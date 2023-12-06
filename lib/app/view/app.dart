@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salah_app/l10n/l10n.dart';
 import 'package:salah_app/salah/view/salah_view.dart';
 
 class App extends StatelessWidget {
@@ -14,8 +13,8 @@ class App extends StatelessWidget {
           accentColor: const Color.fromARGB(255, 255, 19, 255),
         ),
       ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      // localizationsDelegates: AppLocalizations.localizationsDelegates,
+      // supportedLocales: AppLocalizations.supportedLocales,
       home: const SalahView(),
     );
   }
