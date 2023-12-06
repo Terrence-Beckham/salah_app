@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/builder.dart';
+part 'hijiri.g.dart';
+
+@JsonSerializable()
 class HijriDate {
   final String date;
   final String format;
@@ -8,7 +13,8 @@ class HijriDate {
   final int year;
   final String designation;
   final List<String> holidays;
-
+  factory HijriDate.fromJson(Map<String, dynamic> json) =>
+      _$HijriDateFromJson(json);
   HijriDate(
       {required this.date,
       required this.format,

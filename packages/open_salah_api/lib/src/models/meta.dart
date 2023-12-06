@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/json_serializable.dart';
+part 'meta.g.dart';
+
+@JsonSerializable()
 class Meta {
   final double latitude;
   final double longitude;
@@ -7,7 +12,7 @@ class Meta {
   final String midnightMode;
   final String school;
   final Map<String, int> offset;
-
+  factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
   Meta(
       {required this.latitude,
       required this.longitude,

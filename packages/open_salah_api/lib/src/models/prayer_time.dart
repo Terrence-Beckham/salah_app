@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'prayer_time.g.dart';
+
+@JsonSerializable()
 class PrayerTime {
   final String fajr;
   final String sunrise;
@@ -8,7 +12,8 @@ class PrayerTime {
   final String isha;
   final String imsak;
   final String midnight;
-
+  factory PrayerTime.fromJson(Map<String, dynamic> json) =>
+      _$PrayerTimeFromJson(json);
   PrayerTime(
       {required this.fajr,
       required this.sunrise,

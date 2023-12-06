@@ -1,4 +1,8 @@
-class GregorianDate {
+import 'package:json_annotation/json_annotation.dart';
+part 'gregorian.g.dart';
+
+@JsonSerializable()
+class Gregorian {
   final String date;
   final String format;
   final int day;
@@ -8,7 +12,9 @@ class GregorianDate {
   final int year;
   final String designation;
 
-  GregorianDate(
+  factory Gregorian.fromJson(Map<String, dynamic> json) =>
+      _$GregorianFromJson(json);
+  Gregorian(
       {required this.date,
       required this.format,
       required this.day,
