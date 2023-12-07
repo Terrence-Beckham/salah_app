@@ -18,13 +18,10 @@ HijriDate _$HijriDateFromJson(Map<String, dynamic> json) => $checkedCreate(
           day: $checkedConvert('day', (v) => v as int),
           weekday: $checkedConvert('weekday', (v) => v as String),
           month: $checkedConvert('month', (v) => v as int),
-          enMonth: $checkedConvert('en_month', (v) => v as String),
+          shr: $checkedConvert('shr', (v) => v as String),
           year: $checkedConvert('year', (v) => v as int),
           designation: $checkedConvert('designation', (v) => v as String),
-          holidays: $checkedConvert('holidays',
-              (v) => (v as List<dynamic>).map((e) => e as String).toList()),
         );
         return val;
       },
-      fieldKeyMap: const {'enMonth': 'en_month'},
     );
