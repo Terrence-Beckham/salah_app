@@ -3,5 +3,5 @@ export 'gregorian_date.dart';
 export 'hijiri.dart';
 export 'meta.dart';
 export 'prayer_time.dart';
-export 'prayer.dart';
+export 'salah.dart';
 export 'weather.dart';
