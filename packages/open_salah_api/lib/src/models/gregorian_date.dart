@@ -1,26 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'gregorian.g.dart';
+part 'gregorian_date.g.dart';
 
 @JsonSerializable()
-class Gregorian {
+class GregorianDate {
   final String date;
   final String format;
   final int day;
   final String weekday;
   final int month;
-  final String enMonth;
+  final String english;
   final int year;
   final String designation;
-
-  factory Gregorian.fromJson(Map<String, dynamic> json) =>
-      _$GregorianFromJson(json);
-  Gregorian(
+  factory GregorianDate.fromJson(Map<String, dynamic> json) =>
+      _$GregorianDateFromJson(json);
+  GregorianDate(
       {required this.date,
       required this.format,
       required this.day,
       required this.weekday,
       required this.month,
-      required this.enMonth,
+      required this.english,
       required this.year,
       required this.designation});
 }
