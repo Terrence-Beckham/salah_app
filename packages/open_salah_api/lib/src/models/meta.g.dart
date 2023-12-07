@@ -17,17 +17,10 @@ Meta _$MetaFromJson(Map<String, dynamic> json) => $checkedCreate(
           longitude: $checkedConvert('longitude', (v) => (v as num).toDouble()),
           timezone: $checkedConvert('timezone', (v) => v as String),
           method: $checkedConvert('method', (v) => v as String),
-          latitudeAdjustmentMethod:
-              $checkedConvert('latitude_adjustment_method', (v) => v as String),
-          midnightMode: $checkedConvert('midnight_mode', (v) => v as String),
+          adjustment: $checkedConvert('adjustment', (v) => v as String),
+          midnight: $checkedConvert('midnight', (v) => v as String),
           school: $checkedConvert('school', (v) => v as String),
-          offset:
-              $checkedConvert('offset', (v) => Map<String, int>.from(v as Map)),
         );
         return val;
-      },
-      fieldKeyMap: const {
-        'latitudeAdjustmentMethod': 'latitude_adjustment_method',
-        'midnightMode': 'midnight_mode'
       },
     );

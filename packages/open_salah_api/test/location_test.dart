@@ -13,7 +13,7 @@ void main() {
               'longitude': -87.65005,
             }),
             isA<Location>()
-                .having((w) => w.id, 'id', 48873932)
+                .having((w) => w.id, 'id', 4887392)
                 .having((w) => w.name, 'name', 'Chicago')
                 .having((w) => w.latitude, 'latitude', 41.8504444)
                 .having((w) => w.longitude, 'longitude', -87.65005));

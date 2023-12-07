@@ -7,18 +7,17 @@ class Meta {
   final double longitude;
   final String timezone;
   final String method;
-  final String latitudeAdjustmentMethod;
-  final String midnightMode;
+  final String adjustment;
+  final String midnight;
   final String school;
-  final Map<String, int> offset;
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
-  Meta(
-      {required this.latitude,
-      required this.longitude,
-      required this.timezone,
-      required this.method,
-      required this.latitudeAdjustmentMethod,
-      required this.midnightMode,
-      required this.school,
-      required this.offset});
+  Meta({
+    required this.latitude,
+    required this.longitude,
+    required this.timezone,
+    required this.method,
+    required this.adjustment,
+    required this.midnight,
+    required this.school,
+  });
 }
