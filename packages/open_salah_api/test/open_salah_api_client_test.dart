@@ -2,7 +2,6 @@
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:open_salah_api/src/models/models.dart';
-import 'package:open_salah_api/src/open_meteo_api_client.dart';
 import 'package:open_salah_api/src/open_salah_api_client.dart';
 import 'package:test/test.dart';
 
@@ -29,7 +28,7 @@ void main() {
 
     group('constructor', () {
       test('does not require an httpClient', () {
-        expect(OpenMeteoApiClient(), isNotNull);
+        expect(OpenSalahApiClient(), isNotNull);
       });
     });
 
