@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:open_salah_api/open_salah_api.dart';
+import 'package:open_salah_api/src/open_salah_api.dart';
 
 class Salah {
   final PrayerTime timings;

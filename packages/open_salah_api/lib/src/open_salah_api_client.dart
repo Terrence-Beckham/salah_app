@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:open_salah_api/open_salah_api.dart';
+import 'package:open_salah_api/src/open_salah_api.dart';
 
 ///Exception thrown when locationSearch fails
 class LocationRequestFailure implements Exception {}
@@ -23,22 +23,48 @@ class SalahNotFoundFailure implements Exception {}
 
 ///Dart client for Sala Times
 class OpenSalahApiClient {
-  OpenSalahApiClient(http.Client? httpClient)
+  OpenSalahApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  final http.Client _httpClient;
   static const _baseUrlWeather = 'api.open-meteo.com';
   static const _baseUrlGeocoding = 'geocoding-api.open-meteo.com';
-  static const _basePrayerTimes = 'http://api.aladhan.com';
+  static const _basePrayerTimes = 'api.aladhan.com';
+
+  final http.Client _httpClient;
+
+  /// Finds a [Location] `/v1/search/?name=(query)`.
+  // Future<Location> locationSearch(String query) async {
+  //   final locationRequest = Uri.https(
+  //     _baseUrlGeocoding,
+  //     '/v1/search',
+  //     {'name': query, 'count': '1'},
+  //   );
+
+  //   final locationResponse = await _httpClient.get(locationRequest);
+
+  //   if (locationResponse.statusCode != 200) {
+  //     throw LocationRequestFailure();
+  //   }
+
+  //   final locationJson = jsonDecode(locationResponse.body) as Map;
+
+  //   if (!locationJson.containsKey('results')) throw LocationNotFoundFailure();
+
+  //   final results = locationJson['results'] as List;
+
+  //   if (results.isEmpty) throw LocationNotFoundFailure();
+
+  //   return Location.fromJson(results.first as Map<String, dynamic>);
+  // }
 
   /// Finds a location
   Future<Location> locationSearch(String query) async {
-    final LocationRequest = Uri.https(
+    final locationRequest = Uri.https(
       _baseUrlGeocoding,
       '/v1/search',
-      {'name': query, 'count': 1},
+      {'name': query, 'count': '1'},
     );
-    final locationResponse = await _httpClient.get(LocationRequest);
+    final locationResponse = await _httpClient.get(locationRequest);
 
     if (locationResponse.statusCode != 200) {
       throw LocationRequestFailure();
@@ -99,6 +125,7 @@ class OpenSalahApiClient {
 
     if (!salahJson.containsKey('data')) throw SalahNotFoundFailure();
 
+    ///TODO I need to save this list as Salah objects into the DB.
     final results = salahJson['data'] as List;
 
     if (results.isEmpty) throw SalahNotFoundFailure();

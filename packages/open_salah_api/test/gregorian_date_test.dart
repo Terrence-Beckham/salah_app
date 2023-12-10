@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:open_salah_api/open_salah_api.dart';
+import 'package:open_salah_api/src/open_salah_api.dart';
 
 void main() {
   group('Gregorian Date', () {
