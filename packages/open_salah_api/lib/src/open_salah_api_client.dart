@@ -84,13 +84,13 @@ class OpenSalahApiClient {
   ///http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2
   Future<Salah> getSalah(
       {required double latitude,
-      required double longitide,
+      required double longitude,
       required int year,
       required int month}) async {
     final salahRequest = Uri.https(
         _basePrayerTimes,
         '/v1/calender/' '$year/' '$month',
-        {'latitude': '$latitude', 'longitude': '$longitide'});
+        {'latitude': '$latitude', 'longitude': '$longitude'});
 
     final salahResponse = await _httpClient.get(salahRequest);
 

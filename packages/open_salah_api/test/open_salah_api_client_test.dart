@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+// import 'dart:js_interop_unsafe';
+
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:open_salah_api/src/models/models.dart';
@@ -34,7 +36,7 @@ void main() {
 
     group('locationSearch', () {
       const query = 'mock-query';
-      test('makes correct http request', () async {
+      test('makes correct http response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
@@ -200,5 +202,121 @@ void main() {
         );
       });
     });
+
+    group('getSalah', () {
+      const latitude = 41.85003;
+      const longitude = -87.6500;
+
+      const year = 1;
+      const month = 1;
+
+      test('makes correct http request for a Salah', () async {
+        final response = MockResponse();
+
+        when(() => response.statusCode).thenReturn(200);
+        when(() => response.body).thenReturn('{}');
+        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+
+        try {
+          await apiClient.getSalah(
+              latitude: latitude,
+              longitude: longitude,
+              year: year,
+              month: month);
+        } catch (_) {}
+        verify(
+          () => httpClient.get(
+            Uri.https('api.aladhan.com', 'v1/calender/' '$year/' '$month',
+                {'latitude': '$latitude', 'longitude': '$longitude'}),
+          ),
+        ).called(1);
+      });
+
+      test('Throws SalahRequestFailure on non 200 response ', () async {
+        final response = MockResponse();
+        when(() => response.statusCode).thenReturn(400);
+        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+
+        expect(
+          () => apiClient.getSalah(
+              latitude: latitude,
+              longitude: longitude,
+              year: year,
+              month: month),
+          throwsA(isA<SalahRequestFailure>()),
+        );
+      });
+
+      test('Throws SalahNotFoundFailure on empty response', () async {
+        final response = MockResponse();
+
+        when(() => response.statusCode).thenReturn(200);
+        when(() => response.body).thenReturn('{}');
+        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+
+        expect(
+            () async => apiClient.getSalah(
+                latitude: latitude,
+                longitude: longitude,
+                year: year,
+                month: month),
+            throwsA(isA<SalahNotFoundFailure>()));
+      });
+
+//       test('returns  a Salah object on a valid response', () async {
+//         final response = MockResponse();
+//
+//         when(() => response.statusCode).thenReturn(200);
+//         when(() => response.body).thenReturn('''
+//
+//      {
+// "timings" :{
+// "Fajr": "04:59 (BST)",
+// "Sunrise": "06:36 (BST)",
+// "Dhuhr": "13:04 (BST)",
+// "Asr": "16:36 (BST)",
+// "Sunset": "19:34 (BST)",
+// "Maghrib": "19:34 (BST)",
+// "Isha": "21:10 (BST)",
+// "Imsak": "04:49 (BST)",
+// "Midnight": "01:05 (BST)",
+// "Firstthird": "23:15 (BST)",
+// "Lastthird": "02:55 (BST)"
+// }}
+//
+//         ''');
+//         when(() => httpClient.get(any())).thenAnswer((_) async => response);
+//         final actual = await apiClient.getSalah(
+//             latitude: latitude, longitude: longitude, year: year, month: month);
+//
+//         expect(
+//           actual,
+//           isA<Salah>().having(
+//             (w) => w.timings,
+//             'timings',
+//             '''
+//
+//           "timings": {
+//       "Fajr": "04:59 (BST)",
+//       "Sunrise": "06:36 (BST)",
+//       "Dhuhr": "13:04 (BST)",
+//       "Asr": "16:36 (BST)",
+//       "Sunset": "19:34 (BST)",
+//       "Maghrib": "19:34 (BST)",
+//       "Isha": "21:10 (BST)",
+//       "Imsak": "04:49 (BST)",
+//       "Midnight": "01:05 (BST)",
+//       "Firstthird": "23:15 (BST)",
+//       "Lastthird": "02:55 (BST)"
+//        }''',
+//           ),
+//         );
+//       });
+    });
   });
 }
+// ///Exception thrown when salah  search fails
+// class SalahRequestFailure implements Exception {}
+//
+// ///Exception trown when salah  search fails
+// class SalahNotFoundFailure implements Exception {}
