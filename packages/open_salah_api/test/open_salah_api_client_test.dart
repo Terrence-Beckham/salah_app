@@ -15,7 +15,7 @@ class FakeUri extends Fake implements Uri {}
 
 void main() {
   group('OpenSalahApiClient', () {
-    late http.Client httpClient;
+    late http.Client mockHttpClient;
     late OpenSalahApiClient apiClient;
 
     setUpAll(() {
@@ -23,9 +23,9 @@ void main() {
     });
 
     setUp(() {
-      httpClient = MockHttpClient();
+      mockHttpClient = MockHttpClient();
       // apiClient = OpenSalahApiClient(httpClient: httpClient);
-      apiClient = OpenSalahApiClient(httpClient: httpClient);
+      apiClient = OpenSalahApiClient(httpClient: mockHttpClient);
     });
 
     group('constructor', () {
@@ -40,12 +40,12 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         try {
           await apiClient.locationSearch(query);
         } catch (_) {}
         verify(
-          () => httpClient.get(
+          () => mockHttpClient.get(
             Uri.https(
               'geocoding-api.open-meteo.com',
               '/v1/search',
@@ -58,7 +58,7 @@ void main() {
       test('throws LocationRequestFailure on non-200 response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(400);
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         expect(
           () async => apiClient.locationSearch(query),
           throwsA(isA<LocationRequestFailure>()),
@@ -69,7 +69,7 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         await expectLater(
           apiClient.locationSearch(query),
           throwsA(isA<LocationNotFoundFailure>()),
@@ -80,7 +80,7 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{"results": []}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         await expectLater(
           apiClient.locationSearch(query),
           throwsA(isA<LocationNotFoundFailure>()),
@@ -103,7 +103,7 @@ void main() {
   ]
 }''',
         );
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         final actual = await apiClient.locationSearch(query);
         expect(
           actual,
@@ -124,12 +124,12 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         try {
           await apiClient.getWeather(latitude: latitude, longitude: longitude);
         } catch (_) {}
         verify(
-          () => httpClient.get(
+          () => mockHttpClient.get(
             Uri.https('api.open-meteo.com', 'v1/forecast', {
               'latitude': '$latitude',
               'longitude': '$longitude',
@@ -142,7 +142,7 @@ void main() {
       test('throws WeatherRequestFailure on non-200 response', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(400);
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         expect(
           () async => apiClient.getWeather(
             latitude: latitude,
@@ -156,7 +156,7 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         expect(
           () async => apiClient.getWeather(
             latitude: latitude,
@@ -189,7 +189,7 @@ void main() {
 }
         ''',
         );
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
         final actual = await apiClient.getWeather(
           latitude: latitude,
           longitude: longitude,
@@ -215,7 +215,7 @@ void main() {
 
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         try {
           await apiClient.getSalah(
@@ -225,7 +225,7 @@ void main() {
               month: month);
         } catch (_) {}
         verify(
-          () => httpClient.get(
+          () => mockHttpClient.get(
             Uri.https('api.aladhan.com', 'v1/calender/' '$year/' '$month',
                 {'latitude': '$latitude', 'longitude': '$longitude'}),
           ),
@@ -235,7 +235,7 @@ void main() {
       test('Throws SalahRequestFailure on non 200 response ', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(400);
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
           () => apiClient.getSalah(
@@ -252,7 +252,7 @@ void main() {
 
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
-        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
             () async => apiClient.getSalah(
