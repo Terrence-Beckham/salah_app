@@ -218,7 +218,7 @@ void main() {
         when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         try {
-          await apiClient.getSalah(
+          await apiClient.getSalahByMonth(
               latitude: latitude,
               longitude: longitude,
               year: year,
@@ -238,7 +238,7 @@ void main() {
         when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
-          () => apiClient.getSalah(
+          () => apiClient.getSalahByMonth(
               latitude: latitude,
               longitude: longitude,
               year: year,
@@ -255,7 +255,7 @@ void main() {
         when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
-            () async => apiClient.getSalah(
+            () async => apiClient.getSalahByMonth(
                 latitude: latitude,
                 longitude: longitude,
                 year: year,
