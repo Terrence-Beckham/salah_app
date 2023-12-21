@@ -28,7 +28,7 @@ class SalahCubit extends Cubit<SalahState> {
     }
   }
 
-  Future<void> refreshWeather() async {
+  Future<void> refreshSalah() async {
     if (!state.status.isSuccess) return;
     if (state.salah == Salah.empty) return;
     try {

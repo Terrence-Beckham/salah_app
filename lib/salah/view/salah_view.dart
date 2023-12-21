@@ -1,48 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salah_app/salah/cubit/salah_cubit.dart';
+import 'package:salah_repository/salah_repository.dart';
 
-class SalahView extends StatelessWidget {
-  const SalahView({super.key});
+class SalahPage extends StatelessWidget {
+  const SalahPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SalahCubit(context.read<SalahRepository>()),
+      child: const SalahView(),
+    );
+  }
+}
+
+class SalahView extends StatefulWidget {
+  const SalahView({super.key});
+
+  @override
+  State<SalahView> createState() => _SalahViewState();
+}
+
+class _SalahViewState extends State<SalahView> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              child: Container(
-                height: 200,
-                width: 500,
-                color: Colors.deepPurple,
+      appBar: AppBar(
+        title: const Text('OurSalah'),
+      ),
+      body: BlocConsumer<SalahCubit, SalahState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return Column(
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: const Text('Fajr'),
+                  leading: Text(state.salah.fajr),
+                ),
               ),
-            ),
-            const Expanded(
-              child: PrayerTile(
-                prayerName: Text('Fajr'),
+              const Expanded(
+                child: ListTile(
+                  title: Text('Dhuhr'),
+                ),
               ),
-            ),
-            const Expanded(
-              child: PrayerTile(
-                prayerName: Text('Dhuhr'),
+              const Expanded(
+                child: ListTile(
+                  title: Text('Asr'),
+                ),
               ),
-            ),
-            const Expanded(
-              child: PrayerTile(
-                prayerName: Text('Asr'),
+              const Expanded(
+                child: ListTile(
+                  title: Text('Maghrib'),
+                ),
               ),
-            ),
-            const Expanded(
-              child: PrayerTile(
-                prayerName: Text('Maghrib'),
+              const Expanded(
+                child: ListTile(
+                  title: Text('Isha'),
+                ),
               ),
-            ),
-            const Expanded(
-              child: PrayerTile(
-                prayerName: Text('Isha'),
-              ),
-            ),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -53,7 +75,8 @@ class PrayerTile extends StatelessWidget {
     required this.prayerName,
     super.key,
   });
-  final Text prayerName;
+
+  final String prayerName;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +85,9 @@ class PrayerTile extends StatelessWidget {
       width: 500,
       child: Card(
         color: const Color.fromARGB(255, 240, 238, 231),
-        child: prayerName,
+        child: ListTile(
+          leading: Text(prayerName),
+        ),
       ),
     );
   }

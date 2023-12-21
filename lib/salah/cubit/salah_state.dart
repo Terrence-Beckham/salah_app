@@ -4,8 +4,11 @@ enum SalahStatus { initial, loading, success, failure }
 
 extension SalahStatusX on SalahStatus {
   bool get isInitial => this == SalahStatus.initial;
+
   bool get isLoading => this == SalahStatus.loading;
+
   bool get isSuccess => this == SalahStatus.success;
+
   bool get isFailure => this == SalahStatus.failure;
 }
 
@@ -31,6 +34,7 @@ final class SalahState extends Equatable {
   }
 
   Map<String, dynamic> toJson() => _$SalahStateToJson(this);
+
   @override
   List<Object?> get props => [status, salah];
 }

@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_app/salah/view/salah_view.dart';
+import 'package:salah_repository/salah_repository.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, required SalahRepository salahRepository})
+      : _salahRepository = salahRepository;
+
+  final SalahRepository _salahRepository;
+
+  @override
+  Widget build(BuildContext context) {
+    return RepositoryProvider.value(
+      value: _salahRepository,
+      child: BlocProvider(
+        create: (_) => SalahCubit(_salahRepository),
+        child: const SalahAppView(),
+      ),
+    );
+  }
+}
+
+class SalahAppView extends StatelessWidget {
+  const SalahAppView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color.fromARGB(255, 255, 19, 255),
-        ),
-      ),
-      // localizationsDelegates: AppLocalizations.localizationsDelegates,
-      // supportedLocales: AppLocalizations.supportedLocales,
+      theme: ThemeData(primaryColor: Colors.deepPurple),
       home: const SalahView(),
     );
   }
