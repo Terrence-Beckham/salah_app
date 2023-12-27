@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
@@ -29,42 +30,51 @@ class _SalahViewState extends State<SalahView> {
       appBar: AppBar(
         title: const Text('OurSalah'),
       ),
-      body: BlocConsumer<SalahCubit, SalahState>(
-        listener: (context, state) {
-          // TODO: implement listener
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add_outlined),
+        onPressed: () {
+          if (kDebugMode) {
+            print('was pressed');
+          }
+          context.read<SalahCubit>().fetchSalah('giza');
         },
+      ),
+      body: BlocBuilder<SalahCubit, SalahState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: const Text('Fajr'),
-                  leading: Text(state.salah.fajr),
+          switch (state.status) {
+            case SalahStatus.initial:
+              return Center(
+                child: Text(
+                  state.status.toString(),
                 ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Dhuhr'),
+              );
+            case SalahStatus.loading:
+              return const Center(child: SalahLoadingView());
+
+            case SalahStatus.success:
+              return const SalahSuccessView();
+            case SalahStatus.failure:
+              return Center(
+                child: Text(
+                  state.status.toString(),
                 ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Asr'),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Maghrib'),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Isha'),
-                ),
-              ),
-            ],
-          );
+              );
+          }
+          return const Center(child: Text('Something Went Wrong'));
         },
+      ),
+    );
+  }
+}
+
+class SalahLoadingView extends StatelessWidget {
+  const SalahLoadingView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: Colors.deepOrange,
       ),
     );
   }
@@ -88,6 +98,59 @@ class PrayerTile extends StatelessWidget {
         child: ListTile(
           leading: Text(prayerName),
         ),
+      ),
+    );
+  }
+}
+
+class SalahSuccessView extends StatelessWidget {
+  const SalahSuccessView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: Text('Fajr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Dhuhr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Asr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Maghrib'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Isha'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EmptySalahView extends StatelessWidget {
+  const EmptySalahView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {},
+        child: const Text('Get Salah'),
       ),
     );
   }

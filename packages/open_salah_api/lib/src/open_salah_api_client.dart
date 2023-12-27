@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:open_salah_api/open_salah_api.dart';
 
 ///Exception thrown when locationSearch fails
@@ -32,6 +33,7 @@ class OpenSalahApiClient {
   static const _basePrayerTimes = 'api.aladhan.com';
 
   final http.Client _httpClient;
+  final _logger = Logger();
 
   /// Finds a location
   Future<Location> locationSearch(String query) async {
@@ -54,7 +56,7 @@ class OpenSalahApiClient {
     final results = locationJson['results'] as List;
 
     if (results.isEmpty) throw LocationNotFoundFailure();
-
+    _logger.i(Location.fromJson(results.first as Map<String, dynamic>));
     return Location.fromJson(results.first as Map<String, dynamic>);
   }
 
@@ -94,6 +96,7 @@ class OpenSalahApiClient {
         {'latitude': '$latitude', 'longitude': '$longitude'});
 
     final salahResponse = await _httpClient.get(salahRequest);
+    _logger.i(salahResponse.statusCode);
 
     if (salahResponse.statusCode != 200) throw SalahRequestFailure();
 
@@ -118,7 +121,7 @@ class OpenSalahApiClient {
     required double longitude,
   }) async {
     final now = DateTime.now();
-    final formattedDate = "${now.day}/${now.month}/${now.year}";
+    final formattedDate = "${now.day}-${now.month}-${now.year}";
     final salahRequest = Uri.https(
         _basePrayerTimes,
         '/v1/timings/' '$formattedDate',
@@ -126,19 +129,23 @@ class OpenSalahApiClient {
 
     final salahResponse = await _httpClient.get(salahRequest);
 
+    _logger.i(salahResponse.statusCode);
     if (salahResponse.statusCode != 200) throw SalahRequestFailure();
 
     final salahJson = jsonDecode(salahResponse.body) as Map<String, dynamic>;
+    _logger.i(salahJson);
 
     if (!salahJson.containsKey('data')) throw SalahNotFoundFailure();
 
     ///TODO I need to save this list as Salah objects into the DB.
-    final results = salahJson['data'] as List;
+    final results = salahJson['data'];
+    _logger.i(results);
 
     if (results.isEmpty) throw SalahNotFoundFailure();
 
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
-    return OriginSalah.fromJson(results.first as Map<String, dynamic>);
+    // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
+    return OriginSalah.fromJson(results);
   }
 }
