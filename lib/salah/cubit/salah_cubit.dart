@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_repository/salah_repository.dart' hide Salah;
 
@@ -10,6 +11,7 @@ part 'salah_state.dart';
 class SalahCubit extends Cubit<SalahState> {
   SalahCubit(this._salahRepository) : super(const SalahState());
   final SalahRepository _salahRepository;
+  final _logger = Logger();
 
   Future<void> fetchSalah(String city) async {
     if (city == null || city.isEmpty) return;
@@ -17,15 +19,22 @@ class SalahCubit extends Cubit<SalahState> {
 
     try {
       final salah = Salah.fromRepository(await _salahRepository.getSalah(city));
+
       emit(
         state.copyWith(
           status: SalahStatus.success,
           salah: salah,
         ),
       );
-    } on Exception {
+    } catch (e) {
+      _logger.i('[fetchSalah] fails because of $e');
+    } finally {
       emit(state.copyWith(status: SalahStatus.failure));
     }
+
+    // on Exception {
+    //
+    // }
   }
 
   Future<void> refreshSalah() async {

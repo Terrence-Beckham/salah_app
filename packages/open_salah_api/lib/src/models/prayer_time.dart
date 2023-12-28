@@ -4,26 +4,26 @@ part 'prayer_time.g.dart';
 
 @JsonSerializable()
 class PrayerTime {
-  final String fajr;
-  final String sunrise;
-  final String dhuhr;
-  final String asr;
-  final String sunset;
-  final String maghrib;
-  final String isha;
-  final String imsak;
-  final String midnight;
+  final String Fajr;
+  final String Sunrise;
+  final String Dhuhr;
+  final String Asr;
+  final String Sunset;
+  final String Maghrib;
+  final String Isha;
+  final String Imsak;
+  final String Midnight;
 
   factory PrayerTime.fromJson(Map<String, dynamic> json) =>
       _$PrayerTimeFromJson(json);
   PrayerTime(
-      {required this.fajr,
-      required this.sunrise,
-      required this.dhuhr,
-      required this.asr,
-      required this.sunset,
-      required this.maghrib,
-      required this.isha,
-      required this.imsak,
-      required this.midnight});
+      {required this.Fajr,
+      required this.Sunrise,
+      required this.Dhuhr,
+      required this.Asr,
+      required this.Sunset,
+      required this.Maghrib,
+      required this.Isha,
+      required this.Imsak,
+      required this.Midnight});
 }

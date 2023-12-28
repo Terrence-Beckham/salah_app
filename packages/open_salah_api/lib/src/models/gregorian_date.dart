@@ -6,11 +6,11 @@ part 'gregorian_date.g.dart';
 class GregorianDate {
   final String date;
   final String format;
-  final int day;
+  final String day;
   final String weekday;
-  final int month;
+  final String month;
   final String english;
-  final int year;
+  final String year;
   final String designation;
   factory GregorianDate.fromJson(Map<String, dynamic> json) =>
       _$GregorianDateFromJson(json);

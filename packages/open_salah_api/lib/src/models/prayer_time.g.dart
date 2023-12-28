@@ -13,16 +13,27 @@ PrayerTime _$PrayerTimeFromJson(Map<String, dynamic> json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = PrayerTime(
-          fajr: $checkedConvert('fajr', (v) => v as String),
-          sunrise: $checkedConvert('sunrise', (v) => v as String),
-          dhuhr: $checkedConvert('dhuhr', (v) => v as String),
-          asr: $checkedConvert('asr', (v) => v as String),
-          sunset: $checkedConvert('sunset', (v) => v as String),
-          maghrib: $checkedConvert('maghrib', (v) => v as String),
-          isha: $checkedConvert('isha', (v) => v as String),
-          imsak: $checkedConvert('imsak', (v) => v as String),
-          midnight: $checkedConvert('midnight', (v) => v as String),
+          Fajr: $checkedConvert('fajr', (v) => v as String),
+          Sunrise: $checkedConvert('sunrise', (v) => v as String),
+          Dhuhr: $checkedConvert('dhuhr', (v) => v as String),
+          Asr: $checkedConvert('asr', (v) => v as String),
+          Sunset: $checkedConvert('sunset', (v) => v as String),
+          Maghrib: $checkedConvert('maghrib', (v) => v as String),
+          Isha: $checkedConvert('isha', (v) => v as String),
+          Imsak: $checkedConvert('imsak', (v) => v as String),
+          Midnight: $checkedConvert('midnight', (v) => v as String),
         );
         return val;
+      },
+      fieldKeyMap: const {
+        'Fajr': 'fajr',
+        'Sunrise': 'sunrise',
+        'Dhuhr': 'dhuhr',
+        'Asr': 'asr',
+        'Sunset': 'sunset',
+        'Maghrib': 'maghrib',
+        'Isha': 'isha',
+        'Imsak': 'imsak',
+        'Midnight': 'midnight'
       },
     );

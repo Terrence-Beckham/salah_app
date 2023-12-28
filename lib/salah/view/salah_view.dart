@@ -26,45 +26,71 @@ class _SalahViewState extends State<SalahView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<SalahCubit>().fetchSalah('giza');
+        },
+        child: const Icon(Icons.add_outlined),
+      ),
       appBar: AppBar(
         title: const Text('OurSalah'),
       ),
-      body: BlocConsumer<SalahCubit, SalahState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+      body: BlocBuilder<SalahCubit, SalahState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: const Text('Fajr'),
-                  leading: Text(state.salah.fajr),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Dhuhr'),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Asr'),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Maghrib'),
-                ),
-              ),
-              const Expanded(
-                child: ListTile(
-                  title: Text('Isha'),
-                ),
-              ),
-            ],
-          );
+          switch (state.status) {
+            case SalahStatus.initial:
+              return Center(child: Text(state.status.toString()));
+            case SalahStatus.loading:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case SalahStatus.success:
+              return const SalahSuccessView();
+            case SalahStatus.failure:
+              return const Center(
+                child: Text('Something went wrong'),
+              );
+          }
         },
+      ),
+    );
+  }
+}
+
+class SalahSuccessView extends StatelessWidget {
+  const SalahSuccessView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: Text('Fajr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Dhuhr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Asr'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Maghrib'),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text('Isha'),
+            ),
+          ),
+        ],
       ),
     );
   }
