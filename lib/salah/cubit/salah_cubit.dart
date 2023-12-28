@@ -11,6 +11,7 @@ part 'salah_state.dart';
 class SalahCubit extends Cubit<SalahState> {
   SalahCubit(this._salahRepository) : super(const SalahState());
   final SalahRepository _salahRepository;
+
   final _logger = Logger();
 
   Future<void> fetchSalah(String city) async {
@@ -19,7 +20,6 @@ class SalahCubit extends Cubit<SalahState> {
 
     try {
       final salah = Salah.fromRepository(await _salahRepository.getSalah(city));
-
       emit(
         state.copyWith(
           status: SalahStatus.success,
@@ -27,13 +27,13 @@ class SalahCubit extends Cubit<SalahState> {
         ),
       );
     } catch (e) {
-      _logger.i('[fetchSalah] fails because of $e');
+      _logger.e('the Exception is $e');
     } finally {
       emit(state.copyWith(status: SalahStatus.failure));
     }
-
-    // on Exception {
-    //
+    // } on Exception {
+    //   _logger.i(Exception().toString());
+    //   emit(state.copyWith(status: SalahStatus.failure));
     // }
   }
 

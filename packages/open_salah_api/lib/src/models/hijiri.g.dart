@@ -1,27 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: implicit_dynamic_parameter
-
 part of 'hijiri.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-HijriDate _$HijriDateFromJson(Map<String, dynamic> json) => $checkedCreate(
-      'HijriDate',
-      json,
-      ($checkedConvert) {
-        final val = HijriDate(
-          date: $checkedConvert('date', (v) => v as String),
-          format: $checkedConvert('format', (v) => v as String),
-          day: $checkedConvert('day', (v) => v as int),
-          weekday: $checkedConvert('weekday', (v) => v as String),
-          month: $checkedConvert('month', (v) => v as int),
-          shr: $checkedConvert('shr', (v) => v as String),
-          year: $checkedConvert('year', (v) => v as int),
-          designation: $checkedConvert('designation', (v) => v as String),
-        );
-        return val;
-      },
+HijriDate _$HijriDateFromJson(Map<String, dynamic> json) => HijriDate(
+      date: json['date'] as String,
+      format: json['format'] as String,
+      day: json['day'] as int,
+      weekday: json['weekday'] as String,
+      month: json['month'] as int,
+      shr: json['shr'] as String,
+      year: json['year'] as int,
+      designation: json['designation'] as String,
     );
+
+Map<String, dynamic> _$HijriDateToJson(HijriDate instance) => <String, dynamic>{
+      'date': instance.date,
+      'format': instance.format,
+      'day': instance.day,
+      'weekday': instance.weekday,
+      'month': instance.month,
+      'shr': instance.shr,
+      'year': instance.year,
+      'designation': instance.designation,
+    };

@@ -7,15 +7,15 @@ void main() {
       test('Test generation of a PrayerTime Object from Json', () {
         expect(
             PrayerTime.fromJson(<String, dynamic>{
-              'fajr': "01:00",
-              'sunrise': "02:00",
-              'dhuhr': "03:00",
-              'asr': "04:00",
-              'sunset': "05:00",
-              'maghrib': "06:00",
-              'isha': "07:00",
-              'imsak': "08:00",
-              'midnight': "09:00",
+              'Fajr': "01:00",
+              'Sunrise': "02:00",
+              'Dhuhr': "03:00",
+              'Asr': "04:00",
+              'Sunset': "05:00",
+              'Maghrib': "06:00",
+              'Isha': "07:00",
+              'Imsak': "08:00",
+              'Midnight': "09:00",
             }),
             isA<PrayerTime>()
                 .having((x) => x.Fajr, 'fajr', "01:00")

@@ -20,13 +20,15 @@ dependencies:
   salah_repository:
     path: packages/salah_repository
   logger: ^2.0.2+1
+  freezed_annotation: ^2.4.1
+  json_serializable: ^6.7.1
 
 dev_dependencies:
   bloc_test: ^9.1.2
   build_runner: ^2.4.7
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.7.1
+  freezed: ^2.4.6
   mocktail: ^1.0.2
   very_good_analysis: ^5.0.0
 
