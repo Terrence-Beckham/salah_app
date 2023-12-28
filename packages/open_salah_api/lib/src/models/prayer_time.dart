@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'prayer_time.g.dart';
+//Test
 
 @JsonSerializable()
 class PrayerTime {
