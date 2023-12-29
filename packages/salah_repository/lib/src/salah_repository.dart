@@ -22,10 +22,10 @@ class SalahRepository {
     _logger.d('salah By Day: $salah');
 
     return Salah(
-        fajr: salah.timings.fajr,
-        dhuhr: salah.timings.dhuhr,
-        asr: salah.timings.asr,
-        maghrib: salah.timings.maghrib,
-        isha: salah.timings.isha);
+        fajr: salah.timings.Fajr,
+        dhuhr: salah.timings.Dhuhr,
+        asr: salah.timings.Asr,
+        maghrib: salah.timings.Maghrib,
+        isha: salah.timings.Isha);
   }
 }

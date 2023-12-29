@@ -133,7 +133,7 @@ class OpenSalahApiClient {
     if (salahResponse.statusCode != 200) throw SalahRequestFailure();
 
     final salahJson = jsonDecode(salahResponse.body) as Map<String, dynamic>;
-    _logger.i(salahJson);
+    _logger.i('This is the decoded json $salahJson');
 
     if (!salahJson.containsKey('data')) throw SalahNotFoundFailure();
 
