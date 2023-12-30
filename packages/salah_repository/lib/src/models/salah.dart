@@ -1,9 +1,7 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'salah.g.dart';
-
-@JsonSerializable()
 class Salah extends Equatable {
   Salah(
       {required this.fajr,
@@ -17,6 +15,11 @@ class Salah extends Equatable {
   final String asr;
   final String maghrib;
   final String isha;
+
+  @override
+  String toString() {
+    return 'fajr: $fajr, dhuhr: $dhuhr, asr: $asr, maghrib: $maghrib, isha: $isha  ';
+  }
 
   @override
   // TODO: implement props

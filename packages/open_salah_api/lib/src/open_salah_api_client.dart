@@ -76,8 +76,9 @@ class OpenSalahApiClient {
 
     final bodyJson = jsonDecode(weatherResponse.body) as Map<String, dynamic>;
 
-    if (!bodyJson.containsKey('current_weather'))
+    if (!bodyJson.containsKey('current_weather')) {
       throw WeatherNotFoundFailure();
+    }
 
     final weatherJson = bodyJson['current_weather'] as Map<String, dynamic>;
     return Weather.fromJson(weatherJson);

@@ -5,7 +5,7 @@ import 'package:salah_app/salah/view/salah_view.dart';
 import 'package:salah_repository/salah_repository.dart';
 
 class App extends StatelessWidget {
-  const App({super.key, required SalahRepository salahRepository})
+  const App({required SalahRepository salahRepository, super.key})
       : _salahRepository = salahRepository;
 
   final SalahRepository _salahRepository;

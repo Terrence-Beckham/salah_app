@@ -46,6 +46,12 @@ class _SalahViewState extends State<SalahView> {
               );
             case SalahStatus.success:
               return const SalahSuccessView();
+            // return Card(
+            //   child: ListTile(
+            //     leading: const Text('Fajr'),
+            //     trailing: Text(state.salah.fajr),
+            //   ),
+            // );
             case SalahStatus.failure:
               return const Center(
                 child: Text('Something went wrong'),
@@ -62,36 +68,45 @@ class SalahSuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        children: [
-          Expanded(
-            child: ListTile(
-              title: Text('Fajr'),
-            ),
+    return BlocBuilder<SalahCubit, SalahState>(
+      builder: (context, state) {
+        return Center(
+          child: Column(
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: const Text('Fajr'),
+                  trailing: Text(state.salah.fajr),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: const Text('Dhuhr'),
+                  trailing: Text(state.salah.dhuhr),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: const Text('Asr'),
+                  trailing: Text(state.salah.asr),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: const Text('Maghrib'),
+                  trailing: Text(state.salah.maghrib),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: const Text('Isha'),
+                  trailing: Text(state.salah.isha),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: ListTile(
-              title: Text('Dhuhr'),
-            ),
-          ),
-          Expanded(
-            child: ListTile(
-              title: Text('Asr'),
-            ),
-          ),
-          Expanded(
-            child: ListTile(
-              title: Text('Maghrib'),
-            ),
-          ),
-          Expanded(
-            child: ListTile(
-              title: Text('Isha'),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

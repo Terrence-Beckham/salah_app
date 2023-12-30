@@ -11,6 +11,7 @@ Weather _$WeatherFromJson(Map<String, dynamic> json) => Weather(
       weatherCode: (json['weathercode'] as num).toDouble(),
     );
 
+// ignore: unused_element
 Map<String, dynamic> _$WeatherToJson(Weather instance) => <String, dynamic>{
       'temperature': instance.temperature,
       'weathercode': instance.weatherCode,

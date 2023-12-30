@@ -13,6 +13,7 @@ Location _$LocationFromJson(Map<String, dynamic> json) => Location(
       longitude: (json['longitude'] as num).toDouble(),
     );
 
+// ignore: unused_element
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

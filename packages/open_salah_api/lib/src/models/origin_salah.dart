@@ -21,4 +21,10 @@ class OriginSalah {
       meta: Meta.fromJson(json['meta']),
     );
   }
+
+  @override
+  String toString() {
+    return 'Timings: {\nfajr:${timings.fajr},\ndhuhr:${timings.dhuhr},\nasr:${timings.asr},\n'
+        'maghrib:${timings.maghrib},\nisha:${timings.isha}\n}';
+  }
 }

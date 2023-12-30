@@ -15,7 +15,7 @@ class SalahCubit extends Cubit<SalahState> {
   final _logger = Logger();
 
   Future<void> fetchSalah(String city) async {
-    if (city == null || city.isEmpty) return;
+    // if (city == null || city.isEmpty) return;
     emit(state.copyWith(status: SalahStatus.loading));
 
     try {
@@ -53,9 +53,10 @@ class SalahCubit extends Cubit<SalahState> {
     }
   }
 
-  @override
-  SalahState fromJson(Map<String, dynamic> json) => SalahState.fromJson(json);
-
-  @override
-  Map<String, dynamic> toJson(SalahState state) => state.toJson();
+  // @override
+  // SalahState fromJson(Map<String, dynamic> json)
+// => SalahState.fromJson(json);
+  //
+  // @override
+  // Map<String, dynamic> toJson(SalahState state) => state.toJson();
 }

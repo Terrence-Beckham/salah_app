@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:open_salah_api/open_salah_api.dart';
 import 'package:test/test.dart';
 

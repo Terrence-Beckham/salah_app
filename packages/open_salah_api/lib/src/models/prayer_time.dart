@@ -1,44 +1,44 @@
 class PrayerTime {
-  final String Fajr;
-  final String Sunrise;
-  final String Dhuhr;
-  final String Asr;
-  final String Sunset;
-  final String Maghrib;
-  final String Isha;
-  final String Imsak;
-  final String Midnight;
+  final String fajr;
+  final String sunrise;
+  final String dhuhr;
+  final String asr;
+  final String sunset;
+  final String maghrib;
+  final String isha;
+  final String imsak;
+  final String midnight;
 
   factory PrayerTime.fromJson(Map<String, dynamic> json) {
-    final String Fajr = json['Fajr'] as String;
-    final String Sunrise = json['Sunrise'] as String;
-    final String Dhuhr = json['Dhuhr'] as String;
-    final String Asr = json['Asr'] as String;
-    final String Sunset = json['Sunset'] as String;
-    final String Maghrib = json['Maghrib'] as String;
-    final String Isha = json['Isha'] as String;
-    final String Imsak = json['Imsak'] as String;
-    final String Midnight = json['Midnight'] as String;
+    final String fajr = json['Fajr'] as String;
+    final String sunrise = json['Sunrise'] as String;
+    final String dhuhr = json['Dhuhr'] as String;
+    final String asr = json['Asr'] as String;
+    final String sunset = json['Sunset'] as String;
+    final String maghrib = json['Maghrib'] as String;
+    final String isha = json['Isha'] as String;
+    final String imsak = json['Imsak'] as String;
+    final String midnight = json['Midnight'] as String;
     return PrayerTime(
-        Fajr: Fajr,
-        Sunrise: Sunrise,
-        Dhuhr: Dhuhr,
-        Asr: Asr,
-        Sunset: Sunset,
-        Maghrib: Maghrib,
-        Isha: Isha,
-        Imsak: Imsak,
-        Midnight: Midnight);
+        fajr: fajr,
+        sunrise: sunrise,
+        dhuhr: dhuhr,
+        asr: asr,
+        sunset: sunset,
+        maghrib: maghrib,
+        isha: isha,
+        imsak: imsak,
+        midnight: midnight);
   }
 
   PrayerTime(
-      {required this.Fajr,
-      required this.Sunrise,
-      required this.Dhuhr,
-      required this.Asr,
-      required this.Sunset,
-      required this.Maghrib,
-      required this.Isha,
-      required this.Imsak,
-      required this.Midnight});
+      {required this.fajr,
+      required this.sunrise,
+      required this.dhuhr,
+      required this.asr,
+      required this.sunset,
+      required this.maghrib,
+      required this.isha,
+      required this.imsak,
+      required this.midnight});
 }

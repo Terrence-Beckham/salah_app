@@ -1,23 +1,34 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'meta.g.dart';
-
-@JsonSerializable()
 class Meta {
   final double latitude;
   final double longitude;
-  final String timezone;
-  final String method;
-  final String adjustment;
-  final String midnight;
+  final String timeZone;
+  final int methodId;
+  final String methodName;
   final String school;
-  factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
+
   Meta({
     required this.latitude,
     required this.longitude,
-    required this.timezone,
-    required this.method,
-    required this.adjustment,
-    required this.midnight,
+    required this.timeZone,
+    required this.methodId,
+    required this.methodName,
     required this.school,
   });
+
+  factory Meta.fromJson(Map<String, dynamic> json) {
+    final double latitude = json['latitude'] as double;
+    final double longitude = json['longitude'] as double;
+    final String timeZone = json['timezone'] as String;
+    final int methodId = json['method']['id'] as int;
+    final String methodName = json['method']['name'] as String;
+    final String school = json['school'] as String;
+    return Meta(
+      latitude: latitude,
+      longitude: longitude,
+      timeZone: timeZone,
+      methodId: methodId,
+      methodName: methodName,
+      school: school,
+    );
+  }
 }
