@@ -26,15 +26,15 @@ class SalahCubit extends Cubit<SalahState> {
           salah: salah,
         ),
       );
-    } catch (e) {
-      _logger.e('the Exception is $e');
-    } finally {
+      // } catch (e) {
+      //   _logger.e('the Exception is $e');
+      // } finally {
+      //   emit(state.copyWith(status: SalahStatus.failure));
+      // }
+    } on Exception {
+      _logger.i(Exception().toString());
       emit(state.copyWith(status: SalahStatus.failure));
     }
-    // } on Exception {
-    //   _logger.i(Exception().toString());
-    //   emit(state.copyWith(status: SalahStatus.failure));
-    // }
   }
 
   Future<void> refreshSalah() async {
