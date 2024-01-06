@@ -10,7 +10,7 @@ class SalahRepository {
   final OpenSalahApiClient _openSalahApiClient;
   final _logger = Logger();
 
-  Future<Salah> getSalah(String city) async {
+  Future<SalahRepo> getSalah(String city) async {
     final location = await _openSalahApiClient.locationSearch(city);
     final salah = await _openSalahApiClient.getSalahByDay(
       latitude: location.latitude,
@@ -20,11 +20,12 @@ class SalahRepository {
     );
     _logger.d('Salah By Day: $salah');
 
-    return Salah(
-        fajr: salah.timings.fajr,
-        dhuhr: salah.timings.dhuhr,
-        asr: salah.timings.asr,
-        maghrib: salah.timings.maghrib,
-        isha: salah.timings.isha);
+    return SalahRepo(
+      fajr: salah.timings.fajr,
+      dhuhr: salah.timings.dhuhr,
+      asr: salah.timings.asr,
+      maghrib: salah.timings.maghrib,
+      isha: salah.timings.isha,
+    );
   }
 }

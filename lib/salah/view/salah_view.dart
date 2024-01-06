@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_repository/salah_repository.dart';
 
@@ -23,12 +24,14 @@ class SalahView extends StatefulWidget {
 }
 
 class _SalahViewState extends State<SalahView> {
+  final _logger = Logger();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<SalahCubit>().fetchSalah('giza');
+          // context.read<SalahCubit>().fetchSalah('giza');
+          context.read<SalahCubit>().determinePosition();
         },
         child: const Icon(Icons.add_outlined),
       ),

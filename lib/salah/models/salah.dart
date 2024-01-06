@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:salah_repository/salah_repository.dart' as salah_repository;
+import 'package:salah_repository/salah_repository.dart';
 
 part 'salah.g.dart';
 
@@ -14,7 +14,7 @@ class Salah extends Equatable {
     required this.isha,
   });
 
-  factory Salah.fromRepository(salah_repository.Salah salah) {
+  factory Salah.fromRepository(SalahRepo salah) {
     return Salah(
       fajr: salah.fajr,
       dhuhr: salah.dhuhr,

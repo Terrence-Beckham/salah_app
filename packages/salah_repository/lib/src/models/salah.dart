@@ -2,8 +2,8 @@
 
 import 'package:equatable/equatable.dart';
 
-class Salah extends Equatable {
-  Salah(
+class SalahRepo extends Equatable {
+  SalahRepo(
       {required this.fajr,
       required this.dhuhr,
       required this.asr,

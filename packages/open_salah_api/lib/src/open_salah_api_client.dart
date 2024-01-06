@@ -86,7 +86,7 @@ class OpenSalahApiClient {
 
   ///Fetches Salah times for a specific [year], [month], [latitude], and [longitude]
   ///http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2
-  Future<OriginSalah> getSalahByMonth(
+  Future<SalahApi> getSalahByMonth(
       {required double latitude,
       required double longitude,
       required int year,
@@ -112,12 +112,12 @@ class OpenSalahApiClient {
 
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
-    return OriginSalah.fromJson(results.first as Map<String, dynamic>);
+    return SalahApi.fromJson(results.first as Map<String, dynamic>);
   }
 
   ///Get A Salah for a Specific Day
   ///http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
-  Future<OriginSalah> getSalahByDay({
+  Future<SalahApi> getSalahByDay({
     required double latitude,
     required double longitude,
   }) async {
@@ -147,6 +147,6 @@ class OpenSalahApiClient {
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
     // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
-    return OriginSalah.fromJson(results);
+    return SalahApi.fromJson(results);
   }
 }
