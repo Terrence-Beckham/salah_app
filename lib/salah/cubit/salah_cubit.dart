@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_repository/salah_repository.dart' hide SalahRepo;
 
-part 'salah_cubit.g.dart';
+
 part 'salah_state.dart';
 
 class SalahCubit extends Cubit<SalahState> {
@@ -47,8 +47,8 @@ class SalahCubit extends Cubit<SalahState> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, '
+          'we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can
@@ -95,10 +95,10 @@ class SalahCubit extends Cubit<SalahState> {
     }
   }
 
-  // @override
-  // SalahState fromJson(Map<String, dynamic> json)
+// @override
+// SalahState fromJson(Map<String, dynamic> json)
 // => SalahState.fromJson(json);
-  //
-  // @override
-  // Map<String, dynamic> toJson(SalahState state) => state.toJson();
+//
+// @override
+// Map<String, dynamic> toJson(SalahState state) => state.toJson();
 }

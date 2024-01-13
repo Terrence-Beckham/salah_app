@@ -17,8 +17,6 @@ final class SalahState extends Equatable {
   const SalahState({this.status = SalahStatus.initial, Salah? salah})
       : salah = salah ?? Salah.empty;
 
-  factory SalahState.fromJson(Map<String, dynamic> json) =>
-      _$SalahStateFromJson(json);
 
   final SalahStatus status;
   final Salah salah;
@@ -33,7 +31,6 @@ final class SalahState extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() => _$SalahStateToJson(this);
 
   @override
   List<Object?> get props => [status, salah];
