@@ -55,12 +55,15 @@ class OpenSalahApiClient {
     }
     final results = locationJson['results'] as List;
 
+
+
     if (results.isEmpty) throw LocationNotFoundFailure();
     _logger.i(Location.fromJson(results.first as Map<String, dynamic>));
     return Location.fromJson(results.first as Map<String, dynamic>);
   }
 
-  ///Fetches Weather for a given [latitude] and [longitude].
+  ///Fetches Weather for a given [latitud
+  ///e] and [longitude].
   Future<Weather> getWeather({
     required double latitude,
     required double longitude,

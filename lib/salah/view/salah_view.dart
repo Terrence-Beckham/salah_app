@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_repository/salah_repository.dart';
 
@@ -10,21 +9,17 @@ class SalahPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SalahCubit(context.read<SalahRepository>()),
+      // create: (context) => SalahCubit(context.read<SalahRepository>()),
+      create: (context) => SalahCubit(
+        RepositoryProvider.of<SalahRepository>(context),
+      ),
       child: const SalahView(),
     );
   }
 }
 
-class SalahView extends StatefulWidget {
+class SalahView extends StatelessWidget {
   const SalahView({super.key});
-
-  @override
-  State<SalahView> createState() => _SalahViewState();
-}
-
-class _SalahViewState extends State<SalahView> {
-  final _logger = Logger();
 
   @override
   Widget build(BuildContext context) {

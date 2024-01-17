@@ -19,6 +19,9 @@ final class SalahState extends Equatable {
 
 
   final SalahStatus status;
+
+
+
   final Salah salah;
 
   SalahState copyWith({
