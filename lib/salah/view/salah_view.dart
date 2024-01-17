@@ -2,20 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 
-// class SalahPage extends StatelessWidget {
-//   const SalahPage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       // create: (context) => SalahCubit(context.read<SalahRepository>()),
-//       create: (context) => SalahCubit(
-//         RepositoryProvider.of<SalahRepository>(context),
-//       ),
-//       child: const SalahView(),
-//     );
-//   }
-// }
 
 class SalahView extends StatelessWidget {
   const SalahView({super.key});
@@ -44,12 +30,6 @@ class SalahView extends StatelessWidget {
               );
             case SalahStatus.success:
               return const SalahSuccessView();
-            // return Card(
-            //   child: ListTile(
-            //     leading: const Text('Fajr'),
-            //     trailing: Text(state.salah.fajr),
-            //   ),
-            // );
             case SalahStatus.failure:
               return const Center(
                 child: Text('Something went wrong'),
@@ -66,45 +46,47 @@ class SalahSuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SalahCubit, SalahState>(
-      builder: (context, state) {
-        return Center(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: const Text('Fajr'),
-                  trailing: Text(state.salah.fajr),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  title: const Text('Dhuhr'),
-                  trailing: Text(state.salah.dhuhr),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  title: const Text('Asr'),
-                  trailing: Text(state.salah.asr),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  title: const Text('Maghrib'),
-                  trailing: Text(state.salah.maghrib),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
+    final state = context.watch<SalahCubit>().state;
+    return Center(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListTile(
+              title: const Text('Fajr'),
+              trailing: Text(state.salah.fajr),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: const Text('Dhuhr'),
+              // trailing: Text(state.salah.dhuhr),
+              trailing: Text(context.watch<SalahCubit>().state.salah.dhuhr),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: const Text('Asr'),
+              trailing: Text(state.salah.asr),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: const Text('Maghrib'),
+              trailing: Text(state.salah.maghrib),
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<SalahCubit, SalahState>(
+              builder: (context, state) {
+                return ListTile(
                   title: const Text('Isha'),
                   trailing: Text(state.salah.isha),
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
