@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
-import 'package:salah_repository/salah_repository.dart';
 
-class SalahPage extends StatelessWidget {
-  const SalahPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      // create: (context) => SalahCubit(context.read<SalahRepository>()),
-      create: (context) => SalahCubit(
-        RepositoryProvider.of<SalahRepository>(context),
-      ),
-      child: const SalahView(),
-    );
-  }
-}
+// class SalahPage extends StatelessWidget {
+//   const SalahPage({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       // create: (context) => SalahCubit(context.read<SalahRepository>()),
+//       create: (context) => SalahCubit(
+//         RepositoryProvider.of<SalahRepository>(context),
+//       ),
+//       child: const SalahView(),
+//     );
+//   }
+// }
 
 class SalahView extends StatelessWidget {
   const SalahView({super.key});

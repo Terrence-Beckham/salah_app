@@ -16,7 +16,10 @@ class MyApp extends StatelessWidget {
       value: _salahRepository,
       child: BlocProvider(
         create: (_) => SalahCubit(_salahRepository),
-        child: const MaterialApp(home: SalahView()),
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SalahView(),
+        ),
       ),
     );
   }
