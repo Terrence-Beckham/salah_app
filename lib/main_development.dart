@@ -4,7 +4,7 @@ import 'package:salah_repository/salah_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(App(salahRepository: SalahRepository()));
+  runApp(MyApp(salahRepository: SalahRepository()));
 
   // bootstrap(
   //   () => App(

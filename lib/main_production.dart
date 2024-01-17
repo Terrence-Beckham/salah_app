@@ -4,7 +4,7 @@ import 'package:salah_repository/salah_repository.dart';
 
 void main() {
   bootstrap(
-    () => App(
+    () => MyApp(
       salahRepository: SalahRepository(),
     ),
   );
