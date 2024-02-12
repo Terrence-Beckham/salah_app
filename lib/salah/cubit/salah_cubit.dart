@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_repository/salah_repository.dart' hide SalahRepo;
 
-
 part 'salah_state.dart';
 
 class SalahCubit extends Cubit<SalahState> {

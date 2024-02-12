@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:salah_app/app/app.dart';
+import 'package:salah_app/bootstrap.dart';
 import 'package:salah_repository/salah_repository.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp(salahRepository: SalahRepository()));
+void main()  {
 
-  // bootstrap(
-  //   () => App(
-  //     salahRepository: SalahRepository(),
-  //   ),
-  // );
+  bootstrap(
+    () => MyApp(
+      salahRepository: SalahRepository(),
+    ),
+  );
 }
