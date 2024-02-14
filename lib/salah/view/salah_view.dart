@@ -12,8 +12,8 @@ class SalahPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-      // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
-      SalahCubit(context.read<SalahRepository>()),
+          // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
+          SalahCubit(context.read<SalahRepository>()),
       child: const SalahView(),
     );
   }
@@ -257,44 +257,45 @@ class SalahSuccessView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: ListView(children: [
-                           ListTile(
-                             onTap: () => launchSalahSettingsView(context),
-                             leading: IconButton(
-                               icon: const Icon(
-                                 Icons.notifications_active_outlined,
-                                 color: AppColor.accentGreen,
-                               ),
-                               onPressed: () {},
-                             ),
-                             title: const Text(
-                               'Fajr',
-                               style: TextStyle(
-                                 fontWeight: FontWeight.bold,
-                                 color: AppColor.darkGreen,
-                                 shadows: [
-                                   Shadow(
-                                     blurRadius: 10,
-                                     // shadow blur
-                                     color: AppColor.desaturatedGreen,
-                                     // shadow color
-                                     offset: Offset(
-                                       2,
-                                       4,
-                                     ), // how much shadow will be shown
-                                   ),
-                                 ],
-                               ),
-                             ),
-                             // trailing: Text(state.salah.fajr),
-                             trailing: Text(
-                               state.salah.fajr,
-                               style: const TextStyle(
-                                 color: AppColor.desaturatedGreen,
-                                 fontSize: 18,
-                               ),
-                             ),
-                           ),
+                        child: ListView(
+                          children: [
+                            ListTile(
+                              onTap: () => launchSalahSettingsView(context),
+                              leading: IconButton(
+                                icon: const Icon(
+                                  Icons.notifications_active_outlined,
+                                  color: AppColor.accentGreen,
+                                ),
+                                onPressed: () {},
+                              ),
+                              title: const Text(
+                                'Fajr',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.darkGreen,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 10,
+                                      // shadow blur
+                                      color: AppColor.desaturatedGreen,
+                                      // shadow color
+                                      offset: Offset(
+                                        2,
+                                        4,
+                                      ), // how much shadow will be shown
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // trailing: Text(state.salah.fajr),
+                              trailing: Text(
+                                state.salah.fajr,
+                                style: const TextStyle(
+                                  color: AppColor.desaturatedGreen,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -323,8 +324,8 @@ class SalahSuccessView extends StatelessWidget {
                                   // shadow blur
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
-                                  offset:
-                                  Offset(2, 4), // how much shadow will be shown
+                                  offset: Offset(
+                                      2, 4,), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -344,6 +345,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListTile(
+                          onTap: () => launchSalahSettingsView(context),
                           leading: IconButton(
                             icon: const Icon(
                               Icons.notifications_active_outlined,
@@ -362,8 +364,8 @@ class SalahSuccessView extends StatelessWidget {
                                   // shadow blur
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
-                                  offset:
-                                  Offset(2, 4), // how much shadow will be shown
+                                  offset: Offset(
+                                      2, 4), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -383,6 +385,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListTile(
+                          onTap: () => launchSalahSettingsView(context),
                           leading: IconButton(
                             icon: const Icon(
                               Icons.notifications_active_outlined,
@@ -401,8 +404,8 @@ class SalahSuccessView extends StatelessWidget {
                                   // shadow blur
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
-                                  offset:
-                                  Offset(2, 4), // how much shadow will be shown
+                                  offset: Offset(
+                                      2, 4), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -422,6 +425,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListTile(
+                          onTap: () => launchSalahSettingsView(context),
                           leading: IconButton(
                             icon: const Icon(
                               Icons.notifications_active_outlined,
@@ -440,8 +444,8 @@ class SalahSuccessView extends StatelessWidget {
                                   // shadow blur
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
-                                  offset:
-                                  Offset(2, 4), // how much shadow will be shown
+                                  offset: Offset(
+                                      2, 4), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -461,6 +465,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       Expanded(
                         child: ListTile(
+                          onTap: () => launchSalahSettingsView(context),
                           leading: IconButton(
                             icon: const Icon(
                               Icons.notifications_active_outlined,
@@ -479,8 +484,8 @@ class SalahSuccessView extends StatelessWidget {
                                   // shadow blur
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
-                                  offset:
-                                  Offset(2, 4), // how much shadow will be shown
+                                  offset: Offset(
+                                      2, 4), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -501,7 +506,9 @@ class SalahSuccessView extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],),),
+              ],
+            ),
+          ),
         );
       },
     );

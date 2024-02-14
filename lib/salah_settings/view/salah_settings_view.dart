@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/konstants/konstants.dart';
+import 'package:salah_app/widgets/athan_segment_selector.dart';
+import 'package:salah_app/widgets/reciter_menu.dart';
 
 class SalahSettingsView extends StatelessWidget {
   const SalahSettingsView({super.key});
@@ -22,11 +24,11 @@ class SalahSettingsPage extends StatelessWidget {
           backgroundColor: AppColor.backgroundGreen,
           iconTheme: const IconThemeData(color: Colors.white),
         ),
-        body: const Column(
+        body: Column(
           children: [
             Stack(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                   height: 150,
                   child: ColoredBox(
@@ -36,7 +38,7 @@ class SalahSettingsPage extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'Maghrib',
                         style: TextStyle(
                           color: AppColor.darkGreen,
@@ -56,14 +58,14 @@ class SalahSettingsPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 8,right: 16),
+                            padding: EdgeInsets.only(left: 8, right: 16),
                             child: Icon(
                               Icons.location_on_outlined,
-size: 32,
+                              size: 32,
                               color: Colors.orangeAccent,
                             ),
                           ),
@@ -89,6 +91,190 @@ size: 32,
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: 215,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 32, left: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Offset',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.darkGreen,
+                                  shadows: [AppColor.mainShadow],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Text(
+                                        'original time',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColor.desaturatedGreen,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 32,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Text(
+                                          '12:30 AM',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColor.desaturatedGreen,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: AppColor.accentGreen,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.remove_outlined,
+                                            color: Colors.red,
+                                            size: 48,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 68,
+                                        width: 68,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: AppColor.accentGreen,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            '00',
+                                            style: TextStyle(
+                                              fontSize: 32,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: AppColor.accentGreen,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.add_outlined,
+                                            color: Colors.greenAccent,
+                                            size: 48,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Row(
+                                    children: [
+                                      Text(
+                                        'adjusted time',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColor.desaturatedGreen,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 32,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Text(
+                                          '12:30 AM',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColor.desaturatedGreen,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      AppColor.mainDivider,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Athan',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.darkGreen,
+                                      shadows: [AppColor.mainShadow],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(16),
+                            child: AthanSegmentButton(),
+                          ),
+                        ],
+                      ),
+                      AppColor.mainDivider,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Reciter',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.darkGreen,
+                                      shadows: [AppColor.mainShadow],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ReciterMenu(),
+                        ],
+                      ),
+                      AppColor.mainDivider,
                     ],
                   ),
                 ),
