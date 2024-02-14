@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
+import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
 import 'package:salah_repository/salah_repository.dart';
 
 class SalahPage extends StatelessWidget {
@@ -11,8 +12,8 @@ class SalahPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
-          SalahCubit(context.read<SalahRepository>()),
+      // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
+      SalahCubit(context.read<SalahRepository>()),
       child: const SalahView(),
     );
   }
@@ -163,33 +164,29 @@ class SalahSuccessView extends StatelessWidget {
                 ),
                 ColoredBox(
                   color: AppColor.lightAccentGreen,
-                  child: SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.location_on_outlined,
-                              color: AppColor.darkGreen,
-                            ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.location_on_outlined,
+                            color: AppColor.darkGreen,
                           ),
                         ),
-                        const SizedBox(
-                          width: 53,
+                      ),
+                      const SizedBox(
+                        width: 53,
+                      ),
+                      const Text(
+                        ' Bulaaq Dekroor',
+                        style: TextStyle(
+                          color: AppColor.desaturatedGreen,
+                          fontSize: 24,
                         ),
-                        const Text(
-                          ' Bulaaq Dekroor',
-                          style: TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 const Divider(
@@ -243,13 +240,10 @@ class SalahSuccessView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: IconButton(
-                          color: Colors.orangeAccent,
-                          icon: const Icon(Icons.arrow_forward_ios),
-                          onPressed: () {},
-                        ),
+                      IconButton(
+                        color: Colors.orangeAccent,
+                        icon: const Icon(Icons.arrow_forward_ios),
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -258,239 +252,267 @@ class SalahSuccessView extends StatelessWidget {
                   color: AppColor.accentGreen,
                   height: 2,
                 ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: ListView(children: [
+                           ListTile(
+                             onTap: () => launchSalahSettingsView(context),
+                             leading: IconButton(
+                               icon: const Icon(
+                                 Icons.notifications_active_outlined,
+                                 color: AppColor.accentGreen,
+                               ),
+                               onPressed: () {},
+                             ),
+                             title: const Text(
+                               'Fajr',
+                               style: TextStyle(
+                                 fontWeight: FontWeight.bold,
+                                 color: AppColor.darkGreen,
+                                 shadows: [
+                                   Shadow(
+                                     blurRadius: 10,
+                                     // shadow blur
+                                     color: AppColor.desaturatedGreen,
+                                     // shadow color
+                                     offset: Offset(
+                                       2,
+                                       4,
+                                     ), // how much shadow will be shown
+                                   ),
+                                 ],
+                               ),
+                             ),
+                             // trailing: Text(state.salah.fajr),
+                             trailing: Text(
+                               state.salah.fajr,
+                               style: const TextStyle(
+                                 color: AppColor.desaturatedGreen,
+                                 fontSize: 18,
+                               ),
+                             ),
+                           ),
+                          ],
+                        ),
+                      ),
+                      const Divider(
                         color: AppColor.accentGreen,
+                        height: 2,
                       ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Fajr',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
+                      Expanded(
+                        child: ListTile(
+                          onTap: () => launchSalahSettingsView(context),
+                          leading: IconButton(
+                            icon: const Icon(
+                              Icons.notifications_active_outlined,
+                              color: AppColor.accentGreen,
+                            ),
+                            onPressed: () {},
                           ),
-                        ],
+                          title: const Text(
+                            'Sharooq',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.darkGreen,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10,
+                                  // shadow blur
+                                  color: AppColor.desaturatedGreen,
+                                  // shadow color
+                                  offset:
+                                  Offset(2, 4), // how much shadow will be shown
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: Text(
+                            state.salah.dhuhr,
+                            style: const TextStyle(
+                              color: AppColor.desaturatedGreen,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    // trailing: Text(state.salah.fajr),
-                    trailing: Text(
-                      state.salah.fajr,
-                      style: const TextStyle(
-                        color: AppColor.desaturatedGreen,
-                        fontSize: 18,
+                      const Divider(
+                        color: AppColor.accentGreen,
+                        height: 2,
                       ),
-                    ),
+                      Expanded(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: const Icon(
+                              Icons.notifications_active_outlined,
+                              color: AppColor.accentGreen,
+                            ),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            'Dhuhr',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.darkGreen,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10,
+                                  // shadow blur
+                                  color: AppColor.desaturatedGreen,
+                                  // shadow color
+                                  offset:
+                                  Offset(2, 4), // how much shadow will be shown
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: Text(
+                            state.salah.dhuhr,
+                            style: const TextStyle(
+                              color: AppColor.desaturatedGreen,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        color: AppColor.accentGreen,
+                        height: 2,
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: const Icon(
+                              Icons.notifications_active_outlined,
+                              color: AppColor.accentGreen,
+                            ),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            'Asr',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.darkGreen,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10,
+                                  // shadow blur
+                                  color: AppColor.desaturatedGreen,
+                                  // shadow color
+                                  offset:
+                                  Offset(2, 4), // how much shadow will be shown
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: Text(
+                            state.salah.asr,
+                            style: const TextStyle(
+                              color: AppColor.desaturatedGreen,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        color: AppColor.accentGreen,
+                        height: 2,
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: const Icon(
+                              Icons.notifications_active_outlined,
+                              color: AppColor.accentGreen,
+                            ),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            'Maghrib',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.darkGreen,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10,
+                                  // shadow blur
+                                  color: AppColor.desaturatedGreen,
+                                  // shadow color
+                                  offset:
+                                  Offset(2, 4), // how much shadow will be shown
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: Text(
+                            state.salah.maghrib,
+                            style: const TextStyle(
+                              color: AppColor.desaturatedGreen,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        color: AppColor.accentGreen,
+                        height: 2,
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: const Icon(
+                              Icons.notifications_active_outlined,
+                              color: AppColor.accentGreen,
+                            ),
+                            onPressed: () {},
+                          ),
+                          title: const Text(
+                            'Isha',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.darkGreen,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10,
+                                  // shadow blur
+                                  color: AppColor.desaturatedGreen,
+                                  // shadow color
+                                  offset:
+                                  Offset(2, 4), // how much shadow will be shown
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: Text(
+                            state.salah.isha,
+                            style: const TextStyle(
+                              color: AppColor.desaturatedGreen,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        color: AppColor.accentGreen,
+                        height: 2,
+                      ),
+                    ],
                   ),
                 ),
-                const Divider(
-                  color: AppColor.accentGreen,
-                  height: 2,
-                ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
-                        color: AppColor.accentGreen,
-                      ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Sharooq',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Text(
-                      state.salah.dhuhr,
-                      style: const TextStyle(
-                        color: AppColor.desaturatedGreen,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColor.accentGreen,
-                  height: 2,
-                ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
-                        color: AppColor.accentGreen,
-                      ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Dhuhr',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Text(
-                      state.salah.dhuhr,
-                      style: const TextStyle(
-                        color: AppColor.desaturatedGreen,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColor.accentGreen,
-                  height: 2,
-                ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
-                        color: AppColor.accentGreen,
-                      ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Asr',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Text(
-                      state.salah.asr,
-                      style: const TextStyle(
-                        color: AppColor.desaturatedGreen,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColor.accentGreen,
-                  height: 2,
-                ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
-                        color: AppColor.accentGreen,
-                      ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Maghrib',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Text(
-                      state.salah.maghrib,
-                      style: const TextStyle(
-                        color: AppColor.desaturatedGreen,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColor.accentGreen,
-                  height: 2,
-                ),
-                SizedBox(
-                  height: 80,
-                  width: double.infinity,
-                  child: ListTile(
-                    leading: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_outlined,
-                        color: AppColor.accentGreen,
-                      ),
-                      onPressed: () {},
-                    ),
-                    title: const Text(
-                      'Isha',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.darkGreen,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 10, // shadow blur
-                            color: AppColor.desaturatedGreen, // shadow color
-                            offset:
-                                Offset(2, 4), // how much shadow will be shown
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Text(state.salah.isha,style: const TextStyle(
-                      color: AppColor.desaturatedGreen,
-                      fontSize: 18,
-                    ),),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ],),),
         );
       },
+    );
+  }
+
+  void launchSalahSettingsView(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<SalahSettingsView>(
+        builder: (context) => const SalahSettingsView(),
+      ),
     );
   }
 }

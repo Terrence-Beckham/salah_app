@@ -7,6 +7,8 @@ class AppColor {
   static const Color desaturatedGreen = Color(0xFF7E9A77);
   static const Color accentGreen = Color(0xFF43C3A1);
   static const Color lightAccentGreen = Color(0xFFC8F4E8);
+  static const Color backgroundGreen = Color(0xFF64AF89);
+
 
   static const Gradient linearGradient = LinearGradient(
     begin: Alignment(0.0, 0.0),
