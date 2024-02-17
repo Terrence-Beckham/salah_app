@@ -1,20 +1,20 @@
 import 'package:open_salah_api/open_salah_api.dart';
 
-class SalahApi {
+class Salah {
   final PrayerTime timings;
   final GregorianDate gregorian;
   final HijriDate hijri;
   final Meta meta;
 
-  SalahApi({
+  Salah({
     required this.timings,
     required this.gregorian,
     required this.hijri,
     required this.meta,
   });
 
-  factory SalahApi.fromJson(Map<String, dynamic> json) {
-    return SalahApi(
+  factory Salah.fromJson(Map<String, dynamic> json) {
+    return Salah(
       timings: PrayerTime.fromJson(json['timings']),
       gregorian: GregorianDate.fromJson(json['date']['gregorian']),
       hijri: HijriDate.fromJson(json['date']['hijri']),

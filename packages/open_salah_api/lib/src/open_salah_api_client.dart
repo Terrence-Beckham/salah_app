@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:open_salah_api/open_salah_api.dart';
@@ -55,10 +56,9 @@ class OpenSalahApiClient {
     }
     final results = locationJson['results'] as List;
 
-
-
     if (results.isEmpty) throw LocationNotFoundFailure();
-    _logger.i(Location.fromJson(results.first as Map<String, dynamic>));
+    _logger.i(
+        'This is the current Location${Location.fromJson(results.first as Map<String, dynamic>)}');
     return Location.fromJson(results.first as Map<String, dynamic>);
   }
 
@@ -89,15 +89,20 @@ class OpenSalahApiClient {
 
   ///Fetches Salah times for a specific [year], [month], [latitude], and [longitude]
   ///http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2
-  Future<SalahApi> getSalahByMonth(
-      {required double latitude,
-      required double longitude,
-      required int year,
-      required int month}) async {
+  ///This needs to return an entire list
+  Future<Salah> getSalahByMonth() async {
+    final Position position = await _determinePosition();
+    _logger.e('This is the current position:$position');
+    final today = DateTime.now();
+    final year = today.year;
+    final month = today.month;
+    final latitude = position.latitude;
+    final longitude = position.longitude;
     final salahRequest = Uri.https(
         _basePrayerTimes,
-        '/v1/calender/' '$year/' '$month',
+        '/v1/calendar/' '$year/' '$month',
         {'latitude': '$latitude', 'longitude': '$longitude'});
+    _logger.e(salahRequest);
 
     final salahResponse = await _httpClient.get(salahRequest);
     _logger.i(salahResponse.statusCode);
@@ -115,12 +120,15 @@ class OpenSalahApiClient {
 
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
-    return SalahApi.fromJson(results.first as Map<String, dynamic>);
+    final salahs = List<Map<String, dynamic>>.from(results);
+    // _logger.i(salahs.forEach((element)=> {}));
+    // for (var element in salahs) {_logger.i(element);}
+    return Salah.fromJson(results.first as Map<String, dynamic>);
   }
 
   ///Get A Salah for a Specific Day
   ///http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
-  Future<SalahApi> getSalahByDay({
+  Future<Salah> getSalahByDay({
     required double latitude,
     required double longitude,
   }) async {
@@ -150,6 +158,47 @@ class OpenSalahApiClient {
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
     // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
-    return SalahApi.fromJson(results);
+    return Salah.fromJson(results);
+  }
+
+  /// Determine the current position of the device.
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }

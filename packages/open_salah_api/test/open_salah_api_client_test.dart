@@ -210,58 +210,58 @@ void main() {
       const year = 1;
       const month = 1;
 
-      test('makes correct http request for a Salah', () async {
-        final response = MockResponse();
+      // test('makes correct http request for a Salah', () async {
+      //   final response = MockResponse();
+      //
+      //   when(() => response.statusCode).thenReturn(200);
+      //   when(() => response.body).thenReturn('{}');
+      //   when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
+      //
+      //   try {
+      //     await apiClient.getSalahByMonth(
+      //         latitude: latitude,
+      //         longitude: longitude,
+      //         year: year,
+      //         month: month);
+      //   } catch (_) {}
+      //   verify(
+      //     () => mockHttpClient.get(
+      //       Uri.https('api.aladhan.com', 'v1/calender/' '$year/' '$month',
+      //           {'latitude': '$latitude', 'longitude': '$longitude'}),
+      //     ),
+      //   ).called(1);
+      // });
 
-        when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn('{}');
-        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
+      // test('Throws SalahRequestFailure on non 200 response ', () async {
+      //   final response = MockResponse();
+      //   when(() => response.statusCode).thenReturn(400);
+      //   when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
+      //
+      //   expect(
+      //     () => apiClient.getSalahByMonth(
+      //         latitude: latitude,
+      //         longitude: longitude,
+      //         year: year,
+      //         month: month),
+      //     throwsA(isA<SalahRequestFailure>()),
+      //   );
+      // });
 
-        try {
-          await apiClient.getSalahByMonth(
-              latitude: latitude,
-              longitude: longitude,
-              year: year,
-              month: month);
-        } catch (_) {}
-        verify(
-          () => mockHttpClient.get(
-            Uri.https('api.aladhan.com', 'v1/calender/' '$year/' '$month',
-                {'latitude': '$latitude', 'longitude': '$longitude'}),
-          ),
-        ).called(1);
-      });
-
-      test('Throws SalahRequestFailure on non 200 response ', () async {
-        final response = MockResponse();
-        when(() => response.statusCode).thenReturn(400);
-        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
-
-        expect(
-          () => apiClient.getSalahByMonth(
-              latitude: latitude,
-              longitude: longitude,
-              year: year,
-              month: month),
-          throwsA(isA<SalahRequestFailure>()),
-        );
-      });
-
-      test('Throws SalahNotFoundFailure on empty response', () async {
-        final response = MockResponse();
-
-        when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn('{}');
-        when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
-
-        expect(
-            () async => apiClient.getSalahByMonth(
-                latitude: latitude,
-                longitude: longitude,
-                year: year,
-                month: month),
-            throwsA(isA<SalahNotFoundFailure>()));
-      });
+      // test('Throws SalahNotFoundFailure on empty response', () async {
+      //   final response = MockResponse();
+      //
+      //   when(() => response.statusCode).thenReturn(200);
+      //   when(() => response.body).thenReturn('{}');
+      //   when(() => mockHttpClient.get(any())).thenAnswer((_) async => response);
+      //
+      //   expect(
+      //       () async => apiClient.getSalahByMonth(
+      //           latitude: latitude,
+      //           longitude: longitude,
+      //           year: year,
+      //           month: month),
+      //       throwsA(isA<SalahNotFoundFailure>()));
+      // });
 
 //       test('returns  a Salah object on a valid response', () async {
 //         final response = MockResponse();

@@ -4,6 +4,7 @@ import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
 import 'package:salah_app/settings/view/settings_view.dart';
+import 'package:salah_app/widgets/athan_player.dart';
 import 'package:salah_repository/salah_repository.dart';
 
 class SalahPage extends StatelessWidget {
@@ -28,7 +29,7 @@ class SalahView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<SalahCubit>().fetchSalah('Giza');
+          context.read<SalahCubit>().fetchSalah();
           // BlocProvider.of<SalahCubit>(context).fetchSalah('Makkah');
           //The above is equivalent to this
           // final bloc = context.read<SalahCubit>();
@@ -43,6 +44,7 @@ class SalahView extends StatelessWidget {
         builder: (context, state) {
           switch (state.status) {
             case SalahStatus.initial:
+              context.read<SalahCubit>().fetchSalah();
               return Center(child: Text(state.status.toString()));
             case SalahStatus.loading:
               return const Center(
@@ -177,7 +179,31 @@ class SalahSuccessView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog<SimpleDialog>(
+                              context: context,
+                              builder: (context) => const AthanPlayer(),
+                              // SimpleDialog(
+                              //   title: const Text('test dialog'),
+                              //   children: [
+                              //     Column(
+                              //       children: [
+                              //         const CircleAvatar(
+                              //
+                              //           child: Text('Current Salah'),
+                              //         ),
+                              //         IconButton(
+                              //           icon: const Icon(Icons.close),
+                              //           onPressed: () {
+                              //             Navigator.of(context).pop();
+                              //           },
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ],
+                              // ),
+                            );
+                          },
                           icon: const Icon(
                             Icons.location_on_outlined,
                             color: AppColor.darkGreen,
@@ -215,10 +241,10 @@ class SalahSuccessView extends StatelessWidget {
                           onPressed: () {},
                         ),
                       ),
-                      const Column(
+                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             '20 Rajab, 1444',
                             style: TextStyle(
                               fontSize: 24,
@@ -239,8 +265,9 @@ class SalahSuccessView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '20 November, 2024',
-                            style: TextStyle(
+                            // '20 November, 2024',
+                            state.salah.gregorianDate,
+                            style: const TextStyle(
                               fontSize: 16,
                               color: AppColor.desaturatedGreen,
                               fontWeight: FontWeight.bold,
@@ -298,6 +325,7 @@ class SalahSuccessView extends StatelessWidget {
                               // trailing: Text(state.salah.fajr),
                               trailing: Text(
                                 state.salah.fajr,
+
                                 style: const TextStyle(
                                   color: AppColor.desaturatedGreen,
                                   fontSize: 18,
