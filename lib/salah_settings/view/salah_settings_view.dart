@@ -271,7 +271,7 @@ class SalahSettingsPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          ReciterMenu(),
+                          Expanded(child: AthanSoundMenu()),
                         ],
                       ),
                       AppColor.mainDivider,

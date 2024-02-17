@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:salah_app/konstants/konstants.dart';
 
 @override
-class ReciterMenu extends StatefulWidget {
-  const ReciterMenu({super.key});
+class AthanSoundMenu extends StatefulWidget {
+  const AthanSoundMenu({super.key});
 
   @override
-  State<ReciterMenu> createState() => _ReciterMenuState();
+  State<AthanSoundMenu> createState() => _AthanSoundMenuState();
 }
 
-class _ReciterMenuState extends State<ReciterMenu> {
-  List<String> items = ['Maher Muaqally', 'Sudais', 'Shuraim', 'Huthafy'];
-  String? selectedItem = 'Sudais';
+class _AthanSoundMenuState extends State<AthanSoundMenu> {
+  List<String> items = [
+    'Fares Abdul Ghani',
+    'Abdel Moneim',
+    'Abdulah Al Maknawe ',
+    'Hamza Al Majale'
+  ];
+  String? selectedItem = 'Fares Abdul Ghani';
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +29,10 @@ class _ReciterMenuState extends State<ReciterMenu> {
                 value: item,
                 child: Text(
                   item,
-                  style:
-                      const TextStyle(fontSize: 24, color: AppColor.desaturatedGreen),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: AppColor.desaturatedGreen,
+                  ),
                 ),
               ),
             )

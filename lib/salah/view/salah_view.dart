@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
+import 'package:salah_app/settings/view/settings_view.dart';
 import 'package:salah_repository/salah_repository.dart';
 
 class SalahPage extends StatelessWidget {
@@ -153,7 +154,14 @@ class SalahSuccessView extends StatelessWidget {
                       top: 16,
                       right: 16,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<SalahSettingsView>(
+                              builder: (context) => const SettingsPage(),
+                            ),
+                          );
+                        },
                         icon: const Icon(
                           Icons.settings,
                           color: Colors.white,
@@ -325,7 +333,9 @@ class SalahSuccessView extends StatelessWidget {
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
                                   offset: Offset(
-                                      2, 4,), // how much shadow will be shown
+                                    2,
+                                    4,
+                                  ), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -365,7 +375,9 @@ class SalahSuccessView extends StatelessWidget {
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
                                   offset: Offset(
-                                      2, 4), // how much shadow will be shown
+                                    2,
+                                    4,
+                                  ), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -405,7 +417,9 @@ class SalahSuccessView extends StatelessWidget {
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
                                   offset: Offset(
-                                      2, 4), // how much shadow will be shown
+                                    2,
+                                    4,
+                                  ), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -445,7 +459,9 @@ class SalahSuccessView extends StatelessWidget {
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
                                   offset: Offset(
-                                      2, 4), // how much shadow will be shown
+                                    2,
+                                    4,
+                                  ), // how much shadow will be shown
                                 ),
                               ],
                             ),
@@ -485,7 +501,9 @@ class SalahSuccessView extends StatelessWidget {
                                   color: AppColor.desaturatedGreen,
                                   // shadow color
                                   offset: Offset(
-                                      2, 4), // how much shadow will be shown
+                                    2,
+                                    4,
+                                  ), // how much shadow will be shown
                                 ),
                               ],
                             ),
