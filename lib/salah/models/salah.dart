@@ -13,7 +13,8 @@ class Salah extends Equatable {
     required this.maghrib,
     required this.isha,
     required this.gregorianDate,
-
+    required this.readableDate,
+    required this.gregorianWeekdayEnglish,
   });
 
   factory Salah.fromRepository(SalahRepo salah) {
@@ -24,9 +25,11 @@ class Salah extends Equatable {
       maghrib: salah.maghrib,
       isha: salah.isha,
       gregorianDate: salah.gregorianDate,
-
+      readableDate: salah.readableDate,
+      gregorianWeekdayEnglish: salah.gregorianWeekdayEnglish,
     );
   }
+
   factory Salah.fromJson(Map<String, dynamic> json) => _$SalahFromJson(json);
 
   final String fajr;
@@ -35,9 +38,20 @@ class Salah extends Equatable {
   final String maghrib;
   final String isha;
   final String gregorianDate;
+  final String readableDate;
+  final String gregorianWeekdayEnglish;
 
   @override
-  List<Object?> get props => [fajr, dhuhr, asr, maghrib, isha];
+  List<Object?> get props => [
+        fajr,
+        dhuhr,
+        asr,
+        maghrib,
+        isha,
+        gregorianDate,
+        readableDate,
+        gregorianWeekdayEnglish,
+      ];
 
   Map<String, dynamic> toJson() => _$SalahToJson(this);
 
@@ -49,7 +63,10 @@ class Salah extends Equatable {
     maghrib: '',
     isha: '',
     gregorianDate: '',
+    readableDate: '',
+    gregorianWeekdayEnglish: '',
   );
+
   Salah copyWith({
     String? fajr,
     String? dhuhr,
@@ -57,6 +74,8 @@ class Salah extends Equatable {
     String? maghrib,
     String? isha,
     String? gregorianDate,
+    String? readableDate,
+    String? gregorianWeekdayEnglish,
   }) {
     return Salah(
       fajr: fajr ?? this.fajr,
@@ -65,6 +84,9 @@ class Salah extends Equatable {
       maghrib: maghrib ?? this.maghrib,
       isha: isha ?? this.isha,
       gregorianDate: gregorianDate ?? this.gregorianDate,
+      readableDate: readableDate ?? this.readableDate,
+      gregorianWeekdayEnglish:
+          gregorianWeekdayEnglish ?? this.gregorianWeekdayEnglish,
     );
   }
 }

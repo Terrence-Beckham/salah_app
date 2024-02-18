@@ -264,14 +264,30 @@ class SalahSuccessView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Text(
-                            // '20 November, 2024',
-                            state.salah.gregorianDate,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: AppColor.desaturatedGreen,
-                              fontWeight: FontWeight.bold,
+                          Row(
+                            children: [ Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                // '20 November, 2024',
+                               ' ${state.salah.gregorianWeekdayEnglish} ,',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColor.desaturatedGreen,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
+
+                              Text(
+                                // '20 November, 2024',
+                                state.salah.readableDate,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColor.desaturatedGreen,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

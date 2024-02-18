@@ -19,15 +19,19 @@ class SalahRepository {
       // year: 2023,
       // month: 12);
     );
-    _logger.d('Salah By Day: $salah');
 
+
+   ///Extract the specific elements that are needed from the original Salah object.
     return SalahRepo(
+      readableDate: salah.readableDate.dateEnglish,
       fajr: salah.timings.fajr,
       dhuhr: salah.timings.dhuhr,
       asr: salah.timings.asr,
       maghrib: salah.timings.maghrib,
       isha: salah.timings.isha,
       gregorianDate: salah.gregorian.monthEnglish,
+      gregorianWeekdayEnglish: salah.gregorian.weekday
+
 
     );
   }

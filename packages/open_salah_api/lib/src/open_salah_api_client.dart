@@ -123,7 +123,8 @@ class OpenSalahApiClient {
     final salahs = List<Map<String, dynamic>>.from(results);
     // _logger.i(salahs.forEach((element)=> {}));
     // for (var element in salahs) {_logger.i(element);}
-    return Salah.fromJson(results.first as Map<String, dynamic>);
+    // return Salah.fromJson(results.first as Map<String, dynamic>);
+    return Salah.fromJson(results.last as Map<String, dynamic>);
   }
 
   ///Get A Salah for a Specific Day
@@ -151,14 +152,14 @@ class OpenSalahApiClient {
 
     ///TODO I need to save this list as Salah objects into the DB.
     final results = salahJson['data'];
-    _logger.i(results);
+    _logger.i('This is the resulting json: $results');
 
     if (results.isEmpty) throw SalahNotFoundFailure();
 
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
     // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
-    return Salah.fromJson(results);
+    return Salah.fromJson(results.last as Map<String, dynamic>);
   }
 
   /// Determine the current position of the device.
