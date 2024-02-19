@@ -9,6 +9,10 @@
 .buildlog/
 .history
 .svn/
+*.env
+env.g.dart
+env.dart
+
 
 # IntelliJ related
 *.iml

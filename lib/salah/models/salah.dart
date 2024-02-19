@@ -15,6 +15,7 @@ class Salah extends Equatable {
     required this.gregorianDate,
     required this.readableDate,
     required this.gregorianWeekdayEnglish,
+    required this.city,
   });
 
   factory Salah.fromRepository(SalahRepo salah) {
@@ -27,6 +28,7 @@ class Salah extends Equatable {
       gregorianDate: salah.gregorianDate,
       readableDate: salah.readableDate,
       gregorianWeekdayEnglish: salah.gregorianWeekdayEnglish,
+      city: salah.city,
     );
   }
 
@@ -40,6 +42,7 @@ class Salah extends Equatable {
   final String gregorianDate;
   final String readableDate;
   final String gregorianWeekdayEnglish;
+  final String city;
 
   @override
   List<Object?> get props => [
@@ -51,6 +54,7 @@ class Salah extends Equatable {
         gregorianDate,
         readableDate,
         gregorianWeekdayEnglish,
+        city,
       ];
 
   Map<String, dynamic> toJson() => _$SalahToJson(this);
@@ -65,6 +69,7 @@ class Salah extends Equatable {
     gregorianDate: '',
     readableDate: '',
     gregorianWeekdayEnglish: '',
+    city: '',
   );
 
   Salah copyWith({
@@ -76,6 +81,7 @@ class Salah extends Equatable {
     String? gregorianDate,
     String? readableDate,
     String? gregorianWeekdayEnglish,
+    String? city,
   }) {
     return Salah(
       fajr: fajr ?? this.fajr,
@@ -87,6 +93,7 @@ class Salah extends Equatable {
       readableDate: readableDate ?? this.readableDate,
       gregorianWeekdayEnglish:
           gregorianWeekdayEnglish ?? this.gregorianWeekdayEnglish,
+      city: city ?? this.city,
     );
   }
 }

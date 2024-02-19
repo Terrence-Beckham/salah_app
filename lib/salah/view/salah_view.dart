@@ -27,19 +27,6 @@ class SalahView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<SalahCubit>().fetchSalah();
-          // BlocProvider.of<SalahCubit>(context).fetchSalah('Makkah');
-          //The above is equivalent to this
-          // final bloc = context.read<SalahCubit>();
-          //  bloc.fetchSalah('Makkah');
-
-          // context.read<SalahCubit>().fetchSalah('giza');
-          // context.read<SalahCubit>().determinePosition();
-        },
-        child: const Icon(Icons.add_outlined),
-      ),
       body: BlocBuilder<SalahCubit, SalahState>(
         builder: (context, state) {
           switch (state.status) {
@@ -175,33 +162,16 @@ class SalahSuccessView extends StatelessWidget {
                 ColoredBox(
                   color: AppColor.lightAccentGreen,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: const EdgeInsets.only(left: 8),
                         child: IconButton(
                           onPressed: () {
                             showDialog<SimpleDialog>(
                               context: context,
                               builder: (context) => const AthanPlayer(),
-                              // SimpleDialog(
-                              //   title: const Text('test dialog'),
-                              //   children: [
-                              //     Column(
-                              //       children: [
-                              //         const CircleAvatar(
-                              //
-                              //           child: Text('Current Salah'),
-                              //         ),
-                              //         IconButton(
-                              //           icon: const Icon(Icons.close),
-                              //           onPressed: () {
-                              //             Navigator.of(context).pop();
-                              //           },
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ],
-                              // ),
+
                             );
                           },
                           icon: const Icon(
@@ -210,14 +180,23 @@ class SalahSuccessView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 53,
-                      ),
-                      const Text(
-                        ' Bulaaq Dekroor',
-                        style: TextStyle(
+                      Text(
+                        state.salah.city,
+                        style: const TextStyle(
                           color: AppColor.desaturatedGreen,
                           fontSize: 24,
+                        ),
+                      ),Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: IconButton(
+                          onPressed: () {
+                            context.read<SalahCubit>().fetchSalah();
+
+                          },
+                          icon: const Icon(
+                            Icons.update_outlined,
+                            color: AppColor.darkGreen,
+                          ),
                         ),
                       ),
                     ],
@@ -241,7 +220,7 @@ class SalahSuccessView extends StatelessWidget {
                           onPressed: () {},
                         ),
                       ),
-                       Column(
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
@@ -265,19 +244,19 @@ class SalahSuccessView extends StatelessWidget {
                             ),
                           ),
                           Row(
-                            children: [ Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(
-                                // '20 November, 2024',
-                               ' ${state.salah.gregorianWeekdayEnglish} ,',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColor.desaturatedGreen,
-                                  fontWeight: FontWeight.bold,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  // '20 November, 2024',
+                                  ' ${state.salah.gregorianWeekdayEnglish} ,',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColor.desaturatedGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-
                               Text(
                                 // '20 November, 2024',
                                 state.salah.readableDate,
@@ -322,6 +301,7 @@ class SalahSuccessView extends StatelessWidget {
                               title: const Text(
                                 'Fajr',
                                 style: TextStyle(
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: AppColor.darkGreen,
                                   shadows: [
@@ -341,7 +321,6 @@ class SalahSuccessView extends StatelessWidget {
                               // trailing: Text(state.salah.fajr),
                               trailing: Text(
                                 state.salah.fajr,
-
                                 style: const TextStyle(
                                   color: AppColor.desaturatedGreen,
                                   fontSize: 18,
@@ -368,6 +347,7 @@ class SalahSuccessView extends StatelessWidget {
                           title: const Text(
                             'Sharooq',
                             style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColor.darkGreen,
                               shadows: [
@@ -410,6 +390,7 @@ class SalahSuccessView extends StatelessWidget {
                           title: const Text(
                             'Dhuhr',
                             style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColor.darkGreen,
                               shadows: [
@@ -452,6 +433,7 @@ class SalahSuccessView extends StatelessWidget {
                           title: const Text(
                             'Asr',
                             style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColor.darkGreen,
                               shadows: [
@@ -494,6 +476,7 @@ class SalahSuccessView extends StatelessWidget {
                           title: const Text(
                             'Maghrib',
                             style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColor.darkGreen,
                               shadows: [
@@ -536,6 +519,7 @@ class SalahSuccessView extends StatelessWidget {
                           title: const Text(
                             'Isha',
                             style: TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColor.darkGreen,
                               shadows: [

@@ -20,6 +20,7 @@ Salah _$SalahFromJson(Map<String, dynamic> json) => $checkedCreate(
           readableDate: $checkedConvert('readable_date', (v) => v as String),
           gregorianWeekdayEnglish:
               $checkedConvert('gregorian_weekday_english', (v) => v as String),
+          city: $checkedConvert('city', (v) => v as String),
         );
         return val;
       },
@@ -39,4 +40,5 @@ Map<String, dynamic> _$SalahToJson(Salah instance) => <String, dynamic>{
       'gregorian_date': instance.gregorianDate,
       'readable_date': instance.readableDate,
       'gregorian_weekday_english': instance.gregorianWeekdayEnglish,
+      'city': instance.city,
     };

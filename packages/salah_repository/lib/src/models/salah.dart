@@ -3,7 +3,7 @@
 import 'package:equatable/equatable.dart';
 
 class SalahRepo extends Equatable {
-  SalahRepo({
+  SalahRepo( {
     required this.readableDate,
     required this.fajr,
     required this.dhuhr,
@@ -12,6 +12,7 @@ class SalahRepo extends Equatable {
     required this.isha,
     required this.gregorianDate,
     required this.gregorianWeekdayEnglish,
+    required this.city,
   });
 
   final String fajr;
@@ -22,15 +23,25 @@ class SalahRepo extends Equatable {
   final String gregorianDate;
   final String readableDate;
   final String gregorianWeekdayEnglish;
+  final String city;
 
   @override
   String toString() {
     return 'fajr: $fajr, dhuhr: $dhuhr, asr: $asr, maghrib: $maghrib, isha: $isha, '
-        'readableDate: $readableDate  ,gregorianWeekdayEnglish: $gregorianWeekdayEnglish ';
+        'readableDate: $readableDate  ,gregorianWeekdayEnglish: $gregorianWeekdayEnglish, city: $city ';
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [fajr, dhuhr, asr, maghrib, isha, gregorianDate, readableDate,gregorianWeekdayEnglish];
+  List<Object?> get props => [
+        fajr,
+        dhuhr,
+        asr,
+        maghrib,
+        isha,
+        gregorianDate,
+        readableDate,
+        gregorianWeekdayEnglish,
+        city
+      ];
 }

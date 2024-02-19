@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:open_salah_api/env.dart';
 import 'package:open_salah_api/open_salah_api.dart';
+import 'package:open_salah_api/src/models/reverse_geolocation.dart';
 
 ///Exception thrown when locationSearch fails
 class LocationRequestFailure implements Exception {}
@@ -32,9 +34,35 @@ class OpenSalahApiClient {
   static const _baseUrlWeather = 'api.open-meteo.com';
   static const _baseUrlGeocoding = 'geocoding-api.open-meteo.com';
   static const _basePrayerTimes = 'api.aladhan.com';
+  static const _baseReverseGeoCode = 'geocode.maps.co';
+  final apiKey = Env.reverseGeocodingKey;
 
   final http.Client _httpClient;
   final _logger = Logger();
+
+  Future<String> reverseGeo(double latitude, double longitude) async {
+    final reverseLocation = Uri.https(_baseReverseGeoCode, 'reverse', {
+      'lat': latitude.toString(),
+      'lon': longitude.toString(),
+      'key': apiKey
+    });
+    final response = await _httpClient.get(reverseLocation);
+    _logger.i('This is the response: ${response.statusCode}');
+    if (response.statusCode != 200) {
+      throw LocationRequestFailure();
+    }
+    final locationJson = jsonDecode(response.body) as Map<String, dynamic>;
+    _logger.i('This is the decoded locationJson: $locationJson');
+
+    if (!locationJson.containsKey('address')) {
+      throw LocationNotFoundFailure();
+    }
+    final city = locationJson['address']['city'] as String;
+    _logger.i(' This is the city: $city');
+    // return city.toString();
+    // return ReverseGeolocation.fromJson(locationJson);
+    return city;
+  }
 
   /// Finds a location
   Future<Location> locationSearch(String query) async {
@@ -93,6 +121,7 @@ class OpenSalahApiClient {
   Future<Salah> getSalahByMonth() async {
     final Position position = await _determinePosition();
     _logger.e('This is the current position:$position');
+    final city = await reverseGeo(position.latitude, position.longitude);
     final today = DateTime.now();
     final year = today.year;
     final month = today.month;
@@ -124,42 +153,7 @@ class OpenSalahApiClient {
     // _logger.i(salahs.forEach((element)=> {}));
     // for (var element in salahs) {_logger.i(element);}
     // return Salah.fromJson(results.first as Map<String, dynamic>);
-    return Salah.fromJson(results.last as Map<String, dynamic>);
-  }
-
-  ///Get A Salah for a Specific Day
-  ///http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
-  Future<Salah> getSalahByDay({
-    required double latitude,
-    required double longitude,
-  }) async {
-    final now = DateTime.now();
-    final formattedDate = "${now.day}-${now.month}-${now.year}";
-    final salahRequest = Uri.https(
-        _basePrayerTimes,
-        '/v1/timings/' '$formattedDate',
-        {'latitude': '$latitude', 'longitude': '$longitude'});
-
-    final salahResponse = await _httpClient.get(salahRequest);
-
-    _logger.i(salahResponse.statusCode);
-    if (salahResponse.statusCode != 200) throw SalahRequestFailure();
-
-    final salahJson = jsonDecode(salahResponse.body) as Map<String, dynamic>;
-    _logger.i('This is the decoded json $salahJson');
-
-    if (!salahJson.containsKey('data')) throw SalahNotFoundFailure();
-
-    ///TODO I need to save this list as Salah objects into the DB.
-    final results = salahJson['data'];
-    _logger.i('This is the resulting json: $results');
-
-    if (results.isEmpty) throw SalahNotFoundFailure();
-
-    ///TODO This will only get the first Salah for the date.
-    ///I need to save this entire list to the database in the future
-    // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
-    return Salah.fromJson(results.last as Map<String, dynamic>);
+    return Salah.fromJson(results.last as Map<String, dynamic>, city);
   }
 
   /// Determine the current position of the device.
@@ -203,3 +197,37 @@ class OpenSalahApiClient {
     return await Geolocator.getCurrentPosition();
   }
 }
+// ///Get A Salah for a Specific Day
+// ///http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
+// Future<Salah> getSalahByDay({
+//   required double latitude,
+//   required double longitude,
+// }) async {
+//   final now = DateTime.now();
+//   final formattedDate = "${now.day}-${now.month}-${now.year}";
+//   final salahRequest = Uri.https(
+//       _basePrayerTimes,
+//       '/v1/timings/' '$formattedDate',
+//       {'latitude': '$latitude', 'longitude': '$longitude'});
+//
+//   final salahResponse = await _httpClient.get(salahRequest);
+//
+//   _logger.i(salahResponse.statusCode);
+//   if (salahResponse.statusCode != 200) throw SalahRequestFailure();
+//
+//   final salahJson = jsonDecode(salahResponse.body) as Map<String, dynamic>;
+//   _logger.i('This is the decoded json $salahJson');
+//
+//   if (!salahJson.containsKey('data')) throw SalahNotFoundFailure();
+//
+//   ///TODO I need to save this list as Salah objects into the DB.
+//   final results = salahJson['data'];
+//   _logger.i('This is the resulting json: $results');
+//
+//   if (results.isEmpty) throw SalahNotFoundFailure();
+//
+//   ///TODO This will only get the first Salah for the date.
+//   ///I need to save this entire list to the database in the future
+//   // return OriginSalah.fromJson(results.first as Map<String, dynamic>);
+//   return Salah.fromJson(results.last as Map<String, dynamic>);
+// }

@@ -16,12 +16,11 @@ class SalahRepository {
     final int month = today.month;
     final int year = today.year;
     final salah = await _openSalahApiClient.getSalahByMonth(
-      // year: 2023,
-      // month: 12);
-    );
+        // year: 2023,
+        // month: 12);
+        );
 
-
-   ///Extract the specific elements that are needed from the original Salah object.
+    ///Extract the specific elements that are needed from the original Salah object.
     return SalahRepo(
       readableDate: salah.readableDate.dateEnglish,
       fajr: salah.timings.fajr,
@@ -30,9 +29,8 @@ class SalahRepository {
       maghrib: salah.timings.maghrib,
       isha: salah.timings.isha,
       gregorianDate: salah.gregorian.monthEnglish,
-      gregorianWeekdayEnglish: salah.gregorian.weekday
-
-
+      gregorianWeekdayEnglish: salah.gregorian.weekday,
+      city: salah.city,
     );
   }
 }

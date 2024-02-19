@@ -9,29 +9,33 @@ environment:
 dependencies:
   bloc: ^8.1.2
   dio: ^5.3.4
+  envied: ^0.5.3
   equatable: ^2.0.5
   flutter:
     sdk: flutter
 
 
   flutter_bloc: ^8.1.3
-  freezed_annotation: ^2.4.1
   geolocator: ^11.0.0
   google_fonts: ^4.0.0
   hydrated_bloc: ^9.0.0
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
   logger: ^2.0.2+1
-  path_provider: ^2.0.8
+  path_provider: ^2.1.2
   salah_repository:
     path: packages/salah_repository
 
 dev_dependencies:
   bloc_test: ^9.1.2
-  build_runner: ^2.4.7
+  build_runner: ^2.4.8
+  envied_generator: ^0.5.3
   flutter_test:
     sdk: flutter
   freezed: ^2.4.6
+  isar_generator: ^3.1.0+1
   mocktail: ^1.0.2
   very_good_analysis: ^5.0.0
 
