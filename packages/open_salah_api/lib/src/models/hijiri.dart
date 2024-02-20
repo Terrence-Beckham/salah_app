@@ -1,25 +1,27 @@
-class HijriDate {
-  HijriDate({
-    required this.date,
-    required this.format,
-    required this.day,
-    required this.weekday,
-    required this.weekdayArabic,
-    required this.monthNumerical,
-    required this.year,
-    required this.monthEnglish,
-    required this.monthArabic,
-  });
+import 'package:isar/isar.dart';
 
-  final String date;
-  final String format;
-  final String day;
-  final String weekday;
-  final String weekdayArabic;
-  final int monthNumerical;
-  final String year;
-  final String monthEnglish;
-  final String monthArabic;
+class HijriDate {
+  HijriDate(
+    date,
+    format,
+    day,
+    weekday,
+    weekdayArabic,
+    monthNumerical,
+    year,
+    monthEnglish,
+    monthArabic,
+  );
+
+  String? date;
+  String? format;
+  String? day;
+  String? weekday;
+  String? weekdayArabic;
+  int? monthNumerical;
+  String? year;
+  String? monthEnglish;
+  String? monthArabic;
 
   factory HijriDate.fromJson(Map<String, dynamic> json) {
     final String date = json['date'] as String;
@@ -33,15 +35,15 @@ class HijriDate {
     final String year = json['year'] as String;
 
     return HijriDate(
-      date: date,
-      format: format,
-      day: day,
-      weekday: weekdayEnglish,
-      weekdayArabic: weekdayArabic,
-      monthNumerical: monthNumerical,
-      monthArabic: monthArabic,
-      monthEnglish: monthEnglish,
-      year: year,
+       date,
+       format,
+       day,
+       weekdayEnglish,
+       weekdayArabic,
+       monthNumerical,
+      monthArabic,
+      monthEnglish,
+      year,
     );
   }
 }

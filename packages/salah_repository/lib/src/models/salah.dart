@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
+part 'salah.g.dart';
+
+@Collection(inheritance: false)
 class SalahRepo extends Equatable {
-  SalahRepo( {
+  SalahRepo({
     required this.readableDate,
     required this.fajr,
     required this.dhuhr,
@@ -15,6 +19,7 @@ class SalahRepo extends Equatable {
     required this.city,
   });
 
+  Id id = Isar.autoIncrement;
   final String fajr;
   final String dhuhr;
   final String asr;
@@ -31,6 +36,7 @@ class SalahRepo extends Equatable {
         'readableDate: $readableDate  ,gregorianWeekdayEnglish: $gregorianWeekdayEnglish, city: $city ';
   }
 
+  @ignore
   @override
   // TODO: implement props
   List<Object?> get props => [

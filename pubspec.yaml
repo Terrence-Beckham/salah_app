@@ -23,6 +23,8 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
+  local_storage_salah_api:
+    path: packages/local_storage_salah_api
   logger: ^2.0.2+1
   path_provider: ^2.1.2
   salah_repository:

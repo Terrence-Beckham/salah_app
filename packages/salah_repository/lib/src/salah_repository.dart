@@ -1,12 +1,14 @@
+import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:open_salah_api/open_salah_api.dart' hide Salah;
-
+import 'package:salah_repository/salah_repository.dart';
 import 'models/salah.dart' show SalahRepo;
 
 class SalahRepository {
-  SalahRepository({OpenSalahApiClient? openSalahApiClient})
-      : _openSalahApiClient = openSalahApiClient ?? OpenSalahApiClient();
-
+  SalahRepository({OpenSalahApiClient? openSalahApiClient, required Isar isar})
+      : _openSalahApiClient = openSalahApiClient ?? OpenSalahApiClient(),
+        _isar = isar;
+  final Isar _isar;
   final OpenSalahApiClient _openSalahApiClient;
   final _logger = Logger();
 
@@ -20,17 +22,22 @@ class SalahRepository {
         // month: 12);
         );
 
+
     ///Extract the specific elements that are needed from the original Salah object.
-    return SalahRepo(
-      readableDate: salah.readableDate.dateEnglish,
-      fajr: salah.timings.fajr,
-      dhuhr: salah.timings.dhuhr,
-      asr: salah.timings.asr,
-      maghrib: salah.timings.maghrib,
-      isha: salah.timings.isha,
-      gregorianDate: salah.gregorian.monthEnglish,
-      gregorianWeekdayEnglish: salah.gregorian.weekday,
+   final salahFromRepo= SalahRepo(
+      readableDate: salah.readableDate,
+      fajr: salah.fajr,
+      dhuhr: salah.dhuhr,
+      asr: salah.asr,
+      maghrib: salah.maghrib,
+      isha: salah.isha,
+      gregorianDate: salah.gregorianDate,
+      gregorianWeekdayEnglish: salah.gregorianWeekday,
       city: salah.city,
-    );
+    ); // _localStorageSalahApi.addSalah( salah);
+    await _isar.writeTxn(() async {
+      await _isar.salahRepos.put(salahFromRepo); // insert & update
+    });
+    return salahFromRepo;
   }
 }

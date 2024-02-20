@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:open_salah_api/env.dart';
 import 'package:open_salah_api/open_salah_api.dart';
 import 'package:open_salah_api/src/models/reverse_geolocation.dart';
+import 'package:open_salah_api/src/models/origin_salah.dart';
 
 ///Exception thrown when locationSearch fails
 class LocationRequestFailure implements Exception {}
@@ -35,10 +37,19 @@ class OpenSalahApiClient {
   static const _baseUrlGeocoding = 'geocoding-api.open-meteo.com';
   static const _basePrayerTimes = 'api.aladhan.com';
   static const _baseReverseGeoCode = 'geocode.maps.co';
-  final apiKey = Env.reverseGeocodingKey;
 
+  final apiKey = Env.reverseGeocodingKey;
   final http.Client _httpClient;
   final _logger = Logger();
+
+  // Future<void> _init() async {
+  //   final dir = await getApplicationDocumentsDirectory();
+  //    isar = await Isar.open(
+  //     [SalahSchema],
+  //     directory: dir.path,
+  //   );
+  //
+  // }
 
   Future<String> reverseGeo(double latitude, double longitude) async {
     final reverseLocation = Uri.https(_baseReverseGeoCode, 'reverse', {
@@ -49,7 +60,10 @@ class OpenSalahApiClient {
     final response = await _httpClient.get(reverseLocation);
     _logger.i('This is the response: ${response.statusCode}');
     if (response.statusCode != 200) {
-      throw LocationRequestFailure();
+      // throw LocationRequestFailure();
+     ///Todo this error can be because I excedded the 1 request per second
+      ///I need to add a timeout retry method here.
+      return "Unable to find Location";
     }
     final locationJson = jsonDecode(response.body) as Map<String, dynamic>;
     _logger.i('This is the decoded locationJson: $locationJson');
@@ -121,6 +135,7 @@ class OpenSalahApiClient {
   Future<Salah> getSalahByMonth() async {
     final Position position = await _determinePosition();
     _logger.e('This is the current position:$position');
+    //If this fails throw exception and return "Unable to find City name"
     final city = await reverseGeo(position.latitude, position.longitude);
     final today = DateTime.now();
     final year = today.year;
@@ -153,6 +168,9 @@ class OpenSalahApiClient {
     // _logger.i(salahs.forEach((element)=> {}));
     // for (var element in salahs) {_logger.i(element);}
     // return Salah.fromJson(results.first as Map<String, dynamic>);
+    final firstSalah =
+        Salah.fromJson(results.first as Map<String, dynamic>, city);
+
     return Salah.fromJson(results.last as Map<String, dynamic>, city);
   }
 
