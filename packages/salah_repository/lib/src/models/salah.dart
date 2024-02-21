@@ -7,19 +7,20 @@ part 'salah.g.dart';
 
 @Collection(inheritance: false)
 class SalahRepo extends Equatable {
-  SalahRepo({
-    required this.readableDate,
-    required this.fajr,
-    required this.dhuhr,
-    required this.asr,
-    required this.maghrib,
-    required this.isha,
-    required this.gregorianDate,
-    required this.gregorianWeekdayEnglish,
-    required this.city,
-  });
+  SalahRepo(
+      {required this.readableDate,
+      required this.fajr,
+      required this.dhuhr,
+      required this.asr,
+      required this.maghrib,
+      required this.isha,
+      required this.gregorianDate,
+      required this.gregorianWeekdayEnglish,
+      required this.city,
+      required this.latitude,
+      required this.longitude});
 
-  Id id = Isar.autoIncrement;
+  final Id id = Isar.autoIncrement;
   final String fajr;
   final String dhuhr;
   final String asr;
@@ -29,6 +30,8 @@ class SalahRepo extends Equatable {
   final String readableDate;
   final String gregorianWeekdayEnglish;
   final String city;
+  final double latitude;
+  final double longitude;
 
   @override
   String toString() {
@@ -48,6 +51,8 @@ class SalahRepo extends Equatable {
         gregorianDate,
         readableDate,
         gregorianWeekdayEnglish,
-        city
+        city,
+        longitude,
+        latitude,
       ];
 }

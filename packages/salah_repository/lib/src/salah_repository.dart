@@ -21,23 +21,34 @@ class SalahRepository {
         // year: 2023,
         // month: 12);
         );
+    final salahList = salah
+        .map((e) => SalahRepo(
+              readableDate: e.readableDate,
+              fajr: e.fajr,
+              dhuhr: e.dhuhr,
+              asr: e.asr,
+              maghrib: e.maghrib,
+              isha: e.isha,
+              gregorianDate: e.gregorianDate,
+              gregorianWeekdayEnglish: e.gregorianWeekday,
+              city: e.city,
+              latitude: e.latitude,
+              longitude: e.longitude,
+            ))
+        .toList();
+    _logger.i('this is the list of Salah before DB insertion: $salahList');
+    for (var element in salahList) {
+      writeToDB(element);
+    }
+    return salahList.first;
+  }
 
-
-    ///Extract the specific elements that are needed from the original Salah object.
-   final salahFromRepo= SalahRepo(
-      readableDate: salah.readableDate,
-      fajr: salah.fajr,
-      dhuhr: salah.dhuhr,
-      asr: salah.asr,
-      maghrib: salah.maghrib,
-      isha: salah.isha,
-      gregorianDate: salah.gregorianDate,
-      gregorianWeekdayEnglish: salah.gregorianWeekday,
-      city: salah.city,
-    ); // _localStorageSalahApi.addSalah( salah);
+  Future<void> writeToDB(SalahRepo salah) async {
     await _isar.writeTxn(() async {
-      await _isar.salahRepos.put(salahFromRepo); // insert & update
+      await _isar.salahRepos.put(salah);
     });
-    return salahFromRepo;
+    final allSalahs = await _isar.salahRepos.where().findAll();
+
+    _logger.i('These are all of the db: $allSalahs');
   }
 }

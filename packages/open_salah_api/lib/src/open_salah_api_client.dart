@@ -61,7 +61,7 @@ class OpenSalahApiClient {
     _logger.i('This is the response: ${response.statusCode}');
     if (response.statusCode != 200) {
       // throw LocationRequestFailure();
-     ///Todo this error can be because I excedded the 1 request per second
+      ///Todo this error can be because I excedded the 1 request per second
       ///I need to add a timeout retry method here.
       return "Unable to find Location";
     }
@@ -132,7 +132,7 @@ class OpenSalahApiClient {
   ///Fetches Salah times for a specific [year], [month], [latitude], and [longitude]
   ///http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2
   ///This needs to return an entire list
-  Future<Salah> getSalahByMonth() async {
+  Future<List<Salah>> getSalahByMonth() async {
     final Position position = await _determinePosition();
     _logger.e('This is the current position:$position');
     //If this fails throw exception and return "Unable to find City name"
@@ -159,19 +159,19 @@ class OpenSalahApiClient {
 
     ///TODO I need to save this list as Salah objects into the DB.
     final results = salahJson['data'] as List;
+    _logger.i('Lenght of data list ${results.length}');
 
     if (results.isEmpty) throw SalahNotFoundFailure();
 
     ///TODO This will only get the first Salah for the date.
     ///I need to save this entire list to the database in the future
     final salahs = List<Map<String, dynamic>>.from(results);
+    final salahsList = salahs.map((e) => Salah.fromJson(e, city)).toList();
     // _logger.i(salahs.forEach((element)=> {}));
     // for (var element in salahs) {_logger.i(element);}
     // return Salah.fromJson(results.first as Map<String, dynamic>);
-    final firstSalah =
-        Salah.fromJson(results.first as Map<String, dynamic>, city);
-
-    return Salah.fromJson(results.last as Map<String, dynamic>, city);
+    return salahsList;
+    // return Salah.fromJson(results.last as Map<String, dynamic>, city);
   }
 
   /// Determine the current position of the device.

@@ -11,8 +11,6 @@ dependencies:
   json_annotation: ^4.6.0
   flutter_lints: ^3.0.1
   logger: ^2.0.2+1
-  local_storage_salah_api:
-    path: ../local_storage_salah_api
   open_salah_api:
     path: ../open_salah_api
   isar: ^3.1.0+1

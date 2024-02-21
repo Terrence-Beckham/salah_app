@@ -2,6 +2,8 @@ import 'package:isar/isar.dart';
 
 class Salah {
   Id id = Isar.autoIncrement;
+  final double latitude;
+  final double longitude;
   final String fajr;
   final String sharooq;
   final String dhuhr;
@@ -40,7 +42,9 @@ class Salah {
   // final ReverseGeolocation reverseGeolocation;
 
   Salah(
-      {required this.fajr,
+      {required this.latitude,
+      required this.longitude,
+      required this.fajr,
       required this.sharooq,
       required this.dhuhr,
       required this.asr,
@@ -63,8 +67,9 @@ class Salah {
       required this.city});
 
   factory Salah.fromJson(Map<String, dynamic> json, String localCity) {
-   final String city = localCity;
-
+    final String city = localCity;
+    final double latitude = json['meta']['latitude'] as double;
+    final double longitude = json['meta']['longitude'] as double;
     final String fajr = json['timings']['Fajr'] as String;
     final String sharooq = json['timings']['Sunrise'] as String;
     final String dhuhr = json['timings']['Dhuhr'] as String;
@@ -119,6 +124,8 @@ class Salah {
       methodName: methodName,
       readableDate: readableDate,
       city: city,
+      latitude: latitude,
+      longitude: longitude,
       // timings: PrayerTime.fromJson(json['timings']),
       // gregorian: GregorianDate.fromJson(json['date']['gregorian']),
       // hijri: HijriDate.fromJson(json['date']['hijri']),
