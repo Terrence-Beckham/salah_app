@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isar/isar.dart';
 import 'package:salah_app/salah/view/salah_view.dart';
 import 'package:salah_repository/salah_repository.dart';
 
@@ -23,15 +22,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class SalahAppView extends StatelessWidget {
-//   const SalahAppView({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(primaryColor: Colors.deepPurple),
-//       home: const SalahView(),
-//     );
-//   }
-// }
+

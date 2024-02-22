@@ -10,6 +10,7 @@ class SalahRepo extends Equatable {
   SalahRepo(
       {required this.readableDate,
       required this.fajr,
+      required this.sharooq,
       required this.dhuhr,
       required this.asr,
       required this.maghrib,
@@ -22,6 +23,7 @@ class SalahRepo extends Equatable {
 
   final Id id = Isar.autoIncrement;
   final String fajr;
+  final String sharooq;
   final String dhuhr;
   final String asr;
   final String maghrib;

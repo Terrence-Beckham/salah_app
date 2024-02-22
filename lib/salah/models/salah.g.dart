@@ -12,6 +12,7 @@ Salah _$SalahFromJson(Map<String, dynamic> json) => $checkedCreate(
       ($checkedConvert) {
         final val = Salah(
           fajr: $checkedConvert('fajr', (v) => v as String),
+          sharooq: $checkedConvert('sharooq', (v) => v as String),
           dhuhr: $checkedConvert('dhuhr', (v) => v as String),
           asr: $checkedConvert('asr', (v) => v as String),
           maghrib: $checkedConvert('maghrib', (v) => v as String),
@@ -33,6 +34,7 @@ Salah _$SalahFromJson(Map<String, dynamic> json) => $checkedCreate(
 
 Map<String, dynamic> _$SalahToJson(Salah instance) => <String, dynamic>{
       'fajr': instance.fajr,
+      'sharooq': instance.sharooq,
       'dhuhr': instance.dhuhr,
       'asr': instance.asr,
       'maghrib': instance.maghrib,

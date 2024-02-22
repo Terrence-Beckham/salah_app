@@ -365,7 +365,7 @@ class SalahSuccessView extends StatelessWidget {
                             ),
                           ),
                           trailing: Text(
-                            state.salah.dhuhr,
+                            state.salah.sharooq,
                             style: const TextStyle(
                               color: AppColor.desaturatedGreen,
                               fontSize: 18,

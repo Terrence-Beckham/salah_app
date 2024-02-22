@@ -8,6 +8,7 @@ part 'salah.g.dart';
 class Salah extends Equatable {
   const Salah({
     required this.fajr,
+    required this.sharooq,
     required this.dhuhr,
     required this.asr,
     required this.maghrib,
@@ -21,6 +22,7 @@ class Salah extends Equatable {
   factory Salah.fromRepository(SalahRepo salah) {
     return Salah(
       fajr: salah.fajr,
+      sharooq: salah.sharooq,
       dhuhr: salah.dhuhr,
       asr: salah.asr,
       maghrib: salah.maghrib,
@@ -35,6 +37,7 @@ class Salah extends Equatable {
   factory Salah.fromJson(Map<String, dynamic> json) => _$SalahFromJson(json);
 
   final String fajr;
+  final String sharooq;
   final String dhuhr;
   final String asr;
   final String maghrib;
@@ -47,6 +50,7 @@ class Salah extends Equatable {
   @override
   List<Object?> get props => [
         fajr,
+        sharooq,
         dhuhr,
         asr,
         maghrib,
@@ -62,6 +66,7 @@ class Salah extends Equatable {
   //Fallback Empty Salah object
   static const empty = Salah(
     fajr: '',
+    sharooq: '',
     dhuhr: '',
     asr: '',
     maghrib: '',
@@ -74,6 +79,7 @@ class Salah extends Equatable {
 
   Salah copyWith({
     String? fajr,
+    String? sharooq,
     String? dhuhr,
     String? asr,
     String? maghrib,
@@ -85,6 +91,7 @@ class Salah extends Equatable {
   }) {
     return Salah(
       fajr: fajr ?? this.fajr,
+      sharooq: sharooq ?? this.sharooq,
       dhuhr: dhuhr ?? this.dhuhr,
       asr: asr ?? this.asr,
       maghrib: maghrib ?? this.maghrib,
