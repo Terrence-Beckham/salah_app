@@ -20,7 +20,7 @@ class SalahCubit extends Cubit<SalahState> {
     emit(state.copyWith(status: SalahStatus.loading));
 
     try {
-      final salah = Salah.fromRepository(await _salahRepository.getSalah());
+      final salah = Salah.fromRepository(  await _salahRepository.getSalah());
       emit(
         state.copyWith(
           status: SalahStatus.success,

@@ -14,6 +14,10 @@ class Salah extends Equatable {
     required this.maghrib,
     required this.isha,
     required this.gregorianDate,
+    required this.gregorianDay,
+    required this.gregorianMonth,
+    required this.gregorianMonthNumeral,
+    required this.gregorianYear,
     required this.readableDate,
     required this.gregorianWeekdayEnglish,
     required this.city,
@@ -28,6 +32,10 @@ class Salah extends Equatable {
       maghrib: salah.maghrib,
       isha: salah.isha,
       gregorianDate: salah.gregorianDate,
+      gregorianDay: salah.gregorianDay,
+      gregorianMonth: salah.gregorianMonth,
+      gregorianYear: salah.gregorianYear,
+      gregorianMonthNumeral: salah.gregorianMonthNumeral,
       readableDate: salah.readableDate,
       gregorianWeekdayEnglish: salah.gregorianWeekdayEnglish,
       city: salah.city,
@@ -43,6 +51,10 @@ class Salah extends Equatable {
   final String maghrib;
   final String isha;
   final String gregorianDate;
+  final String gregorianDay;
+  final String gregorianMonth;
+  final int gregorianMonthNumeral;
+  final String gregorianYear;
   final String readableDate;
   final String gregorianWeekdayEnglish;
   final String city;
@@ -58,6 +70,10 @@ class Salah extends Equatable {
         gregorianDate,
         readableDate,
         gregorianWeekdayEnglish,
+        gregorianDay,
+        gregorianMonth,
+        gregorianMonthNumeral,
+        gregorianYear,
         city,
       ];
 
@@ -75,6 +91,10 @@ class Salah extends Equatable {
     readableDate: '',
     gregorianWeekdayEnglish: '',
     city: '',
+    gregorianDay: '',
+    gregorianMonth: '',
+    gregorianMonthNumeral: 0,
+    gregorianYear: '',
   );
 
   Salah copyWith({
@@ -85,6 +105,10 @@ class Salah extends Equatable {
     String? maghrib,
     String? isha,
     String? gregorianDate,
+    String? gregorianDay,
+    String? gregorianMonth,
+    int? gregorianMonthNumeral,
+    String? gregorianYear,
     String? readableDate,
     String? gregorianWeekdayEnglish,
     String? city,
@@ -101,6 +125,11 @@ class Salah extends Equatable {
       gregorianWeekdayEnglish:
           gregorianWeekdayEnglish ?? this.gregorianWeekdayEnglish,
       city: city ?? this.city,
+      gregorianDay: gregorianDay ?? this.gregorianDay,
+      gregorianMonth: gregorianMonth ?? this.gregorianMonth,
+      gregorianMonthNumeral:
+          gregorianMonthNumeral ?? this.gregorianMonthNumeral,
+      gregorianYear: gregorianYear ?? this.gregorianYear,
     );
   }
 }

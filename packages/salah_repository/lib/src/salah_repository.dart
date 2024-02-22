@@ -14,10 +14,18 @@ class SalahRepository {
   Future<SalahRepo> getSalah() async {
     // final location = await _openSalahApiClient.locationSearch(city);
     final DateTime today = DateTime.now();
+    final int now = today.day;
+    _logger.i('todays date is: $now');
+    final todaySalah = await retrieveSalah();
+    if (todaySalah != null) {
+      _logger.i('salah retieved from DB');
+      return todaySalah;
+    }
     final salah = await _openSalahApiClient.getSalahByMonth(
         // year: 2023,
         // month: 12);
         );
+
     final salahList = salah
         .map((e) => SalahRepo(
               readableDate: e.readableDate,
@@ -32,18 +40,38 @@ class SalahRepository {
               city: e.city,
               latitude: e.latitude,
               longitude: e.longitude,
+              gregorianDay: e.gregorianDay,
+              gregorianMonth: e.gregorianMonth,
+              gregorianMonthNumeral: e.gregorianMonthNumeral,
+              gregorianYear: e.gregorianYear,
             ))
         .toList();
     for (var element in salahList) {
+      // _logger.i('this is the day before being entered into the db: ${element.gregorianDay}');
       writeToDB(element);
     }
-    return salahList.last;
+
+    final cacheSalah = await retrieveSalah();
+    return cacheSalah ?? salahList.last;
+
+    // return salahList.last;
   }
 
   Future<void> writeToDB(SalahRepo salah) async {
     await _isar.writeTxn(() async {
       await _isar.salahRepos.put(salah);
     });
+  }
 
+  Future<SalahRepo?> retrieveSalah() async {
+    final time = DateTime.now();
+    final SalahRepo? salah = await _isar.salahRepos
+        .filter()
+        .gregorianDayEqualTo(time.day.toString())
+        .and()
+        .gregorianMonthNumeralEqualTo(time.month)
+        .findFirst();
+    _logger.i('this is the salah from the db for today $salah');
+    return salah;
   }
 }

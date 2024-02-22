@@ -42,14 +42,7 @@ class OpenSalahApiClient {
   final http.Client _httpClient;
   final _logger = Logger();
 
-  // Future<void> _init() async {
-  //   final dir = await getApplicationDocumentsDirectory();
-  //    isar = await Isar.open(
-  //     [SalahSchema],
-  //     directory: dir.path,
-  //   );
-  //
-  // }
+
 
   Future<String> reverseGeo(double latitude, double longitude) async {
     final reverseLocation = Uri.https(_baseReverseGeoCode, 'reverse', {
@@ -59,11 +52,16 @@ class OpenSalahApiClient {
     });
     final response = await _httpClient.get(reverseLocation);
     _logger.i('This is the response: ${response.statusCode}');
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 && response.statusCode != 401) {
       // throw LocationRequestFailure();
       ///Todo this error can be because I excedded the 1 request per second
+      ///Might be possible to wait one second and retry.
       ///I need to add a timeout retry method here.
       return "Unable to find Location";
+    }
+
+    if(response.statusCode == 401){
+      /// Todo write code to wait 1 second and retry.
     }
     final locationJson = jsonDecode(response.body) as Map<String, dynamic>;
     _logger.i('This is the decoded locationJson: $locationJson');
@@ -170,6 +168,9 @@ class OpenSalahApiClient {
     // _logger.i(salahs.forEach((element)=> {}));
     // for (var element in salahs) {_logger.i(element);}
     // return Salah.fromJson(results.first as Map<String, dynamic>);
+    _logger.i('this is the original storage event ${salahsList.first.gregorianDay}');
+    _logger.i('this is the original storage event ${salahsList.first.gregorianMonth}');
+    _logger.i('this is the original storage event ${salahsList.first.gregorianYear}');
     return salahsList;
     // return Salah.fromJson(results.last as Map<String, dynamic>, city);
   }

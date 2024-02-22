@@ -14,6 +14,7 @@ class Salah {
   ///Dates Gregorian
   final String gregorianDate;
   final String gregorianDay;
+  final int gregorianMonthNumeral;
   final String gregorianWeekday;
   final String gregorianMonth;
   final String gregorianYear;
@@ -52,6 +53,7 @@ class Salah {
       required this.isha,
       required this.gregorianDate,
       required this.gregorianDay,
+      required this.gregorianMonthNumeral,
       required this.gregorianWeekday,
       required this.gregorianMonth,
       required this.gregorianYear,
@@ -82,6 +84,8 @@ class Salah {
     ///Dates Gregoria as Stringn
     final String gregorianDate = json['date']['gregorian']['date'] as String;
     final String gregorianDay = json['date']['gregorian']['day'] as String;
+    final int gregorianMonthNumeral =
+        json['date']['gregorian']['month']['number'] as int;
     final String gregorianWeekday =
         json['date']['gregorian']['weekday']['en'] as String;
     final String gregorianMonth =
@@ -111,6 +115,7 @@ class Salah {
       isha: isha,
       gregorianDate: gregorianDate,
       gregorianDay: gregorianDay,
+      gregorianMonthNumeral: gregorianMonthNumeral,
       gregorianWeekday: gregorianWeekday,
       gregorianMonth: gregorianMonth,
       gregorianYear: gregorianYear,

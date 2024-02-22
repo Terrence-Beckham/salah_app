@@ -16,6 +16,10 @@ class SalahRepo extends Equatable {
       required this.maghrib,
       required this.isha,
       required this.gregorianDate,
+      required this.gregorianDay,
+      required this.gregorianMonth,
+      required this.gregorianMonthNumeral,
+      required this.gregorianYear,
       required this.gregorianWeekdayEnglish,
       required this.city,
       required this.latitude,
@@ -29,6 +33,10 @@ class SalahRepo extends Equatable {
   final String maghrib;
   final String isha;
   final String gregorianDate;
+  final String gregorianDay;
+  final String gregorianMonth;
+  final int gregorianMonthNumeral;
+  final String gregorianYear;
   final String readableDate;
   final String gregorianWeekdayEnglish;
   final String city;
@@ -37,8 +45,12 @@ class SalahRepo extends Equatable {
 
   @override
   String toString() {
-    return 'fajr: $fajr, dhuhr: $dhuhr, asr: $asr, maghrib: $maghrib, isha: $isha, '
-        'readableDate: $readableDate  ,gregorianWeekdayEnglish: $gregorianWeekdayEnglish, city: $city ';
+    return 'fajr: $fajr,/n dhuhr: $dhuhr,/n asr: $asr,/n maghrib: $maghrib,/n isha: $isha,/n '
+        'readableDate: $readableDate,/n gregorianWeekdayEnglish: $gregorianWeekdayEnglish,/n '
+        'city: $city,/n gregorianDay: $gregorianDay,/n'
+        ' gregorianMonth: $gregorianMonth,/n '
+        'gregorianYear: $gregorianYear,/n '
+        'gregorianMonthNumeral: $gregorianMonthNumeral';
   }
 
   @ignore
@@ -51,6 +63,10 @@ class SalahRepo extends Equatable {
         maghrib,
         isha,
         gregorianDate,
+        gregorianMonth,
+        gregorianMonthNumeral,
+        gregorianDay,
+        gregorianYear,
         readableDate,
         gregorianWeekdayEnglish,
         city,
