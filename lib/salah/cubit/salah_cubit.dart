@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,13 +16,16 @@ class SalahCubit extends Cubit<SalahState> {
 
   final _logger = Logger();
 
+  initTimer(Salah salah) {
+
+  }
 
   Future<void> fetchSalah() async {
     // if (city == null || city.isEmpty) return;
     emit(state.copyWith(status: SalahStatus.loading));
-
     try {
-      final salah = Salah.fromRepository(  await _salahRepository.getSalah());
+      final salah = Salah.fromRepository(await _salahRepository.getSalah());
+
       emit(
         state.copyWith(
           status: SalahStatus.success,
@@ -37,27 +42,4 @@ class SalahCubit extends Cubit<SalahState> {
       emit(state.copyWith(status: SalahStatus.failure));
     }
   }
-
-  // Future<void> refreshSalah() async {
-  //   if (!state.status.isSuccess) return;
-  //   if (state.salah == Salah.empty) return;
-  //   try {
-  //     //Remove the hardcoded city
-  //     // final salah = Salah.fromRepository(
-  //     //   // await _salahRepository.getSalah('Chicago'),
-  //     // );
-  //     emit(
-  //       state.copyWith(status: SalahStatus.success, salah: salah),
-  //     );
-  //   } on Exception {
-  //     emit(state);
-  //   }
-  // }
-
-// @override
-// SalahState fromJson(Map<String, dynamic> json)
-// => SalahState.fromJson(json);
-//
-// @override
-// Map<String, dynamic> toJson(SalahState state) => state.toJson();
 }

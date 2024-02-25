@@ -16,15 +16,15 @@ class SalahRepository {
     final DateTime today = DateTime.now();
     final int now = today.day;
     _logger.i('todays date is: $now');
+
+    //Try to get salah object from db
     final todaySalah = await retrieveSalah();
     if (todaySalah != null) {
       _logger.i('salah retieved from DB');
       return todaySalah;
     }
-    final salah = await _openSalahApiClient.getSalahByMonth(
-        // year: 2023,
-        // month: 12);
-        );
+
+    final salah = await _openSalahApiClient.getSalahByMonth();
 
     final salahList = salah
         .map((e) => SalahRepo(
@@ -46,15 +46,14 @@ class SalahRepository {
               gregorianYear: e.gregorianYear,
             ))
         .toList();
+
     for (var element in salahList) {
       // _logger.i('this is the day before being entered into the db: ${element.gregorianDay}');
       writeToDB(element);
     }
-
+//After inserting into db attempt to get today's salah from db
     final cacheSalah = await retrieveSalah();
     return cacheSalah ?? salahList.last;
-
-    // return salahList.last;
   }
 
   Future<void> writeToDB(SalahRepo salah) async {
@@ -70,6 +69,8 @@ class SalahRepository {
         .gregorianDayEqualTo(time.day.toString())
         .and()
         .gregorianMonthNumeralEqualTo(time.month)
+        .and()
+        .gregorianYearEqualTo(time.year.toString())
         .findFirst();
     _logger.i('this is the salah from the db for today $salah');
     return salah;
