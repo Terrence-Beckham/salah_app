@@ -19,8 +19,9 @@ class Salah {
   final String gregorianMonth;
   final String gregorianYear;
 
-  ///Dates Hijiri
+  ///Dates Hijri
   final String hijriDate;
+  final String hijriDay;
   final String hijriWeekdayEnglish;
   final String hijriWeekdayArabic;
   final String hijriMonthEnglish;
@@ -58,6 +59,7 @@ class Salah {
       required this.gregorianMonth,
       required this.gregorianYear,
       required this.hijriDate,
+      required this.hijriDay,
       required this.hijriWeekdayEnglish,
       required this.hijriWeekdayArabic,
       required this.hijriMonthEnglish,
@@ -81,7 +83,7 @@ class Salah {
 
     final String readableDate = json['date']['readable'] as String;
 
-    ///Dates Gregoria as Stringn
+    ///Dates Gregoria as Strings
     final String gregorianDate = json['date']['gregorian']['date'] as String;
     final String gregorianDay = json['date']['gregorian']['day'] as String;
     final int gregorianMonthNumeral =
@@ -92,8 +94,9 @@ class Salah {
         json['date']['gregorian']['month']['en'] as String;
     final String gregorianYear = json['date']['gregorian']['year'] as String;
 
-    ///Dates Hijir as Stringi
+    ///Dates Hijri as Strings
     final String hijriDate = json['date']['hijri']['date'] as String;
+    final String hijriDay = json['date']['hijri']['day'] as String;
     final String hijriWeekdayEnglish =
         json['date']['hijri']['weekday']['en'] as String;
     final String hijriWeekdayArabic =
@@ -131,6 +134,7 @@ class Salah {
       city: city,
       latitude: latitude,
       longitude: longitude,
+      hijriDay: hijriDay,
       // timings: PrayerTime.fromJson(json['timings']),
       // gregorian: GregorianDate.fromJson(json['date']['gregorian']),
       // hijri: HijriDate.fromJson(json['date']['hijri']),
@@ -144,10 +148,6 @@ class Salah {
   @override
   String toString() {
     return 'Location:{'
-        // 'id:${location.id}'
-        // '\name:${location.name}'
-        // '\nlatitude:${location.latitude}'
-        // '\nlongitude:${location.longitude}'
         'Timings: {'
         '\nfajr:$fajr,'
         '\ndhuhr:$dhuhr,'

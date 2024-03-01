@@ -27,6 +27,17 @@ Salah _$SalahFromJson(Map<String, dynamic> json) => $checkedCreate(
           readableDate: $checkedConvert('readable_date', (v) => v as String),
           gregorianWeekdayEnglish:
               $checkedConvert('gregorian_weekday_english', (v) => v as String),
+          hijriDate: $checkedConvert('hijri_date', (v) => v as String),
+          hijriDay: $checkedConvert('hijri_day', (v) => v as String),
+          hijriWeekdayEnglish:
+              $checkedConvert('hijri_weekday_english', (v) => v as String),
+          hijriWeekdayArabic:
+              $checkedConvert('hijri_weekday_arabic', (v) => v as String),
+          hijriMonthEnglish:
+              $checkedConvert('hijri_month_english', (v) => v as String),
+          hijriMonthArabic:
+              $checkedConvert('hijri_month_arabic', (v) => v as String),
+          hijriYear: $checkedConvert('hijri_year', (v) => v as String),
           city: $checkedConvert('city', (v) => v as String),
         );
         return val;
@@ -38,7 +49,14 @@ Salah _$SalahFromJson(Map<String, dynamic> json) => $checkedCreate(
         'gregorianMonthNumeral': 'gregorian_month_numeral',
         'gregorianYear': 'gregorian_year',
         'readableDate': 'readable_date',
-        'gregorianWeekdayEnglish': 'gregorian_weekday_english'
+        'gregorianWeekdayEnglish': 'gregorian_weekday_english',
+        'hijriDate': 'hijri_date',
+        'hijriDay': 'hijri_day',
+        'hijriWeekdayEnglish': 'hijri_weekday_english',
+        'hijriWeekdayArabic': 'hijri_weekday_arabic',
+        'hijriMonthEnglish': 'hijri_month_english',
+        'hijriMonthArabic': 'hijri_month_arabic',
+        'hijriYear': 'hijri_year'
       },
     );
 
@@ -54,6 +72,13 @@ Map<String, dynamic> _$SalahToJson(Salah instance) => <String, dynamic>{
       'gregorian_month': instance.gregorianMonth,
       'gregorian_month_numeral': instance.gregorianMonthNumeral,
       'gregorian_year': instance.gregorianYear,
+      'hijri_date': instance.hijriDate,
+      'hijri_day': instance.hijriDay,
+      'hijri_weekday_english': instance.hijriWeekdayEnglish,
+      'hijri_weekday_arabic': instance.hijriWeekdayArabic,
+      'hijri_month_english': instance.hijriMonthEnglish,
+      'hijri_month_arabic': instance.hijriMonthArabic,
+      'hijri_year': instance.hijriYear,
       'readable_date': instance.readableDate,
       'gregorian_weekday_english': instance.gregorianWeekdayEnglish,
       'city': instance.city,

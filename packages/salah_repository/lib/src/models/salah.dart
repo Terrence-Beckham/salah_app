@@ -21,6 +21,13 @@ class SalahRepo extends Equatable {
       required this.gregorianMonthNumeral,
       required this.gregorianYear,
       required this.gregorianWeekdayEnglish,
+      required this.hijriDate,
+      required this.hijriDay,
+      required this.hijriWeekdayEnglish,
+      required this.hijriWeekdayArabic,
+      required this.hijriMonthEnglish,
+      required this.hijriMonthArabic,
+      required this.hijriYear,
       required this.city,
       required this.latitude,
       required this.longitude});
@@ -37,6 +44,13 @@ class SalahRepo extends Equatable {
   final String gregorianMonth;
   final int gregorianMonthNumeral;
   final String gregorianYear;
+  final String hijriDate;
+  final String hijriDay;
+  final String hijriWeekdayEnglish;
+  final String hijriWeekdayArabic;
+  final String hijriMonthEnglish;
+  final String hijriMonthArabic;
+  final String hijriYear;
   final String readableDate;
   final String gregorianWeekdayEnglish;
   final String city;
@@ -67,9 +81,14 @@ class SalahRepo extends Equatable {
         gregorianMonthNumeral,
         gregorianDay,
         gregorianYear,
+        hijriDate,
+        hijriDay,
         readableDate,
+        hijriWeekdayEnglish,
         gregorianWeekdayEnglish,
+        hijriWeekdayArabic,
         city,
+        hijriYear,
         longitude,
         latitude,
       ];

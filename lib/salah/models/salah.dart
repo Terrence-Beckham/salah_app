@@ -20,6 +20,13 @@ class Salah extends Equatable {
     required this.gregorianYear,
     required this.readableDate,
     required this.gregorianWeekdayEnglish,
+    required this.hijriDate,
+    required this.hijriDay,
+    required this.hijriWeekdayEnglish,
+    required this.hijriWeekdayArabic,
+    required this.hijriMonthEnglish,
+    required this.hijriMonthArabic,
+    required this.hijriYear,
     required this.city,
   });
 
@@ -39,6 +46,13 @@ class Salah extends Equatable {
       readableDate: salah.readableDate,
       gregorianWeekdayEnglish: salah.gregorianWeekdayEnglish,
       city: salah.city,
+      hijriDate: salah.hijriDate,
+      hijriDay: salah.hijriDay,
+      hijriWeekdayEnglish: salah.hijriWeekdayEnglish,
+      hijriWeekdayArabic: salah.hijriWeekdayArabic,
+      hijriMonthEnglish: salah.hijriMonthEnglish,
+      hijriMonthArabic: salah.hijriMonthArabic,
+      hijriYear: salah.hijriYear,
     );
   }
 
@@ -55,6 +69,13 @@ class Salah extends Equatable {
   final String gregorianMonth;
   final int gregorianMonthNumeral;
   final String gregorianYear;
+  final String hijriDate;
+  final String hijriDay;
+  final String hijriWeekdayEnglish;
+  final String hijriWeekdayArabic;
+  final String hijriMonthEnglish;
+  final String hijriMonthArabic;
+  final String hijriYear;
   final String readableDate;
   final String gregorianWeekdayEnglish;
   final String city;
@@ -71,9 +92,16 @@ class Salah extends Equatable {
         readableDate,
         gregorianWeekdayEnglish,
         gregorianDay,
+        hijriDate,
+        hijriDay,
         gregorianMonth,
+        hijriWeekdayEnglish,
         gregorianMonthNumeral,
+        hijriWeekdayArabic,
         gregorianYear,
+        hijriMonthEnglish,
+        hijriMonthArabic,
+        hijriYear,
         city,
       ];
 
@@ -95,6 +123,13 @@ class Salah extends Equatable {
     gregorianMonth: '',
     gregorianMonthNumeral: 0,
     gregorianYear: '',
+    hijriDate: '',
+    hijriDay: '',
+    hijriWeekdayEnglish: '',
+    hijriWeekdayArabic: '',
+    hijriMonthEnglish: '',
+    hijriMonthArabic: '',
+    hijriYear: '',
   );
 
   Salah copyWith({
@@ -112,6 +147,13 @@ class Salah extends Equatable {
     String? readableDate,
     String? gregorianWeekdayEnglish,
     String? city,
+    String? hijriDate,
+    String? hijriDay,
+    String? hijriWeekdayEnglish,
+    String? hijriWeekdayArabic,
+    String? hijriMonthEnglish,
+    String? hijriMonthArabic,
+    String? hijriYear,
   }) {
     return Salah(
       fajr: fajr ?? this.fajr,
@@ -130,6 +172,13 @@ class Salah extends Equatable {
       gregorianMonthNumeral:
           gregorianMonthNumeral ?? this.gregorianMonthNumeral,
       gregorianYear: gregorianYear ?? this.gregorianYear,
+      hijriDate: hijriDate ?? this.hijriDate,
+      hijriDay: hijriDay ?? this.hijriDay,
+      hijriWeekdayEnglish: hijriWeekdayEnglish ?? this.hijriWeekdayEnglish,
+      hijriWeekdayArabic: hijriMonthArabic ?? this.hijriMonthArabic,
+      hijriMonthEnglish: hijriMonthEnglish ?? this.hijriMonthEnglish,
+      hijriMonthArabic: hijriMonthArabic ?? this.hijriMonthArabic,
+      hijriYear: hijriYear ?? this.hijriYear,
     );
   }
 }

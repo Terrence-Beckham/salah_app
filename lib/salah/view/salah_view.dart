@@ -218,9 +218,12 @@ class SalahSuccessView extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          '20 Rajab, 1444',
-                          style: TextStyle(
+                        Text(
+                          // '20 Rajab, 1444',
+                          '${state.salah.hijriDay}'
+                              ' ${state.salah.hijriMonthEnglish} '
+                              '${state.salah.hijriYear}',
+                          style: const TextStyle(
                             fontSize: 24,
                             color: AppColor.darkGreen,
                             fontWeight: FontWeight.bold,
