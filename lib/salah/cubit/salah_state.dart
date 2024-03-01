@@ -2,9 +2,9 @@ part of 'salah_cubit.dart';
 
 enum SalahStatus { initial, loading, success, failure }
 
-enum CurrentSalah { fajr, sharooq, dhuhr, asr, maghrib, isha, unknown }
+enum CurrentSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 
-enum NextSalah { fajr, sharooq, dhuhr, asr, maghrib, isha, unknown }
+enum NextSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 
 extension SalahStatusX on SalahStatus {
   bool get isInitial => this == SalahStatus.initial;
@@ -21,8 +21,8 @@ final class SalahState extends Equatable {
   const SalahState({
     this.status = SalahStatus.initial,
     Salah? salah,
-    this.currentSalah = CurrentSalah.fajr,
-    this.nextSalah = NextSalah.sharooq,
+    this.currentSalah = CurrentSalah.Fajr,
+    this.nextSalah = NextSalah.Sharooq,
   }) : salah = salah ?? Salah.empty;
 
   final SalahStatus status;

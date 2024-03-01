@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salah_app/Data/timer_repository.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
@@ -15,7 +16,10 @@ class SalahPage extends StatelessWidget {
     return BlocProvider(
       create: (_) =>
           // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
-          SalahCubit(context.read<SalahRepository>()),
+          SalahCubit(
+        context.read<SalahRepository>(),
+        context.read<TimerRepository>(),
+      ),
       child: const SalahView(),
     );
   }
@@ -80,9 +84,9 @@ class SalahSuccessView extends StatelessWidget {
                           Radius.circular(20),
                         ),
                       ),
-                      child: const Text(
-                        ' Maghrib',
-                        style: TextStyle(
+                      child: Text(
+                        state.currentSalah.name,
+                        style: const TextStyle(
                           color: Color(0xFF17794F),
                           fontSize: 32,
                           shadows: [
@@ -106,7 +110,7 @@ class SalahSuccessView extends StatelessWidget {
                     left: 16,
                     child: Container(
                       height: 24,
-                      width: 200,
+                      width: 225,
                       decoration: BoxDecoration(
                         color: AppColor.lightAccentGreen,
                         border: Border.all(color: AppColor.accentGreen),
@@ -114,9 +118,9 @@ class SalahSuccessView extends StatelessWidget {
                           Radius.circular(20),
                         ),
                       ),
-                      child: const Text(
-                        '1 hr and 8 mins until Isha ',
-                        style: TextStyle(
+                      child:  Text(
+                        '1 hr and 8 mins until ${state.nextSalah.name} ',
+                        style: const TextStyle(
                           color: Color(0xFF17794F),
                           fontSize: 16,
                           shadows: [
@@ -221,8 +225,8 @@ class SalahSuccessView extends StatelessWidget {
                         Text(
                           // '20 Rajab, 1444',
                           '${state.salah.hijriDay}'
-                              ' ${state.salah.hijriMonthEnglish} '
-                              '${state.salah.hijriYear}',
+                          ' ${state.salah.hijriMonthEnglish} '
+                          '${state.salah.hijriYear}',
                           style: const TextStyle(
                             fontSize: 24,
                             color: AppColor.darkGreen,
