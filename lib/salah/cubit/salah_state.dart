@@ -1,6 +1,6 @@
 part of 'salah_cubit.dart';
 
-enum SalahStatus { initial, loading, success, failure }
+enum SalahStatus { initial, loading, success, failure, athanPlaying }
 
 enum CurrentSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 
@@ -14,11 +14,16 @@ extension SalahStatusX on SalahStatus {
   bool get isSuccess => this == SalahStatus.success;
 
   bool get isFailure => this == SalahStatus.failure;
+
+  bool get isAthanPlaying => this == SalahStatus.athanPlaying;
 }
 
 @JsonSerializable()
 final class SalahState extends Equatable {
   const SalahState({
+    this.timeToNextSalah = 10000,
+    this.minutesLeft = 60,
+    this.hoursLeft = 60,
     this.status = SalahStatus.initial,
     Salah? salah,
     this.currentSalah = CurrentSalah.Fajr,
@@ -28,7 +33,9 @@ final class SalahState extends Equatable {
   final SalahStatus status;
   final CurrentSalah currentSalah;
   final NextSalah nextSalah;
-
+  final int timeToNextSalah;
+  final int minutesLeft;
+  final int hoursLeft;
   final Salah salah;
 
   SalahState copyWith({
@@ -36,15 +43,29 @@ final class SalahState extends Equatable {
     Salah? salah,
     CurrentSalah? currentSalah,
     NextSalah? nextSalah,
+    int? timeToNextSalah,
+    int? minutesLeft,
+    int? hoursLeft,
   }) {
     return SalahState(
       status: status ?? this.status,
       salah: salah ?? this.salah,
       currentSalah: currentSalah ?? this.currentSalah,
       nextSalah: nextSalah ?? this.nextSalah,
+      timeToNextSalah: timeToNextSalah ?? this.timeToNextSalah,
+      minutesLeft: minutesLeft ?? this.minutesLeft,
+      hoursLeft: hoursLeft ?? this.hoursLeft,
     );
   }
 
   @override
-  List<Object?> get props => [status, salah, nextSalah, currentSalah];
+  List<Object?> get props => [
+        status,
+        salah,
+        nextSalah,
+        currentSalah,
+        timeToNextSalah,
+        minutesLeft,
+        hoursLeft,
+      ];
 }

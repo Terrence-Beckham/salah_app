@@ -59,11 +59,17 @@ class SalahRepo extends Equatable {
 
   @override
   String toString() {
-    return 'fajr: $fajr,/n dhuhr: $dhuhr,/n asr: $asr,/n maghrib: $maghrib,/n isha: $isha,/n '
-        'readableDate: $readableDate,/n gregorianWeekdayEnglish: $gregorianWeekdayEnglish,/n '
-        'city: $city,/n gregorianDay: $gregorianDay,/n'
-        ' gregorianMonth: $gregorianMonth,/n '
-        'gregorianYear: $gregorianYear,/n '
+    return 'fajr: $fajr,'
+        '\n sharooq: $sharooq'
+        '\n dhuhr: $dhuhr,'
+        '\n asr: $asr,'
+        '\n maghrib: $maghrib,'
+        '\n isha: $isha,'
+        '\n ''readableDate: $readableDate,'
+        '\n gregorianWeekdayEnglish: $gregorianWeekdayEnglish,\n '
+        'city: $city,\n gregorianDay: $gregorianDay,\n'
+        ' gregorianMonth: $gregorianMonth,\n '
+        'gregorianYear: $gregorianYear,\n '
         'gregorianMonthNumeral: $gregorianMonthNumeral';
   }
 
@@ -72,6 +78,7 @@ class SalahRepo extends Equatable {
   // TODO: implement props
   List<Object?> get props => [
         fajr,
+        sharooq,
         dhuhr,
         asr,
         maghrib,

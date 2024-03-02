@@ -31,23 +31,37 @@ class SalahView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SalahCubit, SalahState>(
+      body: BlocConsumer<SalahCubit, SalahState>(
+        listenWhen: (previous, current) =>
+            previous.currentSalah != current.currentSalah &&
+            previous.currentSalah != CurrentSalah.unknown,
+        listener: (context, state) {
+          context.read<SalahCubit>().fetchSalah();
+        },
         builder: (context, state) {
-          switch (state.status) {
-            case SalahStatus.initial:
-              context.read<SalahCubit>().fetchSalah();
-              return Center(child: Text(state.status.toString()));
-            case SalahStatus.loading:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case SalahStatus.success:
-              return const SalahSuccessView();
-            case SalahStatus.failure:
-              return const Center(
-                child: Text('Check you internet connection and try again'),
-              );
-          }
+          return BlocBuilder<SalahCubit, SalahState>(
+            builder: (context, state) {
+              switch (state.status) {
+                case SalahStatus.initial:
+                  context.read<SalahCubit>().fetchSalah();
+                  // context.read<SalahCubit>().startTimer();
+
+                  return Center(child: Text(state.status.toString()));
+                case SalahStatus.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case SalahStatus.success:
+                  return const SalahSuccessView();
+                case SalahStatus.athanPlaying:
+                  return const AthanPlayer();
+                case SalahStatus.failure:
+                  return const Center(
+                    child: Text('Check you internet connection and try again'),
+                  );
+              }
+            },
+          );
         },
       ),
     );
@@ -84,23 +98,25 @@ class SalahSuccessView extends StatelessWidget {
                           Radius.circular(20),
                         ),
                       ),
-                      child: Text(
-                        state.currentSalah.name,
-                        style: const TextStyle(
-                          color: Color(0xFF17794F),
-                          fontSize: 32,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 10,
-                              // shadow blur
-                              color: AppColor.desaturatedGreen,
-                              // shadow color
-                              offset: Offset(
-                                2,
-                                4,
-                              ), // how much shadow will be shown
-                            ),
-                          ],
+                      child: Center(
+                        child: Text(
+                          state.currentSalah.name,
+                          style: const TextStyle(
+                            color: Color(0xFF17794F),
+                            fontSize: 32,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 10,
+                                // shadow blur
+                                color: AppColor.desaturatedGreen,
+                                // shadow color
+                                offset: Offset(
+                                  2,
+                                  4,
+                                ), // how much shadow will be shown
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -118,23 +134,25 @@ class SalahSuccessView extends StatelessWidget {
                           Radius.circular(20),
                         ),
                       ),
-                      child:  Text(
-                        '1 hr and 8 mins until ${state.nextSalah.name} ',
-                        style: const TextStyle(
-                          color: Color(0xFF17794F),
-                          fontSize: 16,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 10,
-                              // shadow blur
-                              color: AppColor.desaturatedGreen,
-                              // shadow color
-                              offset: Offset(
-                                2,
-                                4,
-                              ), // how much shadow will be shown
-                            ),
-                          ],
+                      child: Center(
+                        child: Text(
+                          '${state.hoursLeft} hrs & ${state.minutesLeft} min until ${state.nextSalah.name} ',
+                          style: const TextStyle(
+                            color: Color(0xFF17794F),
+                            fontSize: 16,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 10,
+                                // shadow blur
+                                color: AppColor.desaturatedGreen,
+                                // shadow color
+                                offset: Offset(
+                                  2,
+                                  4,
+                                ), // how much shadow will be shown
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -172,6 +190,7 @@ class SalahSuccessView extends StatelessWidget {
                             context: context,
                             builder: (context) => const AthanPlayer(),
                           );
+                          context.read<SalahCubit>().fetchSalah();
                         },
                         icon: const Icon(
                           Icons.location_on_outlined,

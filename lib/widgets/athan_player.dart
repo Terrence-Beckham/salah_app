@@ -29,7 +29,10 @@ class AthanPlayer extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                      },
+                        //
+                        // context.read<SalahCubit>().fetchSalah();
+
+                        },
                       icon: const Icon(
                         Icons.close,
                         color: Colors.red,

@@ -16,26 +16,7 @@ class TimerRepository {
   final Isar _isar;
   final _logger = Logger();
   final Salah _salah = Salah.empty;
-  CurrentSalah _currentSalah = CurrentSalah.unknown;
-  NextSalah _nextSalah = NextSalah.unknown;
   late Timer _timer;
-
-  Stream<CurrentSalah> getCurrentSalah() async* {
-    ///Todo setup Timer duration to fire when the time for one Salah has ended and
-    // another has begun
-  }
-
-  Future<void> init() async {
-    final tempSalah = await retrieveSalah();
-    final result = getSalahTimeline(tempSalah!);
-    // final nextSalah = result[0],currentSalah;
-    _currentSalah = result.$1;
-    _nextSalah = result.$2;
-    _logger
-      ..i('This is the currentSalah $_currentSalah')
-      ..i('This is the NextSalah $_nextSalah');
-    // return(_currentSalah, _nextSalah);
-  }
 
   Future<Salah?> retrieveSalah() async {
     // final formatedTime = DateFormat.yMMMd().format(DateTime.now());
@@ -50,67 +31,99 @@ class TimerRepository {
     return localSalah;
   }
 
-  (CurrentSalah, NextSalah) getSalahTimeline(Salah salah) {
-    final dateString = salah.gregorianDate;
-    final fajrDateTime = DateFormat('dd-MM-yyyy hh:mm')
+  ({CurrentSalah currentSalah, NextSalah nextSalah, int timeToNextSalah})
+      getSalahTimeline(Salah salah) {
+    final fajrDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.fajr}');
-    final sharooqDateTime = DateFormat('dd-MM-yyyy hh:mm')
+    _logger.i('Fajr Time: $fajrDateTime');
+    final sharooqDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.sharooq}');
-    final dhuhrDateTime = DateFormat('dd-MM-yyyy hh:mm')
+    _logger.i('Sharooq Time: $sharooqDateTime');
+    final dhuhrDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.dhuhr}');
-    final asrDateTime = DateFormat('dd-MM-yyyy hh:mm')
+    _logger.i('Dhuhr Time: $dhuhrDateTime');
+    final asrDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.asr}');
-    final maghribDateTime = DateFormat('dd-MM-yyyy hh:mm')
+    _logger.i('Asr Time: $asrDateTime');
+    final maghribDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.maghrib}');
-    final ishaDateTime = DateFormat('dd-MM-yyyy hh:mm')
+    _logger.i('Maghrib Time: $maghribDateTime');
+    final ishaDateTime = DateFormat('dd-MM-yyyy HH:mm')
         .parse('${salah.gregorianDate} ${salah.isha}');
+    _logger.i('Isha Time: $ishaDateTime');
     // DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse("2023-08-10 08:32:05);
-    _logger
-      ..i('This is the fajr datetime object: $fajrDateTime')
-      ..i(dateString);
 
     final now = DateTime.now();
-
     if (now.isAfter(fajrDateTime) && now.isBefore(sharooqDateTime)) {
       _logger.i(' Fajr prayer is the current prayer');
-      final diff = fajrDateTime.difference(sharooqDateTime);
-      _logger.i('This is the time difference between fajr and Sharooq: $diff');
-      return (CurrentSalah.Fajr, NextSalah.Sharooq);
+      final rightNow = DateTime.now();
+      final timeToNextSalah = sharooqDateTime.difference(rightNow).inSeconds;
+
+      return (
+        currentSalah: CurrentSalah.Fajr,
+        nextSalah: NextSalah.Sharooq,
+        timeToNextSalah: timeToNextSalah
+      );
       // emit(state.copyWith(currentSalah: CurrentSalah.fajr));
     }
     if (now.isAfter(sharooqDateTime) && now.isBefore(dhuhrDateTime)) {
       _logger.i('Time is currently SharooqTime');
-      // emit(state.copyWith(currentSalah: CurrentSalah.sharooq));
-      return (CurrentSalah.Sharooq, NextSalah.Dhuhr);
+      final rightNow = DateTime.now();
+      final timeToNextSalah = dhuhrDateTime.difference(rightNow).inSeconds;
+      return (
+        currentSalah: CurrentSalah.Sharooq,
+        nextSalah: NextSalah.Dhuhr,
+        timeToNextSalah: timeToNextSalah
+      );
     }
     if (now.isAfter(dhuhrDateTime) && now.isBefore(asrDateTime)) {
       _logger.i(' Dhuhr prayer is the current prayer');
+      final timeToNextSalah = asrDateTime.difference(dhuhrDateTime).inSeconds;
       // emit(state.copyWith(currentSalah: CurrentSalah.dhuhr));
-      return (CurrentSalah.Dhuhr, NextSalah.Asr);
+      return (
+        currentSalah: CurrentSalah.Dhuhr,
+        nextSalah: NextSalah.Asr,
+        timeToNextSalah: timeToNextSalah
+      );
     }
     if (now.isAfter(asrDateTime) && now.isBefore(maghribDateTime)) {
       _logger.i(' Asr prayer is the current prayer');
+      final rightNow = DateTime.now();
+      final timeToNextSalah = maghribDateTime.difference(rightNow).inSeconds;
+      _logger.d('this is the elapsed time I hope: $timeToNextSalah');
+      return (
+        currentSalah: CurrentSalah.Asr,
+        nextSalah: NextSalah.Maghrib,
+        timeToNextSalah: timeToNextSalah
+      );
       // emit(state.copyWith(currentSalah: CurrentSalah.asr));
-      return (CurrentSalah.Asr, NextSalah.Maghrib);
     }
     if (now.isAfter(maghribDateTime) && now.isBefore(ishaDateTime)) {
       _logger.i(' Maghrib prayer is the current prayer');
-      final diff = maghribDateTime.difference(ishaDateTime);
-      _logger.i('This is the time difference between Maghrib and Isha: $diff');
-      // emit(state.copyWith(currentSalah: CurrentSalah.maghrib));
-      return (CurrentSalah.Maghrib, NextSalah.Isha);
+      final rightNow = DateTime.now();
+      final timeToNextSalah = ishaDateTime.difference(rightNow).inSeconds;
+      // emit(state.copyWith(currentSalah: CurrentSalah.dhuhr));
+      return (
+        currentSalah: CurrentSalah.Maghrib,
+        nextSalah: NextSalah.Isha,
+        timeToNextSalah: timeToNextSalah
+      );
     }
     // if(now.isAfter(ishaDateTime) && now.isBefore(fajrDateTime) ){
     if (now.isAfter(ishaDateTime)) {
       _logger.i(' Isha prayer is the current prayer');
-      // emit(state.copyWith(currentSalah: CurrentSalah.isha));
-      //TODO this has to be modified to use the next day's fajr prayer
-      return (CurrentSalah.Isha, NextSalah.Fajr);
+      final timeToNextSalah = fajrDateTime.difference(ishaDateTime).inSeconds;
+      // emit(state.copyWith(currentSalah: CurrentSalah.dhuhr));
+      return (
+        currentSalah: CurrentSalah.Isha,
+        nextSalah: NextSalah.Fajr,
+        timeToNextSalah: timeToNextSalah
+      );
     }
-    return (CurrentSalah.unknown, NextSalah.unknown);
-  }
-
-  void startTimer(Duration diff) {
-    _timer = Timer(diff, () {});
+    return (
+      currentSalah: CurrentSalah.unknown,
+      nextSalah: NextSalah.unknown,
+      timeToNextSalah: 1000
+    );
   }
 }
