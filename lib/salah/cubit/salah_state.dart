@@ -22,8 +22,8 @@ extension SalahStatusX on SalahStatus {
 final class SalahState extends Equatable {
   const SalahState({
     this.timeToNextSalah = 10000,
-    this.minutesLeft = 60,
-    this.hoursLeft = 60,
+    this.minutesLeft = 300,
+    this.hoursLeft = 3000,
     this.status = SalahStatus.initial,
     Salah? salah,
     this.currentSalah = CurrentSalah.Fajr,

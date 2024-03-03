@@ -22,28 +22,30 @@ class SalahCubit extends Cubit<SalahState> {
   final _logger = Logger();
   Timer? _timer;
 
+  void updateTimes(int minutesLeft, int hoursLeft, int timeToNextSalah) {
+    emit(
+      state.copyWith(
+        minutesLeft: minutesLeft,
+        hoursLeft: hoursLeft,
+        timeToNextSalah: timeToNextSalah,
+      ),
+    );
+  }
+
   void startTimer(int initialSeconds) {
     // emit(state.copyWith(timeToNextSalah: initialSeconds));
     var elapsedTime = initialSeconds;
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      var minutesLeft = (elapsedTime / 60).floor();
-      final hoursLeft = minutesLeft ~/ 60;
-      minutesLeft = minutesLeft - (hoursLeft * 60);
-      elapsedTime -=1;
+    _timer = Timer.periodic(const Duration(seconds: 60), (_) {
+      final lastMinutes = (elapsedTime / 60).floor();
+      final hoursLeft = lastMinutes ~/ 60;
+     final  minutesLeft = lastMinutes - (hoursLeft * 60);
+      elapsedTime -= 60;
 
-
-
-      _logger.i('time to next salah $minutesLeft ');
-      emit(
-        state.copyWith(
-          status: SalahStatus.success,
-          timeToNextSalah: state.timeToNextSalah - 1,
-          minutesLeft:minutesLeft,
-          hoursLeft: hoursLeft,
-        ),
-      );
-      if (state.timeToNextSalah == 0) {
-        stopTimer();
+      _logger.i('time to next salah $elapsedTime ');
+      updateTimes(minutesLeft, hoursLeft, elapsedTime);
+      if (state.timeToNextSalah >= 0) {
+        // stopTimer();
+        // emit(state.copyWith(status: SalahStatus.failure));
       }
     });
   }

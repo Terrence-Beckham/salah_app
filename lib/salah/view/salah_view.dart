@@ -31,37 +31,27 @@ class SalahView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<SalahCubit, SalahState>(
-        listenWhen: (previous, current) =>
-            previous.currentSalah != current.currentSalah &&
-            previous.currentSalah != CurrentSalah.unknown,
-        listener: (context, state) {
-          context.read<SalahCubit>().fetchSalah();
-        },
+      body: BlocBuilder<SalahCubit, SalahState>(
         builder: (context, state) {
-          return BlocBuilder<SalahCubit, SalahState>(
-            builder: (context, state) {
-              switch (state.status) {
-                case SalahStatus.initial:
-                  context.read<SalahCubit>().fetchSalah();
-                  // context.read<SalahCubit>().startTimer();
+          switch (state.status) {
+            case SalahStatus.initial:
+              context.read<SalahCubit>().fetchSalah();
+              // context.read<SalahCubit>().startTimer();
 
-                  return Center(child: Text(state.status.toString()));
-                case SalahStatus.loading:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case SalahStatus.success:
-                  return const SalahSuccessView();
-                case SalahStatus.athanPlaying:
-                  return const AthanPlayer();
-                case SalahStatus.failure:
-                  return const Center(
-                    child: Text('Check you internet connection and try again'),
-                  );
-              }
-            },
-          );
+              return Center(child: Text(state.status.toString()));
+            case SalahStatus.loading:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case SalahStatus.success:
+              return const SalahSuccessView();
+            case SalahStatus.athanPlaying:
+              return const AthanPlayer();
+            case SalahStatus.failure:
+              return const Center(
+                child: Text('Check you internet connection and try again'),
+              );
+          }
         },
       ),
     );
