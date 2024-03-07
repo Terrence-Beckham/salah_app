@@ -7,6 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  audioplayers: ^5.2.1
   bloc: ^8.1.2
   dio: ^5.3.4
   envied: ^0.5.3
@@ -26,6 +27,7 @@ dependencies:
   json_serializable: ^6.7.1
   logger: ^2.0.2+1
   path_provider: ^2.1.2
+  rxdart: ^0.27.7
   salah_repository:
     path: packages/salah_repository
 
@@ -44,4 +46,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/athans/
 #  generate: true

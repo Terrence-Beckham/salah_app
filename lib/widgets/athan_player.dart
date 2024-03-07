@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/konstants/konstants.dart';
 
-@override
+import '../salah/cubit/salah_cubit.dart';
+
+
 class AthanPlayer extends StatelessWidget {
   const AthanPlayer({super.key});
 
@@ -30,7 +33,7 @@ class AthanPlayer extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                         //
-                        // context.read<SalahCubit>().fetchSalah();
+                        context.read<SalahCubit>().init();
 
                         },
                       icon: const Icon(
