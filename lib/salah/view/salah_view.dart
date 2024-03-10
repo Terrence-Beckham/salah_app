@@ -1,9 +1,9 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/Data/timer_repository.dart';
+import 'package:salah_app/athan_player/views/athan_player_view.dart';
 import 'package:salah_app/konstants/konstants.dart';
-import 'package:salah_app/salah/cubit/salah_cubit.dart';
+import 'package:salah_app/salah/salah_bloc.dart';
 import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
 import 'package:salah_app/settings/view/settings_view.dart';
 import 'package:salah_repository/salah_repository.dart';
@@ -16,10 +16,10 @@ class SalahPage extends StatelessWidget {
     return BlocProvider(
       create: (_) =>
           // SalahCubit(RepositoryProvider.of<SalahRepository>(context)),
-          SalahCubit(
+          SalahBloc(
         context.read<SalahRepository>(),
         context.read<TimerRepository>(),
-      ),
+      )..add(const SalahInitial()),
       child: const SalahView(),
     );
   }
@@ -31,27 +31,45 @@ class SalahView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SalahCubit, SalahState>(
-        builder: (context, state) {
-          switch (state.status) {
-            case SalahStatus.initial:
-              context.read<SalahCubit>().init();
-              context.read<SalahCubit>().listenToTimeLineStream();
-
-              return Center(child: Text(state.status.toString()));
-            case SalahStatus.loading:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case SalahStatus.success:
-              return const SalahSuccessView();
-            case SalahStatus.athanPlaying:
-              return  const AthanPlayer();
-            case SalahStatus.failure:
-              return const Center(
-                child: Text('Check you internet connection and try again'),
-              );
+      body: BlocConsumer<SalahBloc, SalahBlocState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state.isAthanTime) {
+            Navigator.push(
+              context,
+              MaterialPageRoute<AthanPlayer>(
+                builder: (context) => AthanPlayer(
+                  salahName: state.currentSalah!.name,
+                  timerRepository: context.read<TimerRepository>(),
+                ),
+              ),
+            );
           }
+        },
+        builder: (context, state) {
+          return BlocBuilder<SalahBloc, SalahBlocState>(
+            builder: (context, state) {
+              switch (state.status) {
+                case SalahStatus.initial:
+                  return Center(child: Text(state.status.toString()));
+                case SalahStatus.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case SalahStatus.success:
+                  return const SalahSuccessView();
+                case SalahStatus.athanPlaying:
+                  return AthanPlayer(
+                    salahName: state.currentSalah!.name,
+                    timerRepository: context.read<TimerRepository>(),
+                  );
+                case SalahStatus.failure:
+                  return const Center(
+                    child: Text('Check you internet connection and try again'),
+                  );
+              }
+            },
+          );
         },
       ),
     );
@@ -64,7 +82,7 @@ class SalahSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final state = context.watch<SalahCubit>().state;
-    return BlocBuilder<SalahCubit, SalahState>(
+    return BlocBuilder<SalahBloc, SalahBlocState>(
       builder: (context, state) {
         return SafeArea(
           child: Column(
@@ -90,7 +108,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          state.currentSalah.name,
+                          state.currentSalah!.name,
                           style: const TextStyle(
                             color: Color(0xFF17794F),
                             fontSize: 32,
@@ -127,7 +145,7 @@ class SalahSuccessView extends StatelessWidget {
                       child: Center(
                         child: Text(
                           '${state.hoursLeft} hrs & ${state.minutesLeft} '
-                          'min until ${state.nextSalah.name} ',
+                          'min until ${state.nextSalah!.name} ',
                           style: const TextStyle(
                             color: Color(0xFF17794F),
                             fontSize: 16,
@@ -177,12 +195,21 @@ class SalahSuccessView extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8),
                       child: IconButton(
                         onPressed: () {
-                          context.read<SalahCubit>().launchAthanPlayer();
+                          // context.read<SalahCubit>().launchAthanPlayer();
                           // showDialog<SimpleDialog>(
                           //   context: context,
                           //   builder: (context) => const AthanPlayer(),
                           // );
                           // context.read<SalahCubit>().fetchSalah();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<AthanPlayer>(
+                              builder: (context) => AthanPlayer(
+                                  timerRepository:
+                                      context.read<TimerRepository>(),
+                                  salahName: state.currentSalah!.name),
+                            ),
+                          );
                         },
                         icon: const Icon(
                           Icons.location_on_outlined,
@@ -201,7 +228,7 @@ class SalahSuccessView extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8),
                       child: IconButton(
                         onPressed: () {
-                          context.read<SalahCubit>().init();
+                          // context.read<SalahCubit>().init();
                         },
                         icon: const Icon(
                           Icons.update_outlined,
@@ -601,167 +628,6 @@ class PrayerTile extends StatelessWidget {
           leading: Text(prayerName),
         ),
       ),
-    );
-  }
-}
-
-class AthanPlayer extends StatefulWidget {
-  const AthanPlayer({super.key});
-
-  @override
-  State<AthanPlayer> createState() => _AthanPlayerState();
-}
-
-class _AthanPlayerState extends State<AthanPlayer> {
-  final audioPlayer = AudioPlayer();
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-   playAthan();
-  }
-
-  Future<void> playAthan() async {
-    await audioPlayer.play(AssetSource('athans/Abdel_Moneim_Abdel_Mobdi_Adhan.mp3'));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SalahCubit, SalahState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            backgroundColor: AppColor.accentGreen,
-            body: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Ink(
-                        decoration: const ShapeDecoration(
-                          shape: CircleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 8,
-                            ),
-                          ),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            // Navigator.of(context).pop();
-                            //
-                            context.read<SalahCubit>().init();
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                 CircleAvatar(
-                  backgroundColor: AppColor.darkGreen,
-                  maxRadius: 120,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    maxRadius: 100,
-                    child: Text(
-                      ' ${state.currentSalah.name}',
-                      style: const TextStyle(color: AppColor.darkGreen, fontSize: 24),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'Time since start of prayer',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    ' 10:00',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Ink(
-                        decoration: const ShapeDecoration(
-                          shape: CircleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 8,
-                            ),
-                          ),
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.notifications_off_outlined,
-                            color: Colors.red,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                      Ink(
-                        decoration: const ShapeDecoration(
-                          shape: CircleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 8,
-                            ),
-                          ),
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.vibration_outlined,
-                            color: Colors.yellow,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

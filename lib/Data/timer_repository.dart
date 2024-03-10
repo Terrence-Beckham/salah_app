@@ -5,9 +5,10 @@ import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta_meta.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:salah_app/salah/cubit/salah_cubit.dart';
 import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_repository/salah_repository.dart';
+
+import '../salah/salah_bloc.dart';
 
 class TimerRepository {
   TimerRepository({
@@ -46,11 +47,11 @@ class TimerRepository {
   void startTimer(TimelineData timelineData) {
     // emit(state.copyWith(timeToNextSalah: initialSeconds));
     var elapsedTime = timelineData.timeToNextSalah;
-    _timer = Timer.periodic(const Duration(seconds: 60), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final lastMinutes = (elapsedTime / 60).floor();
       final hoursLeft = lastMinutes ~/ 60;
       final minutesLeft = lastMinutes - (hoursLeft * 60);
-      elapsedTime -= 60;
+      elapsedTime -= 1;
       final timelineOb = TimelineData(
         timeToNextSalah: elapsedTime,
         currentSalah: timelineData.currentSalah,
@@ -58,6 +59,7 @@ class TimerRepository {
         minutesLeft: minutesLeft,
         hoursLeft: hoursLeft,
       );
+
       _timeLineDataStreamController.add(timelineOb);
 
       _logger.i('time to next salah $elapsedTime ');

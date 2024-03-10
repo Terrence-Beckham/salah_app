@@ -1,11 +1,38 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salah_app/Data/timer_repository.dart';
 import 'package:salah_app/konstants/konstants.dart';
 
+class AthanPlayer extends StatefulWidget {
+  const AthanPlayer(
+      {required this.salahName, required this.timerRepository, super.key});
 
+  final String salahName;
+  final TimerRepository timerRepository;
 
-class AthanPlayer extends StatelessWidget {
-  const AthanPlayer({super.key});
+  @override
+  State<AthanPlayer> createState() => _AthanPlayerState();
+}
+
+class _AthanPlayerState extends State<AthanPlayer> {
+  final audioPlayer = AudioPlayer();
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    playAthan();
+  }
+
+  Future<void> playAthan() async {
+    await audioPlayer
+        .play(AssetSource('athans/Abdel_Moneim_Abdel_Mobdi_Adhan.mp3'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +57,13 @@ class AthanPlayer extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
                         //
-
-                        },
+                      },
                       icon: const Icon(
                         Icons.close,
                         color: Colors.red,
-                        size: 48,
+                        size: 24,
                       ),
                     ),
                   ),
@@ -47,15 +73,16 @@ class AthanPlayer extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            const CircleAvatar(
+            CircleAvatar(
               backgroundColor: AppColor.darkGreen,
               maxRadius: 120,
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 maxRadius: 100,
                 child: Text(
-                  'Prayer Name',
-                  style: TextStyle(color: AppColor.darkGreen, fontSize: 24),
+                  ' $widget.salahName',
+                  style:
+                      const TextStyle(color: AppColor.darkGreen, fontSize: 24),
                 ),
               ),
             ),
@@ -85,7 +112,7 @@ class AthanPlayer extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 100,
+              height: 50,
             ),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -106,7 +133,7 @@ class AthanPlayer extends StatelessWidget {
                       icon: const Icon(
                         Icons.notifications_off_outlined,
                         color: Colors.red,
-                        size: 48,
+                        size: 24,
                       ),
                     ),
                   ),
@@ -124,7 +151,7 @@ class AthanPlayer extends StatelessWidget {
                       icon: const Icon(
                         Icons.vibration_outlined,
                         color: Colors.yellow,
-                        size: 48,
+                        size: 24,
                       ),
                     ),
                   ),
