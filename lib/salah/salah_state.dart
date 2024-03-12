@@ -6,28 +6,28 @@ enum CurrentSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 
 enum NextSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 
-final class SalahBlocState extends Equatable {
-  const SalahBlocState({
+final class SalahState extends Equatable {
+  const SalahState({
+    required this.timeToNextSalah,
+    required this.minutesLeft,
+    required this.hoursLeft,
+    required this.currentSalah,
+    required this.nextSalah,
     this.isAthanTime = false,
-    this.timeToNextSalah,
-    this.minutesLeft ,
-    this.hoursLeft ,
     this.status = SalahStatus.initial,
     Salah? salah,
-    this.currentSalah,
-    this.nextSalah,
   }) : salah = salah ?? Salah.empty;
 
   final SalahStatus status;
   final CurrentSalah? currentSalah;
   final NextSalah? nextSalah;
-  final int? timeToNextSalah;
-  final int? minutesLeft;
-  final int? hoursLeft;
+  final int timeToNextSalah;
+  final int minutesLeft;
+  final int hoursLeft;
   final Salah salah;
   final bool isAthanTime;
 
-  SalahBlocState copyWith({
+  SalahState copyWith({
     SalahStatus Function()? status,
     Salah? Function()? salah,
     CurrentSalah Function()? currentSalah,
@@ -37,7 +37,7 @@ final class SalahBlocState extends Equatable {
     int Function()? hoursLeft,
     bool Function()? isAthanTime,
   }) {
-    return SalahBlocState(
+    return SalahState(
       status: status != null ? status() : this.status,
       salah: salah != null ? salah() : this.salah,
       currentSalah: currentSalah != null ? currentSalah() : this.currentSalah,

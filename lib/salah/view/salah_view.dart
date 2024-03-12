@@ -31,10 +31,10 @@ class SalahView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<SalahBloc, SalahBlocState>(
+      body: BlocConsumer<SalahBloc, SalahState>(
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
-          // TODO: implement listener
-          if (state.isAthanTime) {
+          if (state.status == SalahStatus.athanPlaying) {
             Navigator.push(
               context,
               MaterialPageRoute<AthanPlayer>(
@@ -47,7 +47,7 @@ class SalahView extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return BlocBuilder<SalahBloc, SalahBlocState>(
+          return BlocBuilder<SalahBloc, SalahState>(
             builder: (context, state) {
               switch (state.status) {
                 case SalahStatus.initial:
@@ -59,15 +59,13 @@ class SalahView extends StatelessWidget {
                 case SalahStatus.success:
                   return const SalahSuccessView();
                 case SalahStatus.athanPlaying:
-                  return AthanPlayer(
-                    salahName: state.currentSalah!.name,
-                    timerRepository: context.read<TimerRepository>(),
-                  );
+                  ;
                 case SalahStatus.failure:
                   return const Center(
                     child: Text('Check you internet connection and try again'),
                   );
               }
+              return const Center();
             },
           );
         },
@@ -82,7 +80,7 @@ class SalahSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final state = context.watch<SalahCubit>().state;
-    return BlocBuilder<SalahBloc, SalahBlocState>(
+    return BlocBuilder<SalahBloc, SalahState>(
       builder: (context, state) {
         return SafeArea(
           child: Column(
@@ -205,9 +203,10 @@ class SalahSuccessView extends StatelessWidget {
                             context,
                             MaterialPageRoute<AthanPlayer>(
                               builder: (context) => AthanPlayer(
-                                  timerRepository:
-                                      context.read<TimerRepository>(),
-                                  salahName: state.currentSalah!.name),
+                                timerRepository:
+                                    context.read<TimerRepository>(),
+                                salahName: state.currentSalah!.name,
+                              ),
                             ),
                           );
                         },

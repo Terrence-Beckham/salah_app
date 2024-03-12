@@ -181,4 +181,33 @@ class Salah extends Equatable {
       hijriYear: hijriYear ?? this.hijriYear,
     );
   }
+
+  @override
+  String toString() {
+    return
+      '''
+     fajr,$fajr
+     sharooq: $sharooq
+     dhuhr: $dhuhr
+     asr: $asr
+     maghrib: $maghrib
+     isha: $isha
+     gregorianDate: $gregorianDate
+     gregorianDay: $gregorianDay
+     gregorianMonth: $gregorianMonth
+     gregorianMonthNumeral: $gregorianMonth
+     gregorianYear: $gregorianYear
+     readableDate: $readableDate
+     gregorianWeekdayEnglish: $gregorianWeekdayEnglish
+     city: $city
+     hijriDate: $hijriDate
+     hijriDay: $hijriDay
+     hijriWeekdayEnglish: $hijriWeekdayEnglish
+     hijriWeekdayArabic: $hijriWeekdayArabic
+     hijriMonthEnglish: $hijriMonthEnglish
+     hijriMonthArabic: $hijriMonthArabic
+     hijriYear: $hijriYear
+     ''';
+
+  }
 }

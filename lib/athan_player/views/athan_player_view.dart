@@ -1,14 +1,19 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salah_app/Data/timer_repository.dart';
 import 'package:salah_app/konstants/konstants.dart';
+import 'package:salah_app/salah/salah_bloc.dart';
 
 class AthanPlayer extends StatefulWidget {
-  const AthanPlayer(
-      {required this.salahName, required this.timerRepository, super.key});
+  const AthanPlayer({
+    required String salahName,
+    required TimerRepository timerRepository,
+    super.key,
+  }):_salahName = salahName, _timerRepository = timerRepository;
 
-  final String salahName;
-  final TimerRepository timerRepository;
+  final String _salahName;
+  final TimerRepository _timerRepository;
 
   @override
   State<AthanPlayer> createState() => _AthanPlayerState();
@@ -56,9 +61,12 @@ class _AthanPlayerState extends State<AthanPlayer> {
                       ),
                     ),
                     child: IconButton(
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                        //
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        final salah =
+                            await widget._timerRepository.retrieveSalah();
+                        widget._timerRepository.getSalahTimeline(salah!);
+                        // context.read<SalahBloc>().add(const SalahInitial());
                       },
                       icon: const Icon(
                         Icons.close,
@@ -80,7 +88,7 @@ class _AthanPlayerState extends State<AthanPlayer> {
                 backgroundColor: Colors.white,
                 maxRadius: 100,
                 child: Text(
-                  ' $widget.salahName',
+                  ' ${widget._salahName}',
                   style:
                       const TextStyle(color: AppColor.darkGreen, fontSize: 24),
                 ),

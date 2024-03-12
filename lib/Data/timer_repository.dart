@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
-import 'package:meta/meta_meta.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:salah_app/salah/models/salah.dart';
+import 'package:salah_app/salah/salah_bloc.dart';
 import 'package:salah_repository/salah_repository.dart';
-
-import '../salah/salah_bloc.dart';
 
 class TimerRepository {
   TimerRepository({
@@ -29,7 +26,7 @@ class TimerRepository {
     ),
   );
 
-  Stream<TimelineData> getTimeLines() =>
+  Stream<TimelineData> subscribeToTimeLines() =>
       _timeLineDataStreamController.asBroadcastStream();
 
   Future<Salah?> retrieveSalah() async {
@@ -46,6 +43,7 @@ class TimerRepository {
 
   void startTimer(TimelineData timelineData) {
     // emit(state.copyWith(timeToNextSalah: initialSeconds));
+    _logger.i('Timer has started ');
     var elapsedTime = timelineData.timeToNextSalah;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final lastMinutes = (elapsedTime / 60).floor();
@@ -59,21 +57,28 @@ class TimerRepository {
         minutesLeft: minutesLeft,
         hoursLeft: hoursLeft,
       );
-
       _timeLineDataStreamController.add(timelineOb);
 
       _logger.i('time to next salah $elapsedTime ');
-      if (elapsedTime == 0) {
+      if (elapsedTime == 0 && timelineOb.nextSalah != NextSalah.Sharooq ) {
+        cancelTimer();
+        _logger.i('timer is active = ${_timer.isActive}');
         final timelineObject = TimelineData(
           isAthanTime: true,
           currentSalah: timelineData.currentSalah,
           timeToNextSalah: timelineData.timeToNextSalah,
           nextSalah: timelineData.nextSalah,
+          hoursLeft: 0,
+          minutesLeft: 0,
         );
         _timeLineDataStreamController.add(timelineObject);
         _logger.d('The Athan should fire now');
       }
     });
+  }
+
+  void cancelTimer() {
+    _timer.cancel();
   }
 
   TimelineData getSalahTimeline(Salah salah) {
@@ -105,6 +110,8 @@ class TimerRepository {
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Fajr,
         nextSalah: NextSalah.Sharooq,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
 
       startTimer(timelineObj);
@@ -121,6 +128,8 @@ class TimerRepository {
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Sharooq,
         nextSalah: NextSalah.Dhuhr,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
       startTimer(timelineObj);
       return timelineObj;
@@ -130,11 +139,14 @@ class TimerRepository {
       final rightNow = DateTime.now();
       final timeToNextSalah = asrDateTime.difference(rightNow).inSeconds;
       _logger.i(
-          'this is the time from right now until the Asr prayer $timeToNextSalah');
+        'this is the time from right now until the Asr prayer $timeToNextSalah',
+      );
       final timelineObj = TimelineData(
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Dhuhr,
         nextSalah: NextSalah.Asr,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
       startTimer(timelineObj);
       return timelineObj;
@@ -148,6 +160,8 @@ class TimerRepository {
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Asr,
         nextSalah: NextSalah.Maghrib,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
       startTimer(timelineObj);
       return timelineObj;
@@ -162,6 +176,8 @@ class TimerRepository {
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Maghrib,
         nextSalah: NextSalah.Isha,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
       startTimer(timelineObj);
       return timelineObj;
@@ -176,6 +192,8 @@ class TimerRepository {
         timeToNextSalah: timeToNextSalah,
         currentSalah: CurrentSalah.Isha,
         nextSalah: NextSalah.Fajr,
+        hoursLeft: 0,
+        minutesLeft: 0,
       );
       startTimer(timelineObj);
       return timelineObj;
@@ -184,6 +202,8 @@ class TimerRepository {
       timeToNextSalah: 0,
       currentSalah: CurrentSalah.unknown,
       nextSalah: NextSalah.unknown,
+      hoursLeft: 0,
+      minutesLeft: 0,
     );
   }
 }
@@ -193,18 +213,18 @@ class TimelineData {
     required this.timeToNextSalah,
     required this.currentSalah,
     required this.nextSalah,
-    this.hoursLeft,
-    this.minutesLeft,
+    required this.hoursLeft,
+    required this.minutesLeft,
     this.isAthanTime = false,
   });
 
   final int timeToNextSalah;
   final CurrentSalah currentSalah;
   final NextSalah nextSalah;
-  final int? hoursLeft;
+  final int hoursLeft;
   final bool isAthanTime;
 
-  final int? minutesLeft;
+  final int minutesLeft;
 
   TimelineData copyWith({
     int? timeToNextSalah,
