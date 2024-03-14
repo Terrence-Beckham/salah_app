@@ -87,7 +87,7 @@ class SalahSuccessView extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.asset(
+                  Image.asset(fit:BoxFit.fill ,
                     width: MediaQuery.of(context).size.width,
                     'assets/images/main_background.png',
                   ),
@@ -240,7 +240,8 @@ class SalahSuccessView extends StatelessWidget {
               ),
               const Divider(
                 color: AppColor.accentGreen,
-                height: 2,
+                height: 4,
+                thickness: 2,
               ),
               SizedBox(
                 height: 75,
@@ -317,276 +318,47 @@ class SalahSuccessView extends StatelessWidget {
                   ],
                 ),
               ),
-              const Divider(
-                color: AppColor.accentGreen,
-                height: 2,
-              ),
+             
+
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
-                      child: ListView(
-                        children: [
-                          ListTile(
-                            onTap: () => launchSalahSettingsView(context),
-                            leading: IconButton(
-                              icon: const Icon(
-                                Icons.notifications_active_outlined,
-                                color: AppColor.accentGreen,
-                              ),
-                              onPressed: () {},
-                            ),
-                            title: const Text(
-                              'Fajr',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.darkGreen,
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 10,
-                                    // shadow blur
-                                    color: AppColor.desaturatedGreen,
-                                    // shadow color
-                                    offset: Offset(
-                                      2,
-                                      4,
-                                    ), // how much shadow will be shown
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // trailing: Text(state.salah.fajr),
-                            trailing: Text(
-                              state.salah.fajr,
-                              style: const TextStyle(
-                                color: AppColor.desaturatedGreen,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: PrayerTile(
+                        prayerName: 'Fajr',
+                        prayerTime: state.salah.fajr,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                     Expanded(
-                      child: ListTile(
-                        onTap: () => launchSalahSettingsView(context),
-                        leading: IconButton(
-                          icon: const Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColor.accentGreen,
-                          ),
-                          onPressed: () {},
-                        ),
-                        title: const Text(
-                          'Sharooq',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.darkGreen,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                // shadow blur
-                                color: AppColor.desaturatedGreen,
-                                // shadow color
-                                offset: Offset(
-                                  2,
-                                  4,
-                                ), // how much shadow will be shown
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Text(
-                          state.salah.sharooq,
-                          style: const TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 18,
-                          ),
-                        ),
+                      child: PrayerTile(
+                        prayerName: 'Sharooq',
+                        prayerTime: state.salah.sharooq,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                     Expanded(
-                      child: ListTile(
-                        onTap: () => launchSalahSettingsView(context),
-                        leading: IconButton(
-                          icon: const Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColor.accentGreen,
-                          ),
-                          onPressed: () {},
-                        ),
-                        title: const Text(
-                          'Dhuhr',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.darkGreen,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                // shadow blur
-                                color: AppColor.desaturatedGreen,
-                                // shadow color
-                                offset: Offset(
-                                  2,
-                                  4,
-                                ), // how much shadow will be shown
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Text(
-                          state.salah.dhuhr,
-                          style: const TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 18,
-                          ),
-                        ),
+                      child: PrayerTile(
+                        prayerName: 'Dhuhr',
+                        prayerTime: state.salah.dhuhr,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                     Expanded(
-                      child: ListTile(
-                        onTap: () => launchSalahSettingsView(context),
-                        leading: IconButton(
-                          icon: const Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColor.accentGreen,
-                          ),
-                          onPressed: () {},
-                        ),
-                        title: const Text(
-                          'Asr',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.darkGreen,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                // shadow blur
-                                color: AppColor.desaturatedGreen,
-                                // shadow color
-                                offset: Offset(
-                                  2,
-                                  4,
-                                ), // how much shadow will be shown
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Text(
-                          state.salah.asr,
-                          style: const TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 18,
-                          ),
-                        ),
+                      child: PrayerTile(
+                        prayerName: 'Asr',
+                        prayerTime: state.salah.asr,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                     Expanded(
-                      child: ListTile(
-                        onTap: () => launchSalahSettingsView(context),
-                        leading: IconButton(
-                          icon: const Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColor.accentGreen,
-                          ),
-                          onPressed: () {},
-                        ),
-                        title: const Text(
-                          'Maghrib',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.darkGreen,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                // shadow blur
-                                color: AppColor.desaturatedGreen,
-                                // shadow color
-                                offset: Offset(
-                                  2,
-                                  4,
-                                ), // how much shadow will be shown
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Text(
-                          state.salah.maghrib,
-                          style: const TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 18,
-                          ),
-                        ),
+                      child: PrayerTile(
+                        prayerName: 'Maghrib',
+                        prayerTime: state.salah.maghrib,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                     Expanded(
-                      child: ListTile(
-                        onTap: () => launchSalahSettingsView(context),
-                        leading: IconButton(
-                          icon: const Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColor.accentGreen,
-                          ),
-                          onPressed: () {},
-                        ),
-                        title: const Text(
-                          'Isha',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.darkGreen,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 10,
-                                // shadow blur
-                                color: AppColor.desaturatedGreen,
-                                // shadow color
-                                offset: Offset(
-                                  2,
-                                  4,
-                                ), // how much shadow will be shown
-                              ),
-                            ],
-                          ),
-                        ),
-                        trailing: Text(
-                          state.salah.isha,
-                          style: const TextStyle(
-                            color: AppColor.desaturatedGreen,
-                            fontSize: 18,
-                          ),
-                        ),
+                      child: PrayerTile(
+                        prayerName: 'Isha',
+                        prayerTime: state.salah.isha,
                       ),
-                    ),
-                    const Divider(
-                      color: AppColor.accentGreen,
-                      height: 2,
                     ),
                   ],
                 ),
@@ -597,35 +369,90 @@ class SalahSuccessView extends StatelessWidget {
       },
     );
   }
-
-  void launchSalahSettingsView(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute<SalahSettingsView>(
-        builder: (context) => const SalahSettingsView(),
-      ),
-    );
-  }
 }
 
 class PrayerTile extends StatelessWidget {
   const PrayerTile({
     required this.prayerName,
+    required this.prayerTime,
     super.key,
   });
 
   final String prayerName;
+  final String prayerTime;
+
+  void launchSalahSettingsView(BuildContext context) {Navigator.push(
+    context,
+    MaterialPageRoute<SalahSettingsView>(
+      builder: (context) => const SalahSettingsPage(),
+    ),
+  );
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 200,
-      width: 500,
-      child: Card(
-        color: const Color.fromARGB(255, 240, 238, 231),
-        child: ListTile(
-          leading: Text(prayerName),
-        ),
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 16),
+                child: IconButton(
+                  color: AppColor.accentGreen,
+                  onPressed: () => {},
+                  icon: const Icon(Icons.notifications_active_outlined),
+                ),
+              ),
+              Text(
+                prayerName,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.darkGreen,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 10,
+                      // shadow blur
+                      color: AppColor.desaturatedGreen,
+                      // shadow color
+                      offset: Offset(
+                        2,
+                        4,
+                      ), // how much shadow will be shown
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                prayerTime,
+                style: const TextStyle(
+                  color: AppColor.desaturatedGreen,
+                  fontSize: 18,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: IconButton(
+                  onPressed: () => launchSalahSettingsView(context),
+                  icon: const Icon(
+                    Icons.settings_outlined,
+                    color: AppColor.accentGreen,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

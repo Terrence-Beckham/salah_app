@@ -11,6 +11,7 @@
 migrate_working_dir/
 *.env
 env.g.dart
+weather.g.dart
 lib/env.dart
 # IntelliJ related
 *.iml
