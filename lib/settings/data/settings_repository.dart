@@ -1,28 +1,31 @@
-import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:salah_app/settings/models/settings.dart';
 
 class SettingsRepository {
   SettingsRepository({required Isar isar}) : _isar = isar {
-    _init();
+    init();
   }
-
-
 
   final Isar _isar;
   final _logger = Logger();
 
-  // Future<Settings> _init() async {
-  //     var settings =  await _isar.settings.filter().nameMatches(
-  //         'SETTINGS',).findFirst();
-  //     _logger.i('This is the settings object ${settings!}');
-  //     if (settings == null)
-  //     return settings ??= const Settings();
-  //
-  // }
+  Future<Settings?> init() async {
+    final  settings =
+        await _isar.settings.filter().nameMatches('SETTINGS').findFirst();
+    _logger.i('This is the settings object $settings');
+    if (settings == null) {
+      await addSettingsToDb();
+    }
+    return settings;
+  }
 
+  Future<void> addSettingsToDb() async {
+    const newSettings = Settings();
+    await _isar.writeTxn(() async => _isar.settings.put(newSettings));
+  }
 }
+
 //Future<void> writeToDB(SalahRepo salah) async {
 //     await _isar.writeTxn(() async {
 //       await _isar.salahRepos.put(salah);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:salah_app/konstants/konstants.dart';
-import 'package:salah_app/widgets/athan_segment_selector.dart';
 import 'package:salah_app/widgets/authority_picker_menu.dart';
 import 'package:salah_app/widgets/language_picker_menu.dart';
 import 'package:salah_app/widgets/reciter_menu.dart';

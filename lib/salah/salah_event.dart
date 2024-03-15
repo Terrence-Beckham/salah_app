@@ -24,9 +24,10 @@ final class RequestSalah extends SalahEvent {
   const RequestSalah();
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
-
-
+final class InitializeSettings extends SalahEvent {
+  @override
+  List<Object?> get props => [];
+}

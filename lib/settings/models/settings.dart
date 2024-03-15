@@ -9,12 +9,12 @@ enum AthanSoundSettings { silent, vibrate, sound }
 enum JuristicSchool { standard, hanafi }
 
 @Freezed()
-@Collection(ignore: {'copyWith', 'props'})
+@Collection(ignore: { 'copyWith','props'})
 class Settings with _$Settings {
   const factory Settings({
     int? method,
     String? language,
-    @Index() @Default('SETTINGS') String name,
+    @Index() @Default('SETTINGS') String? name,
     @Default('mishary_alAfasi_fajr.mp3') String fajrAthan,
     @Default('mishary_alAfasi.mp3') String reqularAthan,
     @enumerated @Default(JuristicSchool.standard) JuristicSchool juristicSchool,
@@ -42,8 +42,8 @@ class Settings with _$Settings {
     @Default(0) int maghribOffset,
     @Default(0) int ishaOffset,
   }) = _Settings;
-  Id get isarId => 0;
   const Settings._();
+  Id get isarId => 0;
 }
 // Map<String, int> required authorities = {
 //      'University of Islamic Sciences, Karachi': 1,

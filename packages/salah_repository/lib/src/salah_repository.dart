@@ -71,12 +71,11 @@ class SalahRepository {
   }
 
   Future<SalahRepo?> retrieveSalah() async {
-    final time = DateTime.now();
     // final formatedTime = DateFormat.yMMMd().format(DateTime.now());
-    final formatedTime = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    final formattedTime = DateFormat('dd-MM-yyyy').format(DateTime.now());
     final SalahRepo? salah = await _isar.salahRepos
         .filter()
-        .gregorianDateMatches(formatedTime)
+        .gregorianDateMatches(formattedTime)
         .findFirst();
     _logger.i('this is the salah from the db for today $salah');
     return salah;

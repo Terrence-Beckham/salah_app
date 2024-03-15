@@ -4,7 +4,8 @@ import 'package:salah_app/Data/timer_repository.dart';
 import 'package:salah_app/athan_player/views/athan_player_view.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/salah_bloc.dart';
-import 'package:salah_app/salah_settings/view/salah_settings_view.dart';
+import 'package:salah_app/settings/data/settings_repository.dart';
+import 'package:salah_app/settings/view/salah_settings_view.dart';
 import 'package:salah_app/settings/view/settings_view.dart';
 import 'package:salah_repository/salah_repository.dart';
 
@@ -19,6 +20,7 @@ class SalahPage extends StatelessWidget {
           SalahBloc(
         context.read<SalahRepository>(),
         context.read<TimerRepository>(),
+        context.read<SettingsRepository>(),
       )..add(const SalahInitial()),
       child: const SalahView(),
     );
@@ -87,7 +89,8 @@ class SalahSuccessView extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.asset(fit:BoxFit.fill ,
+                  Image.asset(
+                    fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
                     'assets/images/main_background.png',
                   ),
@@ -318,8 +321,6 @@ class SalahSuccessView extends StatelessWidget {
                   ],
                 ),
               ),
-             
-
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -381,14 +382,13 @@ class PrayerTile extends StatelessWidget {
   final String prayerName;
   final String prayerTime;
 
-  void launchSalahSettingsView(BuildContext context) {Navigator.push(
-    context,
-    MaterialPageRoute<SalahSettingsView>(
-      builder: (context) => const SalahSettingsPage(),
-    ),
-  );
-
-
+  void launchSalahSettingsView(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<SalahSettingsView>(
+        builder: (context) => const SalahSettingsPage(),
+      ),
+    );
   }
 
   @override
