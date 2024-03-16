@@ -14,7 +14,7 @@ class _AthanSoundMenuState extends State<AthanSoundMenu> {
     'Fares Abdul Ghani',
     'Abdel Moneim',
     'Abdulah Al Maknawe ',
-    'Hamza Al Majale'
+    'Hamza Al Majale',
   ];
   String? selectedItem = 'Fares Abdul Ghani';
 

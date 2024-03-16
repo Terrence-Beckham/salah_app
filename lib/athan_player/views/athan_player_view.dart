@@ -36,7 +36,7 @@ class _AthanPlayerState extends State<AthanPlayer> {
 
   Future<void> playAthan() async {
     await audioPlayer
-        .play(AssetSource('athans/mishari_alAfasi.mp3'));
+        .play(AssetSource('athans/mishary_alAfasi.mp3'));
   }
 
   @override

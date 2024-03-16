@@ -16,7 +16,7 @@ class Settings with _$Settings {
     String? language,
     @Index() @Default('SETTINGS') String? name,
     @Default('mishary_alAfasi_fajr.mp3') String fajrAthan,
-    @Default('mishary_alAfasi.mp3') String reqularAthan,
+    @Default('mishary_alAfasi.mp3') String regularAthan,
     @enumerated @Default(JuristicSchool.standard) JuristicSchool juristicSchool,
     @enumerated
     @Default(AthanSoundSettings.sound)

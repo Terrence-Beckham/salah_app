@@ -5,9 +5,12 @@ import 'package:salah_app/athan_player/views/athan_player_view.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/salah_bloc.dart';
 import 'package:salah_app/settings/data/settings_repository.dart';
+import 'package:salah_app/settings/settings_bloc.dart';
 import 'package:salah_app/settings/view/salah_settings_view.dart';
 import 'package:salah_app/settings/view/settings_view.dart';
 import 'package:salah_repository/salah_repository.dart';
+
+enum PrayerName { fajr, sharooq, dhuhr, asr, maghrib, isha }
 
 class SalahPage extends StatelessWidget {
   const SalahPage({super.key});
@@ -41,7 +44,7 @@ class SalahView extends StatelessWidget {
               context,
               MaterialPageRoute<AthanPlayer>(
                 builder: (context) => AthanPlayer(
-                  salahName: state.currentSalah!.name,
+                  salahName: state.nextSalah!.name,
                   timerRepository: context.read<TimerRepository>(),
                 ),
               ),
@@ -174,7 +177,7 @@ class SalahSuccessView extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute<SalahSettingsView>(
+                          MaterialPageRoute<SalahSettingsPage>(
                             builder: (context) => const SettingsPage(),
                           ),
                         );
@@ -327,37 +330,37 @@ class SalahSuccessView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Fajr',
+                        prayerName: PrayerName.fajr,
                         prayerTime: state.salah.fajr,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Sharooq',
+                        prayerName: PrayerName.sharooq,
                         prayerTime: state.salah.sharooq,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Dhuhr',
+                        prayerName: PrayerName.dhuhr,
                         prayerTime: state.salah.dhuhr,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Asr',
+                        prayerName: PrayerName.asr,
                         prayerTime: state.salah.asr,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Maghrib',
+                        prayerName: PrayerName.maghrib,
                         prayerTime: state.salah.maghrib,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
-                        prayerName: 'Isha',
+                        prayerName: PrayerName.isha,
                         prayerTime: state.salah.isha,
                       ),
                     ),
@@ -379,16 +382,19 @@ class PrayerTile extends StatelessWidget {
     super.key,
   });
 
-  final String prayerName;
+  final PrayerName prayerName;
   final String prayerTime;
 
   void launchSalahSettingsView(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute<SalahSettingsView>(
-        builder: (context) => const SalahSettingsPage(),
+    Navigator.of(context).push(
+      MaterialPageRoute<SalahSettingsPage>(
+        builder: (context) => BlocProvider<SettingsBloc>(
+          create: (context) => SettingsBloc(context.read<SettingsRepository>()),
+          child: SalahSettingsPage(salahName: prayerName, prayerTime: prayerTime),
+        ),
       ),
     );
+
   }
 
   @override
@@ -410,7 +416,7 @@ class PrayerTile extends StatelessWidget {
                 ),
               ),
               Text(
-                prayerName,
+                prayerName.name.capitalize(),
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -455,5 +461,11 @@ class PrayerTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+extension StringExtensions on String {
+  String capitalize() {
+    return '${this[0].toUpperCase()}${substring(1)}';
   }
 }
