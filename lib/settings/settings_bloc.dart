@@ -7,30 +7,31 @@ import 'package:salah_app/settings/data/settings_repository.dart';
 import 'package:salah_app/settings/models/settings.dart';
 
 part 'settings_event.dart';
+
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(this._settingsRepository)
       : super(
-          const SettingsState(
-            method: null,
-            language: '',
-            name: '',
-            fajrAthan: '',
-            regularAthan: '',
-            juristicSchool: JuristicSchool.standard,
-            fajrAthanSettings: AthanSoundSettings.sound,
-            dhuhrAthanSettings: AthanSoundSettings.sound,
-            asrAthanSettings: AthanSoundSettings.sound,
-            maghribAthanSettings: AthanSoundSettings.sound,
-            ishaAthanSettings: AthanSoundSettings.sound,
-            fajrOffset: 0,
-            dhuhrOffset: 0,
-            asrOffset: 0,
-            maghribOffset: 0,
-            ishaOffset: 0,
-          ),
-        ) {
+    const SettingsState(
+      method: null,
+      language: '',
+      name: '',
+      fajrAthan: '',
+      regularAthan: '',
+      juristicSchool: JuristicSchool.standard,
+      fajrAthanSettings: AthanSoundSettings.sound,
+      dhuhrAthanSettings: AthanSoundSettings.sound,
+      asrAthanSettings: AthanSoundSettings.sound,
+      maghribAthanSettings: AthanSoundSettings.sound,
+      ishaAthanSettings: AthanSoundSettings.sound,
+      fajrOffset: 0,
+      dhuhrOffset: 0,
+      asrOffset: 0,
+      maghribOffset: 0,
+      ishaOffset: 0,
+    ),
+  ) {
     on<SettingsInitial>(_init);
     on<OffsetIncrement>(_offSetIncrement);
     on<OffsetDecrement>(_offSetDecrement);
@@ -68,11 +69,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  FutureOr<void> _offSetIncrement(
-    OffsetIncrement event,
-    Emitter<SettingsState> emit,
-  ) async {
-    await _settingsRepository.addOffset(event.prayerName);
+  FutureOr<void> _offSetIncrement(OffsetIncrement event,
+      Emitter<SettingsState> emit,) async {
+    await _settingsRepository.updateIncrementOffset(event.prayerName);
 
     final settings = await _settingsRepository.init();
     emit(
@@ -86,9 +85,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
     );
   }
-}
 
-FutureOr<void> _offSetDecrement(
-  OffsetDecrement event,
-  Emitter<SettingsState> emit,
-) {}
+  FutureOr<void> _offSetDecrement(OffsetDecrement event, Emitter<SettingsState> emit) async{
+    await _settingsRepository.updateDecrementOffset(event.prayerName);
+
+    final settings = await _settingsRepository.init();
+    emit(
+      state.copyWith(
+        status: SettingsStatus.success,
+        asrOffset: settings!.asrOffset,
+        dhuhrOffset: settings.dhuhrOffset,
+        fajrOffset: settings.fajrOffset,
+        ishaOffset: settings.ishaOffset,
+        maghribOffset: settings.maghribOffset,
+      ),
+    );
+
+  }
+}
