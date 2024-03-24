@@ -4,6 +4,18 @@ enum SettingsStatus { initial, loading, success, failure }
 
 final class SettingsState extends Equatable {
   const SettingsState({
+    required this.fajrTime,
+    required this.fajrOffsetTime,
+    required this.sharooqTime,
+    required this.sharooqOffsetTime,
+    required this.dhuhrTime,
+    required this.dhuhrOffsetTime,
+    required this.asrTime,
+    required this.asrOffsetTime,
+    required this.maghribTime,
+    required this.maghribOffsetTime,
+    required this.ishaTime,
+    required this.ishaOffsetTime,
     required this.method,
     required this.language,
     required this.name,
@@ -16,6 +28,7 @@ final class SettingsState extends Equatable {
     required this.maghribAthanSettings,
     required this.ishaAthanSettings,
     required this.fajrOffset,
+    required this.sharooqOffset,
     required this.dhuhrOffset,
     required this.asrOffset,
     required this.maghribOffset,
@@ -37,10 +50,24 @@ final class SettingsState extends Equatable {
   final AthanSoundSettings maghribAthanSettings;
   final AthanSoundSettings ishaAthanSettings;
   final int fajrOffset;
+  final int sharooqOffset;
   final int dhuhrOffset;
   final int asrOffset;
   final int maghribOffset;
   final int ishaOffset;
+
+  final String fajrTime;
+  final String fajrOffsetTime;
+  final String sharooqTime;
+  final String sharooqOffsetTime;
+  final String dhuhrTime;
+  final String dhuhrOffsetTime;
+  final String asrTime;
+  final String asrOffsetTime;
+  final String maghribTime;
+  final String maghribOffsetTime;
+  final String ishaTime;
+  final String ishaOffsetTime;
 
   SettingsState copyWith({
     SettingsStatus? status,
@@ -56,10 +83,23 @@ final class SettingsState extends Equatable {
     AthanSoundSettings? maghribAthanSettings,
     AthanSoundSettings? ishaAthanSettings,
     int? fajrOffset,
+    int? sharooqOffset,
     int? dhuhrOffset,
     int? asrOffset,
     int? maghribOffset,
     int? ishaOffset,
+    String? fajrTime,
+    String? fajrOffsetTime,
+    String? sharooqTime,
+    String? sharooqOffsetTime,
+    String? dhuhrTime,
+    String? dhuhrOffsetTime,
+    String? asrTime,
+    String? asrOffsetTime,
+    String? maghribTime,
+    String? maghribOffsetTime,
+    String? ishaTime,
+    String? ishaOffsetTime,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -75,15 +115,30 @@ final class SettingsState extends Equatable {
       maghribAthanSettings: maghribAthanSettings ?? this.maghribAthanSettings,
       ishaAthanSettings: ishaAthanSettings ?? this.ishaAthanSettings,
       fajrOffset: fajrOffset ?? this.fajrOffset,
+      sharooqOffset: sharooqOffset ?? this.sharooqOffset,
       dhuhrOffset: dhuhrOffset ?? this.dhuhrOffset,
       asrOffset: asrOffset ?? this.asrOffset,
       maghribOffset: maghribOffset ?? this.maghribOffset,
       ishaOffset: ishaOffset ?? this.ishaOffset,
+      fajrTime: fajrTime ?? this.fajrTime,
+      fajrOffsetTime: fajrOffsetTime ?? this.fajrOffsetTime,
+      sharooqTime: sharooqTime ?? this.sharooqTime,
+      sharooqOffsetTime: sharooqOffsetTime ?? this.sharooqOffsetTime,
+      dhuhrTime: dhuhrTime ?? this.dhuhrTime,
+      dhuhrOffsetTime: dhuhrOffsetTime ?? this.dhuhrOffsetTime,
+      asrTime: asrTime ?? this.asrTime,
+      asrOffsetTime: asrOffsetTime ?? this.asrOffsetTime,
+      maghribTime: maghribTime ?? this.maghribTime,
+      maghribOffsetTime: maghribOffsetTime ?? this.maghribOffsetTime,
+      ishaTime: ishaTime ?? this.ishaTime,
+      ishaOffsetTime: ishaOffsetTime ?? this.ishaOffsetTime,
     );
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
+        status,
         method,
         language,
         name,
@@ -96,10 +151,22 @@ final class SettingsState extends Equatable {
         maghribAthanSettings,
         ishaAthanSettings,
         fajrOffset,
+        sharooqOffset,
         dhuhrOffset,
         asrOffset,
         maghribOffset,
         ishaOffset,
-        ishaOffset,
+        fajrTime,
+        fajrOffsetTime,
+        sharooqTime,
+        sharooqOffsetTime,
+        dhuhrTime,
+        dhuhrOffsetTime,
+        asrTime,
+        asrOffsetTime,
+        maghribTime,
+        maghribOffsetTime,
+        ishaTime,
+        ishaOffsetTime,
       ];
 }

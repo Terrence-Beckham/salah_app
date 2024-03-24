@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salah_app/Data/timer_repository.dart';
+import 'package:salah_app/Data/repositories/timer_repository.dart';
 import 'package:salah_app/konstants/konstants.dart';
 import 'package:salah_app/salah/salah_bloc.dart';
 
@@ -63,10 +63,10 @@ class _AthanPlayerState extends State<AthanPlayer> {
                     child: IconButton(
                       onPressed: () async {
                         Navigator.of(context).pop();
-                        final salah =
-                            await widget._timerRepository.retrieveSalah();
-                        widget._timerRepository.getSalahTimeline(salah!);
-                        // context.read<SalahBloc>().add(const SalahInitial());
+                        // final salah =
+                        //     await widget._timerRepository.retrieveSalah();
+                        // await widget._timerRepository.getSalahTimeline(salah!);
+                        context.read<SalahBloc>().add(const SalahInitial());
                       },
                       icon: const Icon(
                         Icons.close,

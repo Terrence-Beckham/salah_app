@@ -16,7 +16,7 @@ class SettingsRepository {
         await _isar.settings.filter().nameMatches('SETTINGS').findFirst();
     _logger.i('This is the settings object $settings');
     if (settings == null) {
-      await addSettingsToDb();
+      await initSettingsDB();
     }
     return settings;
   }
@@ -31,12 +31,15 @@ class SettingsRepository {
         final newSettings = settings?.copyWith(fajrOffset: newOffset);
         await updateSettingsToDB(newSettings!);
       case PrayerName.sharooq:
-        break;
+        final sharooqOffset = settings?.sharooqOffset;
+        final newOffset = sharooqOffset! + 1;
+        final newSettings = settings?.copyWith(sharooqOffset: newOffset);
+        await updateSettingsToDB(newSettings!);
 
       case PrayerName.dhuhr:
         final dhuhrOffset = settings?.dhuhrOffset;
         final newOffset = dhuhrOffset! + 1;
-        final newSettings =settings?.copyWith(dhuhrOffset: newOffset);
+        final newSettings = settings?.copyWith(dhuhrOffset: newOffset);
         await updateSettingsToDB(newSettings!);
       case PrayerName.asr:
         final asrOffset = settings?.asrOffset;
@@ -52,7 +55,7 @@ class SettingsRepository {
         final ishaOffset = settings?.ishaOffset;
         final newOffset = ishaOffset! + 1;
         final newSettings = settings?.copyWith(ishaOffset: newOffset);
-        await updateSettingsToDB(newSettingsj!);
+        await updateSettingsToDB(newSettings!);
     }
   }
 
@@ -66,7 +69,10 @@ class SettingsRepository {
         final newSettings = settings?.copyWith(fajrOffset: newOffset);
         await updateSettingsToDB(newSettings!);
       case PrayerName.sharooq:
-        break;
+        final sharooqOffset = settings?.sharooqOffset;
+        final newOffset = sharooqOffset! - 1;
+        final newSettings = settings?.copyWith(sharooqOffset: newOffset);
+        await updateSettingsToDB(newSettings!);
 
       case PrayerName.dhuhr:
         final dhuhrOffset = settings?.dhuhrOffset;
@@ -76,12 +82,12 @@ class SettingsRepository {
       case PrayerName.asr:
         final asrOffset = settings?.asrOffset;
         final newOffset = asrOffset! - 1;
-        final newSettings =settings?.copyWith(asrOffset: newOffset);
+        final newSettings = settings?.copyWith(asrOffset: newOffset);
         await updateSettingsToDB(newSettings!);
       case PrayerName.maghrib:
         final maghribOffset = settings?.maghribOffset;
         final newOffset = maghribOffset! - 1;
-        final newSettings =settings?.copyWith(maghribOffset: newOffset);
+        final newSettings = settings?.copyWith(maghribOffset: newOffset);
         await updateSettingsToDB(newSettings!);
       case PrayerName.isha:
         final ishaOffset = settings?.ishaOffset;
@@ -91,7 +97,7 @@ class SettingsRepository {
     }
   }
 
-  Future<void> addSettingsToDb() async {
+  Future<void> initSettingsDB() async {
     const newSettings = Settings();
     await _isar.writeTxn(() async => _isar.settings.put(newSettings));
   }

@@ -1,31 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salah_app/Data/repositories/settings_repository.dart';
+import 'package:salah_app/Data/repositories/timer_repository.dart';
 import 'package:salah_app/konstants/konstants.dart';
+import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_app/salah/view/salah_view.dart';
-import 'package:salah_app/settings/data/settings_repository.dart';
 import 'package:salah_app/settings/settings_bloc.dart';
 import 'package:salah_app/widgets/athan_segment_selector.dart';
 import 'package:salah_app/widgets/reciter_menu.dart';
 
 class SalahSettingsPage extends StatelessWidget {
   const SalahSettingsPage({
+    required Salah salah,
     required PrayerName salahName,
     required String prayerTime,
+    required String prayerOffsetTime,
     super.key,
   })  : _salahName = salahName,
-        _prayerTime = prayerTime;
+        _prayerTime = prayerTime,
+        _prayerOffsetTime = prayerOffsetTime,
+        _salah = salah;
 
   final PrayerName _salahName;
   final String _prayerTime;
+  final String _prayerOffsetTime;
+  final Salah _salah;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SettingsBloc(context.read<SettingsRepository>())
-        ..add(SettingsInitial()),
+      create: (_) => SettingsBloc(
+        context.read<SettingsRepository>(),
+        context.read<TimerRepository>(),
+      )..add(SettingsInitial(salah: _salah)),
       child: _SalahSettingsView(
         prayerName: _salahName,
         prayerTime: _prayerTime,
+        prayerOffsetTime: _prayerOffsetTime,
+        salah: _salah,
       ),
     );
   }
@@ -35,12 +47,18 @@ class _SalahSettingsView extends StatelessWidget {
   const _SalahSettingsView({
     required PrayerName prayerName,
     required String prayerTime,
+    required String prayerOffsetTime,
+    required Salah salah,
     super.key,
   })  : _prayerName = prayerName,
-        _prayerTime = prayerTime;
+        _prayerTime = prayerTime,
+        _prayerOffsetTime = prayerOffsetTime,
+        _salah = salah;
 
   final PrayerName _prayerName;
   final String _prayerTime;
+  final String _prayerOffsetTime;
+  final Salah _salah;
 
   // String updatePrayerTimeOffset(SettingsState state, PrayerName prayerName){
   // switch(prayerName){
@@ -65,7 +83,7 @@ class _SalahSettingsView extends StatelessWidget {
         return state.fajrOffset;
 
       case PrayerName.sharooq:
-        break;
+        return state.sharooqOffset;
       case PrayerName.dhuhr:
         return state.dhuhrOffset;
       case PrayerName.asr:
@@ -79,12 +97,31 @@ class _SalahSettingsView extends StatelessWidget {
     return 0;
   }
 
+  String calculateOriginalTime(PrayerName prayerName, SettingsState state) {
+    switch (prayerName) {
+      case PrayerName.fajr:
+        return state.fajrTime;
+      case PrayerName.sharooq:
+        return state.sharooqTime;
+
+      case PrayerName.dhuhr:
+        return state.sharooqTime;
+      case PrayerName.asr:
+        return state.asrTime;
+      case PrayerName.maghrib:
+        return state.maghribTime;
+      case PrayerName.isha:
+        return state.ishaTime;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         switch (state.status) {
           case SettingsStatus.initial:
+            // context.read<SettingsBloc>().add();
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -183,34 +220,9 @@ class _SalahSettingsView extends StatelessWidget {
                                         ),
                                       ),
                                       Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'original time',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color:
-                                                      AppColor.desaturatedGreen,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 32,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                child: Text(
-                                                  _prayerTime,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .desaturatedGreen,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                           Row(
                                             children: [
                                               Container(
@@ -277,32 +289,6 @@ class _SalahSettingsView extends StatelessWidget {
                                                     Icons.add_outlined,
                                                     color: Colors.greenAccent,
                                                     size: 48,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Row(
-                                            children: [
-                                              Text(
-                                                'adjusted time',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color:
-                                                      AppColor.desaturatedGreen,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 32,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(16),
-                                                child: Text(
-                                                  '12:30 AM',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .desaturatedGreen,
                                                   ),
                                                 ),
                                               ),

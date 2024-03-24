@@ -37,6 +37,7 @@ class Settings with _$Settings {
     @Default(AthanSoundSettings.sound)
     AthanSoundSettings ishaAthanSoundSettings,
     @Default(0) int fajrOffset,
+    @Default(0) int sharooqOffset,
     @Default(0) int dhuhrOffset,
     @Default(0) int asrOffset,
     @Default(0) int maghribOffset,

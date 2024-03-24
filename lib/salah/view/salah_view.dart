@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salah_app/Data/timer_repository.dart';
+import 'package:salah_app/Data/repositories/settings_repository.dart';
+import 'package:salah_app/Data/repositories/timer_repository.dart';
 import 'package:salah_app/athan_player/views/athan_player_view.dart';
 import 'package:salah_app/konstants/konstants.dart';
+import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_app/salah/salah_bloc.dart';
-import 'package:salah_app/settings/data/settings_repository.dart';
 import 'package:salah_app/settings/settings_bloc.dart';
 import 'package:salah_app/settings/view/salah_settings_view.dart';
 import 'package:salah_app/settings/view/settings_view.dart';
@@ -44,10 +45,12 @@ class SalahView extends StatelessWidget {
               context,
               MaterialPageRoute<AthanPlayer>(
                 builder: (context) => AthanPlayer(
-                  salahName: state.nextSalah!.name,
+                  salahName: state.salah.nextSalah.name,
                   timerRepository: context.read<TimerRepository>(),
                 ),
               ),
+            ).then(
+              (value) => context.read<SalahBloc>().add(const SalahInitial()),
             );
           }
         },
@@ -112,7 +115,7 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          state.currentSalah!.name,
+                          state.salah.currentSalah.name,
                           style: const TextStyle(
                             color: Color(0xFF17794F),
                             fontSize: 32,
@@ -148,8 +151,8 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          '${state.hoursLeft} hrs & ${state.minutesLeft} '
-                          'min until ${state.nextSalah!.name} ',
+                          '${state.salah.hoursLeft} hrs & ${state.salah.minutesLeft} '
+                          'min until ${state.salah.nextSalah.name} ',
                           style: const TextStyle(
                             color: Color(0xFF17794F),
                             fontSize: 16,
@@ -180,6 +183,10 @@ class SalahSuccessView extends StatelessWidget {
                           MaterialPageRoute<SalahSettingsPage>(
                             builder: (context) => const SettingsPage(),
                           ),
+                        ).then(
+                          (value) => context
+                              .read<SalahBloc>()
+                              .add(const SalahInitial()),
                         );
                       },
                       icon: const Icon(
@@ -211,7 +218,7 @@ class SalahSuccessView extends StatelessWidget {
                               builder: (context) => AthanPlayer(
                                 timerRepository:
                                     context.read<TimerRepository>(),
-                                salahName: state.currentSalah!.name,
+                                salahName: state.salah.currentSalah.name,
                               ),
                             ),
                           );
@@ -330,38 +337,50 @@ class SalahSuccessView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.fajr,
-                        prayerTime: state.salah.fajr,
+                        prayerTime: state.salah.fajrTime,
+                        prayerOffsetTime: state.salah.fajrOffsetTime,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.sharooq,
-                        prayerTime: state.salah.sharooq,
+                        prayerTime: state.salah.sharooqTime,
+                        prayerOffsetTime: state.salah.sharooqOffsetTime,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.dhuhr,
-                        prayerTime: state.salah.dhuhr,
+                        prayerTime: state.salah.dhuhrTime,
+                        prayerOffsetTime: state.salah.dhuhrOffsetTime,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.asr,
-                        prayerTime: state.salah.asr,
+                        prayerTime: state.salah.asrTime,
+                        prayerOffsetTime: state.salah.asrOffsetTime,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.maghrib,
-                        prayerTime: state.salah.maghrib,
+                        prayerTime: state.salah.maghribTime,
+                        prayerOffsetTime: state.salah.maghribOffsetTime,
                       ),
                     ),
                     Expanded(
                       child: PrayerTile(
+                        salah: state.salah,
                         prayerName: PrayerName.isha,
-                        prayerTime: state.salah.isha,
+                        prayerTime: state.salah.ishaTime,
+                        prayerOffsetTime: state.salah.ishaOffsetTime,
                       ),
                     ),
                   ],
@@ -379,22 +398,33 @@ class PrayerTile extends StatelessWidget {
   const PrayerTile({
     required this.prayerName,
     required this.prayerTime,
+    required this.prayerOffsetTime,
+    required this.salah,
     super.key,
   });
 
   final PrayerName prayerName;
   final String prayerTime;
+  final String prayerOffsetTime;
+  final Salah salah;
 
   void launchSalahSettingsView(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<SalahSettingsPage>(
         builder: (context) => BlocProvider<SettingsBloc>(
-          create: (context) => SettingsBloc(context.read<SettingsRepository>()),
-          child: SalahSettingsPage(salahName: prayerName, prayerTime: prayerTime),
+          create: (context) => SettingsBloc(
+            context.read<SettingsRepository>(),
+            context.read<TimerRepository>(),
+          ),
+          child: SalahSettingsPage(
+            salah: salah,
+            salahName: prayerName,
+            prayerTime: prayerTime,
+            prayerOffsetTime: prayerOffsetTime,
+          ),
         ),
       ),
     );
-
   }
 
   @override
@@ -440,7 +470,7 @@ class PrayerTile extends StatelessWidget {
           Row(
             children: [
               Text(
-                prayerTime,
+                prayerOffsetTime,
                 style: const TextStyle(
                   color: AppColor.desaturatedGreen,
                   fontSize: 18,

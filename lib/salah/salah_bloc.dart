@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
-import 'package:salah_app/Data/timer_repository.dart';
+import 'package:salah_app/Data/repositories/settings_repository.dart';
+import 'package:salah_app/Data/repositories/timer_repository.dart';
 import 'package:salah_app/salah/models/salah.dart';
-import 'package:salah_app/settings/data/settings_repository.dart';
 import 'package:salah_repository/salah_repository.dart';
 
 part 'salah_event.dart';
@@ -16,16 +16,12 @@ class SalahBloc extends Bloc<SalahEvent, SalahState> {
       this._salahRepository, this._timerRepository, this._settingsRepository)
       : super(
           const SalahState(
-            salah: Salah.empty,
-            hoursLeft: 0,
-            minutesLeft: 0,
-            currentSalah: CurrentSalah.unknown,
-            nextSalah: NextSalah.unknown,
-            timeToNextSalah: 0,
+            salah: Salah.empty, status: SalahStatus.initial,
+
           ),
         ) {
     on<SalahInitial>(_initSalah);
-    on<SubscribeToTimeline>(subscribeTimeline);
+    on<SubscribeToTimeline>(_subscribeTimeline);
     on<RequestSalah>(_requestSalah);
     on<InitializeSettings>(_initSettings);
   }
@@ -37,7 +33,7 @@ class SalahBloc extends Bloc<SalahEvent, SalahState> {
   final _logger = Logger();
 
   void _initSalah(SalahInitial event, Emitter<SalahState> emit) {
-    emit(state.copyWith(status: () => SalahStatus.loading));
+    emit(state.copyWith(status: SalahStatus.loading));
     add(const RequestSalah());
   }
 
@@ -46,52 +42,45 @@ class SalahBloc extends Bloc<SalahEvent, SalahState> {
     Emitter<SalahState> emit,
   ) async {
     try {
-      final salah = Salah.fromRepository(await _salahRepository.getSalah());
+      var salah = Salah.fromRepository(await _salahRepository.getSalah());
       _logger.i('current City is  ${salah.city} I think');
-      _timerRepository.getSalahTimeline(salah);
-      emit(state.copyWith(salah: () => salah));
+      salah = await _timerRepository.getSalahTimeline(salah);
+      await _timerRepository.addTimelineDataToTimer(salah);
+      emit(state.copyWith(status: SalahStatus.loading));
       add(SubscribeToTimeline(salah));
     } on Exception {
-      emit(state.copyWith(status: () => SalahStatus.failure));
+      emit(state.copyWith(status: SalahStatus.failure));
       _logger.i(Exception().toString());
     }
   }
+
   Future<void> _initSettings(
-      InitializeSettings event,
-      Emitter<SalahState> emitter,
-      ) async {
+    InitializeSettings event,
+    Emitter<SalahState> emitter,
+  ) async {
     await _settingsRepository.init();
   }
-  FutureOr<void> subscribeTimeline(
+
+  FutureOr<void> _subscribeTimeline(
     SubscribeToTimeline event,
     Emitter<SalahState> emit,
   ) async {
-    await emit.forEach<TimelineData>(
+    await emit.forEach<Salah>(
       _timerRepository.subscribeToTimeLines(),
       onData: (data) {
+        _logger.d(data);
         if (data.isAthanTime) {
           return state.copyWith(
-            status: () => SalahStatus.athanPlaying,
-            minutesLeft: () => data.minutesLeft,
-            timeToNextSalah: () => data.timeToNextSalah,
-            nextSalah: () => data.nextSalah,
-            currentSalah: () => data.currentSalah,
-            hoursLeft: () => data.hoursLeft,
-            isAthanTime: () => data.isAthanTime,
+            status: SalahStatus.athanPlaying,
+           salah: data,
           );
         } else {
           return state.copyWith(
-            status: () => SalahStatus.success,
-            minutesLeft: () => data.minutesLeft,
-            timeToNextSalah: () => data.timeToNextSalah,
-            nextSalah: () => data.nextSalah,
-            currentSalah: () => data.currentSalah,
-            hoursLeft: () => data.hoursLeft,
-            isAthanTime: () => data.isAthanTime,
+            status: SalahStatus.success,
+            salah: data,
           );
         }
       },
     );
-
   }
 }
