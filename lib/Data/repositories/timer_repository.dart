@@ -29,12 +29,12 @@ class TimerRepository {
 
   Future<Salah> getSalahTimeline(Salah salah) async {
     final settings = await _settingsRepository.init();
-    final fajrOffset = settings!.fajrOffset;
-    final sharooqOffset = settings.sharooqOffset;
-    final dhuhrOffset = settings.dhuhrOffset;
-    final asrOffset = settings.asrOffset;
-    final maghribOffset = settings.maghribOffset;
-    final ishaOffset = settings.ishaOffset;
+    final fajrOffset = settings!.fajrOffsetDisplay;
+    final sharooqOffset = settings.sharooqOffsetDisplay;
+    final dhuhrOffset = settings.dhuhrOffsetDisplay;
+    final asrOffset = settings.asrOffsetDisplay;
+    final maghribOffset = settings.maghribOffsetDisplay;
+    final ishaOffset = settings.ishaOffsetDisplay;
     final newFormat = DateFormat('Hm');
 
     final fajrDateTime = DateFormat('dd-MM-yyyy HH:mm')
@@ -255,6 +255,8 @@ class TimerRepository {
     // emit(state.copyWith(timeToNextSalah: initialSeconds));
     _logger.i('Timer has started ');
     var elapsedTime = salah.timeToNextSalah;
+   // if(_timer.isActive){cancelTimer();}
+
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final lastMinutes = (elapsedTime / 60).floor();
       final hoursLeft = lastMinutes ~/ 60;
@@ -264,13 +266,13 @@ class TimerRepository {
       elapsedTime -= 1;
       if (elapsedTime == 0 && salah.nextSalah != NextSalah.Sharooq) {
         cancelTimer();
-        salah.copyWith(minutesLeft: minutesLeft, hoursLeft: hoursLeft);
 
         _logger
           ..i('timer is active = ${_timer.isActive}')
           ..i('$salah.hoursLeft, $minutesLeft');
         final localSalah = salah.copyWith(
           hoursLeft: hoursLeft,
+          isAthanTime: true,
           minutesLeft: minutesLeft,
           currentSalah: salah.currentSalah,
           timeToNextSalah: salah.timeToNextSalah,
@@ -319,6 +321,7 @@ class TimerRepository {
 
   void cancelTimer() {
     _timer.cancel();
+    _logger.d('Timer was cancelled');
   }
 
   Future<void> addTimelineDataToTimer(Salah salah) async {

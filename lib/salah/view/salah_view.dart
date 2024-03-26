@@ -38,9 +38,10 @@ class SalahView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<SalahBloc, SalahState>(
-        listenWhen: (previous, current) => previous.status != current.status,
+        listenWhen: (previous, current) =>
+            previous.salah.isAthanTime != current.salah.isAthanTime,
         listener: (context, state) {
-          if (state.status == SalahStatus.athanPlaying) {
+          if (state.salah.isAthanTime) {
             Navigator.push(
               context,
               MaterialPageRoute<AthanPlayer>(
@@ -66,14 +67,11 @@ class SalahView extends StatelessWidget {
                   );
                 case SalahStatus.success:
                   return const SalahSuccessView();
-                case SalahStatus.athanPlaying:
-                  ;
                 case SalahStatus.failure:
                   return const Center(
                     child: Text('Check you internet connection and try again'),
                   );
               }
-              return const Center();
             },
           );
         },
@@ -151,7 +149,8 @@ class SalahSuccessView extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          '${state.salah.hoursLeft} hrs & ${state.salah.minutesLeft} '
+                          '${state.salah.hoursLeft} hrs &'
+                          ' ${state.salah.minutesLeft} '
                           'min until ${state.salah.nextSalah.name} ',
                           style: const TextStyle(
                             color: Color(0xFF17794F),
@@ -331,57 +330,84 @@ class SalahSuccessView extends StatelessWidget {
                   ],
                 ),
               ),
+              const Divider(
+                color: AppColor.accentGreen,
+              ),
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.fajr,
-                        prayerTime: state.salah.fajrTime,
+                        prayerTime: state.salah.fajrOffsetTime,
                         prayerOffsetTime: state.salah.fajrOffsetTime,
                       ),
                     ),
+                    const Divider(
+                      color: AppColor.accentGreen,
+                    ),
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.sharooq,
                         prayerTime: state.salah.sharooqTime,
                         prayerOffsetTime: state.salah.sharooqOffsetTime,
                       ),
                     ),
+                    const Divider(
+                      color: AppColor.accentGreen,
+                    ),
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.dhuhr,
                         prayerTime: state.salah.dhuhrTime,
                         prayerOffsetTime: state.salah.dhuhrOffsetTime,
                       ),
                     ),
+                    const Divider(
+                      color: AppColor.accentGreen,
+                    ),
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.asr,
                         prayerTime: state.salah.asrTime,
                         prayerOffsetTime: state.salah.asrOffsetTime,
                       ),
                     ),
+                    const Divider(
+                      color: AppColor.accentGreen,
+                    ),
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.maghrib,
                         prayerTime: state.salah.maghribTime,
                         prayerOffsetTime: state.salah.maghribOffsetTime,
                       ),
                     ),
+                    const Divider(
+                      color: AppColor.accentGreen,
+                    ),
                     Expanded(
                       child: PrayerTile(
+                        timerRepository: context.read<TimerRepository>(),
                         salah: state.salah,
                         prayerName: PrayerName.isha,
                         prayerTime: state.salah.ishaTime,
                         prayerOffsetTime: state.salah.ishaOffsetTime,
                       ),
+                    ),
+                    const Divider(
+                      color: AppColor.accentGreen,
                     ),
                   ],
                 ),
@@ -396,35 +422,45 @@ class SalahSuccessView extends StatelessWidget {
 
 class PrayerTile extends StatelessWidget {
   const PrayerTile({
-    required this.prayerName,
-    required this.prayerTime,
-    required this.prayerOffsetTime,
-    required this.salah,
+    required PrayerName prayerName,
+    required String prayerTime,
+    required String prayerOffsetTime,
+    required Salah salah,
+    required TimerRepository timerRepository,
     super.key,
-  });
+  })  : _prayerTime = prayerTime,
+        _prayerName = prayerName,
+        _prayerOffsetTime = prayerOffsetTime,
+        _salah = salah,
+        _timerRepository = timerRepository;
 
-  final PrayerName prayerName;
-  final String prayerTime;
-  final String prayerOffsetTime;
-  final Salah salah;
+  final PrayerName _prayerName;
+  final String _prayerTime;
+  final String _prayerOffsetTime;
+  final Salah _salah;
+  final TimerRepository _timerRepository;
 
   void launchSalahSettingsView(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<SalahSettingsPage>(
-        builder: (context) => BlocProvider<SettingsBloc>(
-          create: (context) => SettingsBloc(
-            context.read<SettingsRepository>(),
-            context.read<TimerRepository>(),
+    _timerRepository.cancelTimer();
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<SalahSettingsPage>(
+            builder: (context) => BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                _salah,
+                context.read<SettingsRepository>(),
+                context.read<TimerRepository>(),
+              ),
+              child: SalahSettingsPage(
+                salah: _salah,
+                salahName: _prayerName,
+              ),
+            ),
           ),
-          child: SalahSettingsPage(
-            salah: salah,
-            salahName: prayerName,
-            prayerTime: prayerTime,
-            prayerOffsetTime: prayerOffsetTime,
-          ),
-        ),
-      ),
-    );
+        )
+        .then(
+          (salah) => context.read<SalahBloc>().add(const RequestSalah()),
+        );
   }
 
   @override
@@ -446,7 +482,7 @@ class PrayerTile extends StatelessWidget {
                 ),
               ),
               Text(
-                prayerName.name.capitalize(),
+                _prayerName.name.capitalize(),
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -470,10 +506,10 @@ class PrayerTile extends StatelessWidget {
           Row(
             children: [
               Text(
-                prayerOffsetTime,
+                _prayerOffsetTime,
                 style: const TextStyle(
                   color: AppColor.desaturatedGreen,
-                  fontSize: 18,
+                  fontSize: 20,
                 ),
               ),
               Padding(

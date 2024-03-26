@@ -1,6 +1,6 @@
 part of 'salah_bloc.dart';
 
-enum SalahStatus { initial, loading, success, failure, athanPlaying }
+enum SalahStatus { initial, loading, success, failure,  }
 
 enum CurrentSalah { Fajr, Sharooq, Dhuhr, Asr, Maghrib, Isha, unknown }
 

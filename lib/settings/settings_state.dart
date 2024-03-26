@@ -33,14 +33,15 @@ final class SettingsState extends Equatable {
     required this.asrOffset,
     required this.maghribOffset,
     required this.ishaOffset,
+    required this.salah,
     this.status = SettingsStatus.initial,
   });
 
+  final Salah salah;
   final SettingsStatus status;
   final int? method;
   final String? language;
   final String name;
-
   final String fajrAthan;
   final String regularAthan;
   final JuristicSchool juristicSchool;
@@ -68,6 +69,8 @@ final class SettingsState extends Equatable {
   final String maghribOffsetTime;
   final String ishaTime;
   final String ishaOffsetTime;
+
+
 
   SettingsState copyWith({
     SettingsStatus? status,
@@ -100,6 +103,7 @@ final class SettingsState extends Equatable {
     String? maghribOffsetTime,
     String? ishaTime,
     String? ishaOffsetTime,
+    Salah? salah,
   }) {
     return SettingsState(
       status: status ?? this.status,
@@ -132,13 +136,14 @@ final class SettingsState extends Equatable {
       maghribOffsetTime: maghribOffsetTime ?? this.maghribOffsetTime,
       ishaTime: ishaTime ?? this.ishaTime,
       ishaOffsetTime: ishaOffsetTime ?? this.ishaOffsetTime,
+      salah: salah ?? this.salah,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         status,
+        salah,
         method,
         language,
         name,

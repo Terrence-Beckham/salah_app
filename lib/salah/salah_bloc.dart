@@ -13,11 +13,13 @@ part 'salah_state.dart';
 
 class SalahBloc extends Bloc<SalahEvent, SalahState> {
   SalahBloc(
-      this._salahRepository, this._timerRepository, this._settingsRepository)
-      : super(
+    this._salahRepository,
+    this._timerRepository,
+    this._settingsRepository,
+  ) : super(
           const SalahState(
-            salah: Salah.empty, status: SalahStatus.initial,
-
+            salah: Salah.empty,
+            status: SalahStatus.initial,
           ),
         ) {
     on<SalahInitial>(_initSalah);
@@ -45,6 +47,7 @@ class SalahBloc extends Bloc<SalahEvent, SalahState> {
       var salah = Salah.fromRepository(await _salahRepository.getSalah());
       _logger.i('current City is  ${salah.city} I think');
       salah = await _timerRepository.getSalahTimeline(salah);
+      // _timerRepository.cancelTimer();
       await _timerRepository.addTimelineDataToTimer(salah);
       emit(state.copyWith(status: SalahStatus.loading));
       add(SubscribeToTimeline(salah));
@@ -69,17 +72,11 @@ class SalahBloc extends Bloc<SalahEvent, SalahState> {
       _timerRepository.subscribeToTimeLines(),
       onData: (data) {
         _logger.d(data);
-        if (data.isAthanTime) {
-          return state.copyWith(
-            status: SalahStatus.athanPlaying,
-           salah: data,
-          );
-        } else {
-          return state.copyWith(
-            status: SalahStatus.success,
-            salah: data,
-          );
-        }
+
+        return state.copyWith(
+          status: SalahStatus.success,
+          salah: data,
+        );
       },
     );
   }

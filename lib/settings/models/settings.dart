@@ -36,12 +36,12 @@ class Settings with _$Settings {
     @enumerated
     @Default(AthanSoundSettings.sound)
     AthanSoundSettings ishaAthanSoundSettings,
-    @Default(0) int fajrOffset,
-    @Default(0) int sharooqOffset,
-    @Default(0) int dhuhrOffset,
-    @Default(0) int asrOffset,
-    @Default(0) int maghribOffset,
-    @Default(0) int ishaOffset,
+    @Default(0) int fajrOffsetDisplay,
+    @Default(0) int sharooqOffsetDisplay,
+    @Default(0) int dhuhrOffsetDisplay,
+    @Default(0) int asrOffsetDisplay,
+    @Default(0) int maghribOffsetDisplay,
+    @Default(0) int ishaOffsetDisplay,
   }) = _Settings;
   const Settings._();
   Id get isarId => 0;

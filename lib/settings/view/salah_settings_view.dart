@@ -13,30 +13,23 @@ class SalahSettingsPage extends StatelessWidget {
   const SalahSettingsPage({
     required Salah salah,
     required PrayerName salahName,
-    required String prayerTime,
-    required String prayerOffsetTime,
     super.key,
   })  : _salahName = salahName,
-        _prayerTime = prayerTime,
-        _prayerOffsetTime = prayerOffsetTime,
         _salah = salah;
 
   final PrayerName _salahName;
-  final String _prayerTime;
-  final String _prayerOffsetTime;
   final Salah _salah;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SettingsBloc(
+        _salah,
         context.read<SettingsRepository>(),
         context.read<TimerRepository>(),
       )..add(SettingsInitial(salah: _salah)),
       child: _SalahSettingsView(
-        prayerName: _salahName,
-        prayerTime: _prayerTime,
-        prayerOffsetTime: _prayerOffsetTime,
+        salahName: _salahName,
         salah: _salah,
       ),
     );
@@ -44,44 +37,22 @@ class SalahSettingsPage extends StatelessWidget {
 }
 
 class _SalahSettingsView extends StatelessWidget {
-  const _SalahSettingsView({
-    required PrayerName prayerName,
-    required String prayerTime,
-    required String prayerOffsetTime,
+  _SalahSettingsView({
     required Salah salah,
+    required PrayerName salahName,
     super.key,
-  })  : _prayerName = prayerName,
-        _prayerTime = prayerTime,
-        _prayerOffsetTime = prayerOffsetTime,
-        _salah = salah;
+  })  : _salahName = salahName,
+        _salah = salah {
+    // displayOriginalAndOffsetTimes(_salahName);
+  }
 
-  final PrayerName _prayerName;
-  final String _prayerTime;
-  final String _prayerOffsetTime;
+  final PrayerName _salahName;
   final Salah _salah;
-
-  // String updatePrayerTimeOffset(SettingsState state, PrayerName prayerName){
-  // switch(prayerName){
-  //   case PrayerName.fajr:
-  //    return 'FajrIncrement';
-  //     // TODO: Handle this case.
-  //   case PrayerName.sharooq:
-  //     // TODO: Handle this case.
-  //   case PrayerName.dhuhr:
-  //     // TODO: Handle this case.
-  //   case PrayerName.asr:
-  //     // TODO: Handle this case.
-  //   case PrayerName.maghrib:
-  //     // TODO: Handle this case.
-  //   case PrayerName.isha:
-  //     // TODO: Handle this case.
-  // }return 0;
 
   int calculateOffsetTime(PrayerName prayerName, SettingsState state) {
     switch (prayerName) {
       case PrayerName.fajr:
         return state.fajrOffset;
-
       case PrayerName.sharooq:
         return state.sharooqOffset;
       case PrayerName.dhuhr:
@@ -90,30 +61,28 @@ class _SalahSettingsView extends StatelessWidget {
         return state.asrOffset;
       case PrayerName.maghrib:
         return state.maghribOffset;
-
       case PrayerName.isha:
         return state.ishaOffset;
     }
     return 0;
   }
 
-  String calculateOriginalTime(PrayerName prayerName, SettingsState state) {
-    switch (prayerName) {
-      case PrayerName.fajr:
-        return state.fajrTime;
-      case PrayerName.sharooq:
-        return state.sharooqTime;
-
-      case PrayerName.dhuhr:
-        return state.sharooqTime;
-      case PrayerName.asr:
-        return state.asrTime;
-      case PrayerName.maghrib:
-        return state.maghribTime;
-      case PrayerName.isha:
-        return state.ishaTime;
-    }
-  }
+  // String calculateOriginalTime(PrayerName prayerName, SettingsState state) {
+  //   switch (prayerName) {
+  //     case PrayerName.fajr:
+  //       return state.fajrTime;
+  //     case PrayerName.sharooq:
+  //       return state.sharooqTime;
+  //     case PrayerName.dhuhr:
+  //       return state.sharooqTime;
+  //     case PrayerName.asr:
+  //       return state.asrTime;
+  //     case PrayerName.maghrib:
+  //       return state.maghribTime;
+  //     case PrayerName.isha:
+  //       return state.ishaTime;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +117,7 @@ class _SalahSettingsView extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                _prayerName.name.capitalize(),
+                                _salahName.name.capitalize(),
                                 style: const TextStyle(
                                   color: AppColor.darkGreen,
                                   fontWeight: FontWeight.bold,
@@ -167,10 +136,10 @@ class _SalahSettingsView extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Padding(
+                                  const Padding(
                                     padding:
                                         EdgeInsets.only(left: 8, right: 16),
                                     child: Icon(
@@ -180,8 +149,8 @@ class _SalahSettingsView extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Bulaaq Dekroor',
-                                    style: TextStyle(
+                                    _salah.city,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 32,
@@ -221,8 +190,42 @@ class _SalahSettingsView extends StatelessWidget {
                                       ),
                                       Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
+                                          Row(
+                                            children: [
+                                              const Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: 8,
+                                                ),
+                                                child: Text(
+                                                  'Original time',
+                                                  style: TextStyle(
+                                                    color: AppColor.accentGreen,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                switch (_salahName) {
+                                                  PrayerName.fajr =>
+                                                    state.salah.fajrTime,
+                                                  PrayerName.sharooq =>
+                                                    state.salah.sharooqTime,
+                                                  PrayerName.dhuhr =>
+                                                    state.salah.dhuhrTime,
+                                                  PrayerName.asr =>
+                                                    state.salah.asrTime,
+                                                  PrayerName.maghrib =>
+                                                    state.salah.maghribTime,
+                                                  PrayerName.isha =>
+                                                    state.salah.ishaTime,
+                                                },
+                                                style: const TextStyle(
+                                                  color: AppColor.accentGreen,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                           Row(
                                             children: [
                                               Container(
@@ -233,14 +236,19 @@ class _SalahSettingsView extends StatelessWidget {
                                                   ),
                                                 ),
                                                 child: IconButton(
-                                                  onPressed: () => context
-                                                      .read<SettingsBloc>()
-                                                      .add(
-                                                        OffsetDecrement(
-                                                          prayerName:
-                                                              _prayerName,
-                                                        ),
-                                                      ),
+                                                  onPressed: () {
+                                                    context
+                                                        .read<SettingsBloc>()
+                                                        .add(
+                                                          OffsetDecrement(
+                                                            salah: _salah,
+                                                            prayerName:
+                                                                _salahName,
+                                                          ),
+                                                        );
+
+
+                                                  },
                                                   icon: const Icon(
                                                     Icons.remove_outlined,
                                                     color: Colors.red,
@@ -258,9 +266,10 @@ class _SalahSettingsView extends StatelessWidget {
                                                   ),
                                                 ),
                                                 child: Center(
+                                                  //Display Offset Time Field
                                                   child: Text(
                                                     calculateOffsetTime(
-                                                      _prayerName,
+                                                      _salahName,
                                                       state,
                                                     ).toString(),
                                                     style: const TextStyle(
@@ -281,8 +290,9 @@ class _SalahSettingsView extends StatelessWidget {
                                                       .read<SettingsBloc>()
                                                       .add(
                                                         OffsetIncrement(
+                                                          salah: _salah,
                                                           prayerName:
-                                                              _prayerName,
+                                                              _salahName,
                                                         ),
                                                       ),
                                                   icon: const Icon(
@@ -290,6 +300,40 @@ class _SalahSettingsView extends StatelessWidget {
                                                     color: Colors.greenAccent,
                                                     size: 48,
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: 8,
+                                                ),
+                                                child: Text(
+                                                  'Adjusted time',
+                                                  style: TextStyle(
+                                                    color: AppColor.accentGreen,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                switch (_salahName) {
+                                                PrayerName.fajr =>
+                                                state.salah.fajrOffsetTime,
+                                                PrayerName.sharooq =>
+                                                state.salah.sharooqOffsetTime,
+                                                PrayerName.dhuhr =>
+                                                state.salah.dhuhrOffsetTime,
+                                                PrayerName.asr =>
+                                                state.salah.asrOffsetTime,
+                                                PrayerName.maghrib =>
+                                                state.salah.maghribOffsetTime,
+                                                PrayerName.isha =>
+                                                state.salah.ishaOffsetTime,
+                                              },
+                                                style: const TextStyle(
+                                                  color: AppColor.accentGreen,
                                                 ),
                                               ),
                                             ],

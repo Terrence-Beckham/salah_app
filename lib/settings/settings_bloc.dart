@@ -1,24 +1,36 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
-import 'package:salah_app/Data/repositories/models/timeline_data.dart';
 import 'package:salah_app/Data/repositories/settings_repository.dart';
 import 'package:salah_app/Data/repositories/timer_repository.dart';
 import 'package:salah_app/salah/models/salah.dart';
 import 'package:salah_app/salah/view/salah_view.dart';
-import 'package:salah_app/settings/models/settings.dart';
+
+import 'models/settings.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc(this._settingsRepository, this._timerRepository)
+  SettingsBloc(this._salah, this._settingsRepository, this._timerRepository)
       : super(
           const SettingsState(
-            method: null,
+            salah: Salah.empty,
+            fajrTime: '',
+            fajrOffsetTime: '',
+            sharooqTime: '',
+            sharooqOffsetTime: '',
+            dhuhrTime: '',
+            dhuhrOffsetTime: '',
+            asrTime: '',
+            asrOffsetTime: '',
+            maghribTime: '',
+            maghribOffsetTime: '',
+            ishaTime: '',
+            ishaOffsetTime: '',
+            method: 1,
             language: '',
             name: '',
             fajrAthan: '',
@@ -35,57 +47,33 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
             asrOffset: 0,
             maghribOffset: 0,
             ishaOffset: 0,
-            fajrTime: '',
-            fajrOffsetTime: '',
-            sharooqTime: '',
-            sharooqOffsetTime: '',
-            dhuhrTime: '',
-            dhuhrOffsetTime: '',
-            asrTime: '',
-            asrOffsetTime: '',
-            maghribTime: '',
-            maghribOffsetTime: '',
-            ishaTime: '',
-            ishaOffsetTime: '',
           ),
         ) {
     on<SettingsInitial>(_init);
     on<OffsetIncrement>(_offSetIncrement);
     on<OffsetDecrement>(_offSetDecrement);
+    on<UpdateSalahTimeDisplay>(_updateSalahTimeDisplay);
     // on<SalahTimeLineSubscription>(_subscribeToTimeline);
   }
 
+  final Salah _salah;
   final SettingsRepository _settingsRepository;
   final TimerRepository _timerRepository;
   final Logger _logger = Logger();
 
   Future<void> _init(SettingsInitial event, Emitter<SettingsState> emit) async {
-    emit(
-      state.copyWith(
-        status: SettingsStatus.loading,
-      ),
-    );
     final settings = await _settingsRepository.init();
+    _logger.e('Fajr offset Display: ${settings?.fajrOffsetDisplay}');
     emit(
       state.copyWith(
         status: SettingsStatus.success,
-        asrAthanSettings: settings!.asrAthanSoundSettings,
-        asrOffset: settings.asrOffset,
-        dhuhrAthanSettings: settings.dhuhrAthanSoundSettings,
-        dhuhrOffset: settings.dhuhrOffset,
-        fajrAthan: settings.fajrAthan,
-        fajrAthanSettings: settings.fajrAthanSoundsSettings,
-        fajrOffset: settings.fajrOffset,
-        sharooqOffset: settings.sharooqOffset,
-        ishaAthanSettings: settings.ishaAthanSoundSettings,
-        ishaOffset: settings.ishaOffset,
-        juristicSchool: settings.juristicSchool,
-        language: settings.language,
-        maghribAthanSettings: settings.maghribAthanSoundSettings,
-        maghribOffset: settings.maghribOffset,
-        method: settings.method,
-        name: settings.name,
-        regularAthan: settings.regularAthan,
+        salah: _salah,
+        fajrOffset: settings?.fajrOffsetDisplay,
+        sharooqOffset: settings?.sharooqOffsetDisplay,
+        dhuhrOffset: settings?.dhuhrOffsetDisplay,
+        asrOffset: settings?.asrOffsetDisplay,
+        maghribOffset: settings?.maghribOffsetDisplay,
+        ishaOffset: settings?.ishaOffsetDisplay,
       ),
     );
   }
@@ -97,62 +85,50 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     await _settingsRepository.updateIncrementOffset(event.prayerName);
 
     final settings = await _settingsRepository.init();
+    final tempSalah = await _timerRepository.getSalahTimeline(event.salah);
+    _logger.e('tempSalah: $tempSalah');
+
     emit(
       state.copyWith(
+        fajrOffset: settings?.fajrOffsetDisplay,
+        sharooqOffset: settings?.sharooqOffsetDisplay,
+        dhuhrOffset: settings?.dhuhrOffsetDisplay,
+        asrOffset: settings?.asrOffsetDisplay,
+        maghribOffset: settings?.maghribOffsetDisplay,
+        ishaOffset: settings?.ishaOffsetDisplay,
+        salah: tempSalah,
         status: SettingsStatus.success,
-        asrOffset: settings!.asrOffset,
-        dhuhrOffset: settings.dhuhrOffset,
-        fajrOffset: settings.fajrOffset,
-        sharooqOffset: settings.sharooqOffset,
-        ishaOffset: settings.ishaOffset,
-        maghribOffset: settings.maghribOffset,
       ),
     );
   }
 
   FutureOr<void> _offSetDecrement(
-      OffsetDecrement event, Emitter<SettingsState> emit) async {
+    OffsetDecrement event,
+    Emitter<SettingsState> emit,
+  ) async {
     await _settingsRepository.updateDecrementOffset(event.prayerName);
-
     final settings = await _settingsRepository.init();
+    final tempSalah = await _timerRepository.getSalahTimeline(event.salah);
     emit(
       state.copyWith(
+        fajrOffset: settings?.fajrOffsetDisplay,
+        sharooqOffset: settings?.sharooqOffsetDisplay,
+        dhuhrOffset: settings?.dhuhrOffsetDisplay,
+        asrOffset: settings?.asrOffsetDisplay,
+        maghribOffset: settings?.maghribOffsetDisplay,
+        ishaOffset: settings?.ishaOffsetDisplay,
+        salah: tempSalah,
         status: SettingsStatus.success,
-        asrOffset: settings!.asrOffset,
-        dhuhrOffset: settings.dhuhrOffset,
-        fajrOffset: settings.fajrOffset,
-        sharooqOffset: settings.sharooqOffset,
-        ishaOffset: settings.ishaOffset,
-        maghribOffset: settings.maghribOffset,
       ),
     );
   }
 
-  // FutureOr<void> _subscribeToTimeline(
-  //   SalahTimeLineSubscription event,
-  //   Emitter<SettingsState> emit,
-  // ) async {
-  //   await _timerRepository.getSalahTimeline(event._salah);
-  //   await emit.forEach<TimelineData>(
-  //     _timerRepositor,
-  //     onData: (data) {
-  //      _logger.d('this is the data from the prayerStream $data' );
-  //       return state.copyWith(
-  //         status: SettingsStatus.success,
-  //         fajrTime: data.fajrTime,
-  //         fajrOffsetTime: data.fajrOffsetTime,
-  //         sharooqOffsetTime: data.sharooqOffsetTime,
-  //         sharooqTime: data.sharooqTime,
-  //         dhuhrTime: data.dhuhrTime,
-  //         dhuhrOffsetTime: data.dhuhrOffsetTime,
-  //         asrTime: data.asrTime,
-  //         asrOffsetTime: data.asrOffsetTime,
-  //         maghribTime: data.maghribTime,
-  //         maghribOffsetTime: data.maghribOffsetTime,
-  //         ishaTime: data.ishaTime,
-  //         ishaOffsetTime: data.ishaOffsetTime,
-  //       );
-  //     },
-  //   );
-  // }
+  FutureOr<void> _updateSalahTimeDisplay(
+    UpdateSalahTimeDisplay event,
+    Emitter<SettingsState> emit,
+  ) async {
+    final tempSalah = event.salah;
+    final salah = await _timerRepository.getSalahTimeline(tempSalah);
+    emit(state.copyWith(status: SettingsStatus.success, salah: salah));
+  }
 }
